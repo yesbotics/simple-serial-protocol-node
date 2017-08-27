@@ -1,5 +1,5 @@
 import * as SerialPort from 'serialport/lib';
-import Dictionary from "typescript-collections/dist/lib/Dictionary";
+import Dictionary from 'typescript-collections/dist/lib/Dictionary';
 
 export class SimpleSerialProtocol {
 
