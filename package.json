@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc --rootDir \"./src\" --outDir \"./dist\"",
     "tsc:w": "tsc -w --rootDir \"./src\" --outDir \"./dist\" --inlineSourceMap",
-    "app": "nodemon ./dist/src/example.js",
-    "start": "concurrent --kill-others \"npm run tsc:w\" \"npm run app\" ",
+    "app": "nodemon ./dist/example.js",
+    "start": "concurrently --kill-others \"npm run tsc:w\" \"npm run app\" ",
     "compile": "npm run tsc",
     "dev": "nodemon -e ts  --exec \"npm run compile\"",
     "prepare": "npm run compile",
@@ -37,7 +37,7 @@
   "devDependencies": {
     "concurrently": "^3.5.0",
     "nodemon": "^1.11.0",
-    "tslint": "^5.6.0",
-    "typescript": "^2.4.2"
+    "tslint": "^5.7.0",
+    "typescript": "^2.5.1"
   }
 }
