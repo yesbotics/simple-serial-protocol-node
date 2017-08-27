@@ -11,7 +11,8 @@
     "start": "concurrent --kill-others \"npm run tsc:w\" \"npm run app\" ",
     "compile": "npm run tsc",
     "dev": "nodemon -e ts  --exec \"npm run compile\"",
-    "prepare": "npm run compile"
+    "prepare": "npm run compile",
+    "list-serial-ports:linux": "dmesg | grep tty"
   },
   "repository": {
     "type": "git",
