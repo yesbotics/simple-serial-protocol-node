@@ -6,13 +6,23 @@ class Example {
 
     public run = (): void => {
         let ssp: SimpleSerialProtocol = new SimpleSerialProtocol(Example.PORTNAME, Example.BAUDRATE);
+        ssp.registerCommand('b', this.onCommandB);
+        ssp.registerCommand('c', this.onCommandC);
         ssp.start().then(() => {
-            console.log('arduino is ready');
+            console.log('arduino is ready. now sending command "a;"');
             ssp.send('a;');
         }).catch((err) => {
             throw err;
         });
     };
+
+    private onCommandB(cmdMsg: String) {
+        console.log('onCommandB', cmdMsg);
+    }
+
+    private onCommandC(cmdMsg: String) {
+        console.log('onCommandC', cmdMsg);
+    }
 }
 
 let example = new Example();
