@@ -1,6 +1,7 @@
-import {SimpleSerialProtocol} from "./lib/simple-serial-protocol";
+import {SimpleSerialProtocol} from './lib/simple-serial-protocol';
 
 class Example {
+
     public static readonly PORTNAME: String = 'COM3';
     public static readonly BAUDRATE: Number = 115200;
 

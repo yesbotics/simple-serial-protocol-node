@@ -11,7 +11,7 @@ export class SimpleSerialProtocol {
     constructor(portname, baudrate: Number = 115200) {
         this._portname = portname;
         this._baudrate = baudrate;
-        this._serialPort = new SerialPort(this._portname, {baudRate: baudrate, autoOpen: false})
+        this._serialPort = new SerialPort(this._portname, {baudRate: baudrate, autoOpen: false});
     }
 
     public start = (): Promise<any> => {
@@ -44,8 +44,8 @@ export class SimpleSerialProtocol {
         return this;
     };
 
-    public registerCommand = (char: String, callback:Function): SimpleSerialProtocol => {
-        this._registeredCommandCallbacks.setValue(char,callback);
+    public registerCommand = (char: String, callback: Function): SimpleSerialProtocol => {
+        this._registeredCommandCallbacks.setValue(char, callback);
         return this;
     };
 
@@ -65,7 +65,7 @@ export class SimpleSerialProtocol {
             if (char === ';') {
                 let commandChar: String = cmdBuf.charAt(0);
                 this._registeredCommandCallbacks.getValue(commandChar).apply(null, [cmdBuf]);
-                cmdBuf='';
+                cmdBuf = '';
             }
         }
     }
