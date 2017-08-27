@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/einspunktnull/node-simple-serial-protocol#readme",
   "dependencies": {
+    "@types/serialport": "^4.0.9",
     "serialport": "^5.0.0"
   },
   "devDependencies": {
