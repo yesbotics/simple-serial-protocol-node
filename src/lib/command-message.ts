@@ -5,7 +5,7 @@ export class CommandMessage {
     constructor(raw: string) {
         this._raw = raw;
         let valuesStr: String = raw.substring(1, raw.length - 1);
-        this._values = valuesStr.split(';');
+        this._values = valuesStr.split(',');
     }
 
     public get length (): number  {
