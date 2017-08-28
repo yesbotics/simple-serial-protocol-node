@@ -36,24 +36,24 @@ export class SimpleSerialProtocol {
         });
     }
 
-    public get isRunning(): Boolean {
+    public get isRunning(): boolean {
         return this._serialPort.isOpen;
     }
 
     public send = (msg: string): SimpleSerialProtocol => {
         this._serialPort.write(msg, 'ascii');
         return this;
-    };
+    }
 
     public registerCommand = (char: string, callback: Function): SimpleSerialProtocol => {
         this._registeredCommandCallbacks.setValue(char, callback);
         return this;
-    };
+    }
 
     public unregisterCommand = (char: string): SimpleSerialProtocol => {
         this._registeredCommandCallbacks.remove(char);
         return this;
-    };
+    }
 
     private onData = (buf: Buffer): void => {
         let msg: string = buf.toString('ascii');
