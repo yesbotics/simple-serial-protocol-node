@@ -1,9 +1,10 @@
 import {SimpleSerialProtocol} from './lib/simple-serial-protocol';
+import {CommandMessage} from './lib/command-message';
 
 class Example {
 
-    public static readonly PORTNAME: String = 'COM3';
-    public static readonly BAUDRATE: Number = 115200;
+    public static readonly PORTNAME: string = 'COM3';
+    public static readonly BAUDRATE: number = 115200;
 
     public run = (): void => {
         let ssp: SimpleSerialProtocol = new SimpleSerialProtocol(Example.PORTNAME, Example.BAUDRATE);
@@ -17,12 +18,12 @@ class Example {
         });
     };
 
-    private onCommandB(cmdMsg: String) {
-        console.log('onCommandB', cmdMsg);
+    private onCommandB(cmdMsg: CommandMessage) {
+        console.log('onCommandB', cmdMsg.getMessageString());
     }
 
-    private onCommandC(cmdMsg: String) {
-        console.log('onCommandC', cmdMsg);
+    private onCommandC(cmdMsg: CommandMessage) {
+        console.log('onCommandC', cmdMsg.getMessageString());
     }
 }
 
