@@ -1,14 +1,15 @@
 import * as SerialPort from 'serialport/lib';
 import Dictionary from 'typescript-collections/dist/lib/Dictionary';
+import {CommandMessage} from './command-message';
 
 export class SimpleSerialProtocol {
 
     private _serialPort: SerialPort = null;
-    private _portname: String;
-    private _baudrate: Number = 115200;
-    private _registeredCommandCallbacks: Dictionary<String, Function> = new Dictionary();
+    private _portname: string;
+    private _baudrate: number = 115200;
+    private _registeredCommandCallbacks: Dictionary<string, Function> = new Dictionary();
 
-    constructor(portname, baudrate: Number = 115200) {
+    constructor(portname, baudrate: number = 115200) {
         this._portname = portname;
         this._baudrate = baudrate;
         this._serialPort = new SerialPort(this._portname, {baudRate: baudrate, autoOpen: false});
@@ -44,27 +45,27 @@ export class SimpleSerialProtocol {
         return this;
     };
 
-    public registerCommand = (char: String, callback: Function): SimpleSerialProtocol => {
+    public registerCommand = (char: string, callback: Function): SimpleSerialProtocol => {
         this._registeredCommandCallbacks.setValue(char, callback);
         return this;
     };
 
-    public unregisterCommand = (char: String): SimpleSerialProtocol => {
+    public unregisterCommand = (char: string): SimpleSerialProtocol => {
         this._registeredCommandCallbacks.remove(char);
         return this;
     };
 
     private onData = (buf: Buffer): void => {
-        let msg: String = buf.toString('ascii');
+        let msg: string = buf.toString('ascii');
         console.log('onData:', msg);
         let len = msg.length;
-        let cmdBuf: String = '';
+        let cmdBuf: string = '';
         for (let i = 0; i < len; i++) {
             let char = msg[i];
             cmdBuf += char;
             if (char === ';') {
-                let commandChar: String = cmdBuf.charAt(0);
-                this._registeredCommandCallbacks.getValue(commandChar).apply(null, [cmdBuf]);
+                let commandChar: string = cmdBuf.charAt(0);
+                this._registeredCommandCallbacks.getValue(commandChar).apply(null, [new CommandMessage(cmdBuf)]);
                 cmdBuf = '';
             }
         }
