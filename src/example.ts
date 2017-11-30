@@ -6,7 +6,7 @@ class Example {
     public static readonly PORTNAME: string = 'COM3';
     public static readonly BAUDRATE: number = 115200;
 
-    public run = (): void => {
+    public run(): void {
         let ssp: SimpleSerialProtocol = new SimpleSerialProtocol(Example.PORTNAME, Example.BAUDRATE);
         ssp.registerCommand('b', this.onCommandB);
         ssp.registerCommand('c', this.onCommandC);

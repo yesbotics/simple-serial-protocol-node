@@ -8,27 +8,27 @@ export class CommandMessage {
         this._values = valuesStr.split(',');
     }
 
-    public get length (): number  {
+    public get length(): number {
         return this._values.length;
     };
 
-    public getMessageString = (): string => {
+    public getMessageString(): string {
         return this._raw;
-    };
+    }
 
-    public getStringValueAt = (index: number): string => {
+    public getStringValueAt(index: number): string {
         return this._values[index];
     };
 
-    public getIntValueAt = (index: number): number => {
+    public getIntValueAt(index: number): number {
         return parseInt(this._values[index], 10);
     };
 
-    public getFloatValueAt = (index: number): number => {
+    public getFloatValueAt(index: number): number {
         return parseFloat(this._values[index]);
     };
 
-    public getBooleanValueAt = (index: number): boolean => {
+    public getBooleanValueAt(index: number): boolean {
         return this._values[index] === 'true' || this._values[index] === '1' ? true : false;
     };
 
