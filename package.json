@@ -12,7 +12,8 @@
     "compile": "npm run tsc",
     "dev": "nodemon -e ts  --exec \"npm run compile\"",
     "prepare": "npm run compile",
-    "list-serial-ports:linux": "dmesg | grep tty"
+    "list-serial-ports:linux": "dmesg | grep tty",
+    "prepublish": "npm run compile"
   },
   "repository": {
     "type": "git",

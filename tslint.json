@@ -96,7 +96,7 @@
         "align": false,
         "class-name": true,
         "comment-format": [
-            false, // kann das false?
+            false,
             "check-space"
         ],
         "interface-name": false,

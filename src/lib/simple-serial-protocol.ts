@@ -54,7 +54,8 @@ export class SimpleSerialProtocol {
     public send(msg: string): SimpleSerialProtocol {
         //TODO: Check this
         //second arg is not correct my idea says
-        this._serialPort.write(msg, 'ascii');
+        // this._serialPort.write(msg, 'ascii');
+        this._serialPort.write(msg);
         return this;
     }
 
