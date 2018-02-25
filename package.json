@@ -1,35 +1,33 @@
 {
-  "name": "simple-serial-protocol-node",
-  "version": "1.0.0",
+  "name": "@yesbotics/simple-serial-protocol-node",
+  "version": "1.0.2",
   "description": "Library for communication with arduino",
   "main": "./dist/index.js",
+  "typings": "./dist/index",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "tsc": "tsc --rootDir \"./src\" --outDir \"./dist\"",
-    "tsc:w": "tsc -w --rootDir \"./src\" --outDir \"./dist\" --inlineSourceMap",
+    "tsc": "tsc --rootDir \"./src\" --outDir \"./dist\" --declaration",
+    "tsc:w": "tsc -w --rootDir \"./src\" --outDir \"./dist\" --inlineSourceMap --declaration",
     "app": "nodemon ./dist/example.js",
-    "start": "concurrently --kill-others \"npm run tsc:w\" \"npm run app\" ",
+    "start": "concurrently --kill-others \"npm run tsc:w --declaration\" \"npm run app\" ",
     "compile": "npm run tsc",
-    "dev": "nodemon -e ts  --exec \"npm run compile\"",
+    "dev": "nodemon -e ts --exec \"npm run compile\"",
     "prepare": "npm run compile",
     "list-serial-ports:linux": "dmesg | grep tty",
     "prepublish": "npm run compile"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/einspunktnull/node-simple-serial-protocol.git"
+    "url": "git@gitlab.com:yesbotics/simple-serial-protocol/simple-serial-protocol-node.git"
   },
   "keywords": [
     "arduino",
     "serial",
     "protocol"
   ],
-  "author": "Albrecht Nitsche",
+  "author": "Albrecht Nitsche, Jens Kabisch",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/einspunktnull/node-simple-serial-protocol/issues"
-  },
-  "homepage": "https://github.com/einspunktnull/node-simple-serial-protocol#readme",
+  "homepage": "https://gitlab.com/yesbotics/simple-serial-protocol/simple-serial-protocol-node",
   "dependencies": {
     "@types/serialport": "^4.0.9",
     "serialport": "^6.0.0",
