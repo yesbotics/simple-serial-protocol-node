@@ -14,7 +14,7 @@
     "dev": "nodemon -e ts --exec \"npm run compile\"",
     "prepare": "npm run compile",
     "list-serial-ports:linux": "dmesg | grep tty",
-    "prepublish": "npm run compile"
+    "prepublish": "npm run compile  && npm version patch"
   },
   "repository": {
     "type": "git",
