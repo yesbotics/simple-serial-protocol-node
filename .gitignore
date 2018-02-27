@@ -66,4 +66,3 @@ typings/
 
 .idea
 node-simple-serial-protocol.iml
-/dist
