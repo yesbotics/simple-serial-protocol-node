@@ -1,5 +1,5 @@
 /package-lock.json
-
+/.settings
 
 
 
@@ -67,3 +67,4 @@ typings/
 .idea
 node-simple-serial-protocol.iml
 /.project
+/dist
