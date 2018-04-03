@@ -1,6 +1,6 @@
 {
   "name": "@yesbotics/simple-serial-protocol-node",
-  "version": "1.0.6",
+  "version": "1.0.10",
   "description": "Library for communication with Arduino",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -12,7 +12,6 @@
     "start": "concurrently --kill-others \"npm run tsc:w --declaration\" \"npm run app\" ",
     "compile": "npm run tsc",
     "dev": "nodemon -e ts --exec \"npm run compile\"",
-    "prepare": "npm run compile",
     "list-serial-ports:linux": "dmesg | grep tty",
     "prepublish": "npm run compile && npm version patch"
   },
