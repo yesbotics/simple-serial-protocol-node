@@ -10,7 +10,7 @@ export class CommandMessage {
 
     public get length(): number {
         return this._values.length;
-    };
+    }
 
     public getMessageString(): string {
         return this._raw;
@@ -18,19 +18,18 @@ export class CommandMessage {
 
     public getStringValueAt(index: number): string {
         return this._values[index];
-    };
+    }
 
     public getIntValueAt(index: number): number {
         return parseInt(this._values[index], 10);
-    };
+    }
 
     public getFloatValueAt(index: number): number {
         return parseFloat(this._values[index]);
-    };
+    }
 
     public getBooleanValueAt(index: number): boolean {
         return this._values[index] === 'true' || this._values[index] === '1' ? true : false;
-    };
-
+    }
 
 }

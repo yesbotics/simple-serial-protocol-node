@@ -1,6 +1,8 @@
-import Dictionary from 'typescript-collections/dist/lib/Dictionary';
-import {CommandMessage} from './command-message';
 import * as SerialPort from 'serialport';
+
+import Dictionary from 'typescript-collections/dist/lib/Dictionary';
+
+import {CommandMessage} from './command-message';
 
 export class SimpleSerialProtocol {
 
