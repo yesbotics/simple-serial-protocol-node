@@ -37,7 +37,7 @@ export class SimpleSerialProtocol {
                 setTimeout(resolve, 1000);
                 this._running = true;
             });
-            this._serialPort.on('data', this.onData);
+            this._serialPort.on('data', this.onData.bind(this));
         });
     };
 
