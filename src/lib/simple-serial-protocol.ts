@@ -1,6 +1,8 @@
-import Dictionary from 'typescript-collections/dist/lib/Dictionary';
-import {CommandMessage} from './command-message';
 import * as SerialPort from 'serialport';
+
+import Dictionary from 'typescript-collections/dist/lib/Dictionary';
+
+import {CommandMessage} from './command-message';
 
 export class SimpleSerialProtocol {
 
@@ -9,7 +11,7 @@ export class SimpleSerialProtocol {
     private _baudrate: number = 115200;
     private _registeredCommandCallbacks: Dictionary<string, Function> = new Dictionary();
     private _running: boolean = false;
-    private _currentBuffer: string = "";
+    private _currentBuffer: string = '';
 
     constructor(portname, baudrate: number = 115200) {
         this._portname = portname;
@@ -52,9 +54,6 @@ export class SimpleSerialProtocol {
     }
 
     public send(msg: string): SimpleSerialProtocol {
-        //TODO: Check this
-        //second arg is not correct my idea says
-        // this._serialPort.write(msg, 'ascii');
         this._serialPort.write(msg);
         return this;
     }
@@ -84,7 +83,7 @@ export class SimpleSerialProtocol {
                 } else {
                     console.error('Could not find callback for command "' + commandChar + '"');
                 }
-                this._currentBuffer = "";
+                this._currentBuffer = '';
             }
         }
     }
