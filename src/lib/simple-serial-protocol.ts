@@ -13,7 +13,7 @@ export class SimpleSerialProtocol {
     private _running: boolean = false;
     private _currentBuffer: string = '';
 
-    constructor(portname, baudrate: number = 115200) {
+    constructor(portname: string, baudrate: number = 115200) {
         this._portname = portname;
         this._baudrate = baudrate;
         this._serialPort = new SerialPort(this._portname, {baudRate: baudrate, autoOpen: false});
@@ -42,6 +42,15 @@ export class SimpleSerialProtocol {
             this._serialPort.on('data', this.onData.bind(this));
         });
     };
+
+
+    public getPortname(): string {
+        return this._portname;
+    }
+
+    public getBaudrate(): number {
+        return this._baudrate;
+    }
 
     public dispose(callback?: (error: Error) => void): void {
         this._registeredCommandCallbacks.clear();
