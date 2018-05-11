@@ -12,8 +12,10 @@ export class SimpleSerialProtocol {
     private _registeredCommandCallbacks: Dictionary<string, Function> = new Dictionary();
     private _running: boolean = false;
     private _currentBuffer: string = '';
+    private _readyTimeout: number;
 
-    constructor(portname: string, baudrate: number = 115200) {
+    constructor(portname: string, baudrate: number = 115200, readyTimeout: number = 1000) {
+        this._readyTimeout = readyTimeout;
         this._portname = portname;
         this._baudrate = baudrate;
         this._serialPort = new SerialPort(this._portname, {baudRate: baudrate, autoOpen: false});
@@ -36,7 +38,7 @@ export class SimpleSerialProtocol {
                 // In such cases, immediately writing to the device will cause lost data as they wont be ready to receive the data.
                 // This is often worked around by having the Arduino send a "ready" byte that your Node program waits for before writing.
                 // You can also often get away with waiting around 400ms.
-                setTimeout(resolve, 1000);
+                setTimeout(resolve, this._readyTimeout);
                 this._running = true;
             });
             this._serialPort.on('data', this.onData.bind(this));
@@ -90,7 +92,7 @@ export class SimpleSerialProtocol {
                 if (commandFunc) {
                     commandFunc.apply(null, [new CommandMessage(this._currentBuffer)]);
                 } else {
-                    console.error('Could not find callback for command "' + commandChar + '"');
+                    console.error('Could not find callback for command "' + commandChar + '", message: ' + this._currentBuffer);
                 }
                 this._currentBuffer = '';
             }
