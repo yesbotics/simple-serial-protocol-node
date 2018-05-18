@@ -56,7 +56,9 @@ export class SimpleSerialProtocol {
 
     public dispose(callback?: (error: Error) => void): void {
         this._registeredCommandCallbacks.clear();
-        return this._serialPort.close(callback);
+        if (this._serialPort['isOpen']) {
+            this._serialPort.close(callback);
+        }
     }
 
     public get isRunning(): boolean {
