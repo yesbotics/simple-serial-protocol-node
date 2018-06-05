@@ -6,6 +6,9 @@ import {CommandMessage} from './command-message';
 
 export class SimpleSerialProtocol {
 
+    public static readonly DELIMITER: string = ',';
+    public static readonly END: string = ';';
+
     private _serialPort: SerialPort = null;
     private _portname: string;
     private _baudrate: number = 115200;
@@ -71,6 +74,16 @@ export class SimpleSerialProtocol {
         return this;
     }
 
+    public sendCommand(commandChar: string, ...args): SimpleSerialProtocol {
+        let rawMessage: string = commandChar;
+        if (args && args.length > 0) {
+            rawMessage += args.join(SimpleSerialProtocol.DELIMITER);
+        }
+        rawMessage += SimpleSerialProtocol.END;
+        this._serialPort.write(rawMessage);
+        return this;
+    }
+
     public registerCommand(char: string, callback: Function): SimpleSerialProtocol {
         this._registeredCommandCallbacks.setValue(char, callback);
         return this;
@@ -88,7 +101,7 @@ export class SimpleSerialProtocol {
         for (let i = 0; i < len; i++) {
             let char = msg[i];
             this._currentBuffer += char;
-            if (char === ';') {
+            if (char === SimpleSerialProtocol.END) {
                 let commandChar: string = this._currentBuffer.charAt(0);
                 let commandFunc = this._registeredCommandCallbacks.getValue(commandChar);
                 if (commandFunc) {
