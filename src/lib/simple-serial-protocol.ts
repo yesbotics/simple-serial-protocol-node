@@ -16,11 +16,13 @@ export class SimpleSerialProtocol {
     private _running: boolean = false;
     private _currentBuffer: string = '';
     private _readyTimeout: number;
+    private _maxBufferSize: number;
 
-    constructor(portname: string, baudrate: number = 115200, readyTimeout: number = 1000) {
+    constructor(portname: string, baudrate: number = 115200, readyTimeout: number = 1000, maxBufferSize: number = 100) {
         this._readyTimeout = readyTimeout;
         this._portname = portname;
         this._baudrate = baudrate;
+        this._maxBufferSize = maxBufferSize;
         this._serialPort = new SerialPort(this._portname, {baudRate: baudrate, autoOpen: false});
     }
 
@@ -94,13 +96,22 @@ export class SimpleSerialProtocol {
         return this;
     }
 
+    // TODO: prevent overflow or implement better invalid message handling
+    // TODO: onError
     private onData(buf: Buffer): void {
+
         let msg: string = buf.toString('ascii');
         // console.log('onData:', msg);
         let len = msg.length;
         for (let i = 0; i < len; i++) {
             let char = msg[i];
             this._currentBuffer += char;
+
+            if (this._currentBuffer.length > this._maxBufferSize) {
+                this._currentBuffer = '';
+                console.log('warning! maxBufferSize exceeded');
+                return;
+            }
             if (char === SimpleSerialProtocol.END) {
                 let commandChar: string = this._currentBuffer.charAt(0);
                 let commandFunc = this._registeredCommandCallbacks.getValue(commandChar);
