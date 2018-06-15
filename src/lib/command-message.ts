@@ -16,6 +16,10 @@ export class CommandMessage {
         return this._raw;
     }
 
+    public getValueStrings(): string[] {
+        return this._values;
+    }
+
     public getStringValueAt(index: number): string {
         return this._values[index];
     }
