@@ -3,11 +3,18 @@ import * as SerialPort from 'serialport';
 import Dictionary from 'typescript-collections/dist/lib/Dictionary';
 
 import {CommandMessage} from './command-message';
+import {SimpleSerialProtocolError} from "./simple-serial-protocol-error";
 
 export class SimpleSerialProtocol {
 
+    public static readonly ERROR: string = '!';
     public static readonly DELIMITER: string = ',';
     public static readonly END: string = ';';
+
+    public static readonly ERROR_NUM_MESSAGE_INCOMPLETE: number = 1;
+    public static readonly ERROR_NUM_INVALID_COMMAND: number = 2;
+    public static readonly ERROR_NUM_UNREGISTERED_COMMAND: number = 3;
+    public static readonly ERROR_NUM_INVALID_ARGUMENTS_COUNT: number = 4;
 
     private _serialPort: SerialPort = null;
     private _portname: string;
@@ -17,6 +24,7 @@ export class SimpleSerialProtocol {
     private _currentBuffer: string = '';
     private _readyTimeout: number;
     private _maxBufferSize: number;
+    private _onErrorCallback: (error: SimpleSerialProtocolError) => void;
 
     constructor(portname: string, baudrate: number = 115200, readyTimeout: number = 1000, maxBufferSize: number = 100) {
         this._readyTimeout = readyTimeout;
@@ -96,6 +104,11 @@ export class SimpleSerialProtocol {
         return this;
     }
 
+    public onErrorCommand(onErrorCallback: (error: SimpleSerialProtocolError) => void): SimpleSerialProtocol {
+        this._onErrorCallback = onErrorCallback;
+        return this;
+    }
+
     // TODO: prevent overflow or implement better invalid message handling
     // TODO: onError
     private onData(buf: Buffer): void {
@@ -110,18 +123,52 @@ export class SimpleSerialProtocol {
             if (this._currentBuffer.length > this._maxBufferSize) {
                 this._currentBuffer = '';
                 console.log('warning! maxBufferSize exceeded');
+                this.callOnError(new SimpleSerialProtocolError(SimpleSerialProtocolError.MAX_BUFFERSIZE_EXCEEDED, new CommandMessage(this._currentBuffer)));
                 return;
             }
             if (char === SimpleSerialProtocol.END) {
                 let commandChar: string = this._currentBuffer.charAt(0);
+                if (commandChar === SimpleSerialProtocol.ERROR) {
+                    let commandMsg: CommandMessage = new CommandMessage(this._currentBuffer);
+                    let errorNum: number = commandMsg.getIntValueAt(0);
+                    let error: SimpleSerialProtocolError = null;
+                    switch (errorNum) {
+                        case SimpleSerialProtocol.ERROR_NUM_MESSAGE_INCOMPLETE:
+                            error = new SimpleSerialProtocolError(SimpleSerialProtocolError.MESSAGE_INCOMPLETE, commandMsg);
+                            break;
+                        case SimpleSerialProtocol.ERROR_NUM_INVALID_COMMAND:
+                            error = new SimpleSerialProtocolError(SimpleSerialProtocolError.INVALID_COMMAND, commandMsg);
+                            break;
+                        case SimpleSerialProtocol.ERROR_NUM_UNREGISTERED_COMMAND:
+                            error = new SimpleSerialProtocolError(SimpleSerialProtocolError.UNREGISTERED_COMMAND, commandMsg);
+                            break;
+                        case SimpleSerialProtocol.ERROR_NUM_INVALID_ARGUMENTS_COUNT:
+                            error = new SimpleSerialProtocolError(SimpleSerialProtocolError.INVALID_ARGUMENTS_COUNT, commandMsg);
+                            break;
+                        default:
+                            error = new SimpleSerialProtocolError(SimpleSerialProtocolError.UNKNOWN, commandMsg);
+                    }
+                    this.callOnError(error);
+                    this._currentBuffer = '';
+                    return;
+                }
                 let commandFunc = this._registeredCommandCallbacks.getValue(commandChar);
                 if (commandFunc) {
                     commandFunc.apply(null, [new CommandMessage(this._currentBuffer)]);
                 } else {
-                    console.error('Could not find callback for command "' + commandChar + '", message: ' + this._currentBuffer);
+                    this._currentBuffer = '';
+                    throw '\'Could not find callback for command "\' + commandChar + \'", message: \' + this._currentBuffer';
                 }
                 this._currentBuffer = '';
             }
+        }
+    }
+
+    private callOnError(simpleSerialProtocolError: SimpleSerialProtocolError): void {
+        if (!this._onErrorCallback) {
+            throw 'no ErrorHandler attached. use SimpleSerialProtocol.onErrorCommand(errorCallbackFuntion)';
+        } else {
+            this._onErrorCallback(simpleSerialProtocolError);
         }
     }
 }
