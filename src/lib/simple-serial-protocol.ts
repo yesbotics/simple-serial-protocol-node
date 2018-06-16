@@ -156,8 +156,9 @@ export class SimpleSerialProtocol {
                 if (commandFunc) {
                     commandFunc.apply(null, [new CommandMessage(this._currentBuffer)]);
                 } else {
+                    let lastBuffer:string = this._currentBuffer;
                     this._currentBuffer = '';
-                    throw '\'Could not find callback for command "\' + commandChar + \'", message: \' + this._currentBuffer';
+                    throw 'Could not find callback for command "' + commandChar + '", message: ' + lastBuffer;
                 }
                 this._currentBuffer = '';
             }

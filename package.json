@@ -1,6 +1,6 @@
 {
   "name": "@yesbotics/simple-serial-protocol-node",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "description": "Library for communication with Arduino",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
