@@ -4,6 +4,7 @@ import Dictionary from 'typescript-collections/dist/lib/Dictionary';
 
 import {CommandMessage} from './command-message';
 import {SimpleSerialProtocolError} from "./simple-serial-protocol-error";
+import {isBoolean} from "util";
 
 export class SimpleSerialProtocol {
 
@@ -88,9 +89,11 @@ export class SimpleSerialProtocol {
     }
 
     public sendCommand(commandChar: string, ...args): SimpleSerialProtocol {
+
         let rawMessage: string = commandChar;
         if (args && args.length > 0) {
-            rawMessage += args.join(SimpleSerialProtocol.DELIMITER);
+            let preparedArgs: string[] = args.map(this.prepareArgs.bind(this));
+            rawMessage += preparedArgs.join(SimpleSerialProtocol.DELIMITER);
         }
         rawMessage += SimpleSerialProtocol.END;
         this._serialPort.write(rawMessage);
@@ -111,6 +114,12 @@ export class SimpleSerialProtocol {
         this._onErrorCallback = onErrorCallback;
         return this;
     }
+
+    private prepareArgs(arg: any): string {
+        if (isBoolean(arg)) return arg === true ? '1' : '0';
+        return arg;
+    }
+
 
     // TODO: prevent overflow or implement better invalid message handling
     // TODO: onError
@@ -159,7 +168,7 @@ export class SimpleSerialProtocol {
                 if (commandFunc) {
                     commandFunc.apply(null, [new CommandMessage(this._currentBuffer)]);
                 } else {
-                    let lastBuffer:string = this._currentBuffer;
+                    let lastBuffer: string = this._currentBuffer;
                     this._currentBuffer = '';
                     throw 'Could not find callback for command "' + commandChar + '", message: ' + lastBuffer;
                 }
