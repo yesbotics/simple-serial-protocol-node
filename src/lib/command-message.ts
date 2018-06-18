@@ -28,6 +28,10 @@ export class CommandMessage {
         return parseInt(this._values[index], 10);
     }
 
+    public getLongValueAt(index: number): number {
+        return this.getIntValueAt(index);
+    }
+
     public getFloatValueAt(index: number): number {
         return parseFloat(this._values[index]);
     }
