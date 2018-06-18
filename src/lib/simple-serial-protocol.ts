@@ -11,6 +11,9 @@ export class SimpleSerialProtocol {
     public static readonly DELIMITER: string = ',';
     public static readonly END: string = ';';
 
+    public static readonly DELIMITER_ESCAPED: string = '\'';
+    public static readonly END_ESCAPED: string = '#';
+
     public static readonly ERROR_NUM_MESSAGE_INCOMPLETE: number = 1;
     public static readonly ERROR_NUM_INVALID_COMMAND: number = 2;
     public static readonly ERROR_NUM_UNREGISTERED_COMMAND: number = 3;
