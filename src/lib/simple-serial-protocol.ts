@@ -170,7 +170,7 @@ export class SimpleSerialProtocol {
                 } else {
                     let lastBuffer: string = this._currentBuffer;
                     this._currentBuffer = '';
-                    throw 'Could not find callback for command "' + commandChar + '", message: ' + lastBuffer;
+                    console.warn('Could not find callback for command "' + commandChar + '", message: ' + lastBuffer);
                 }
                 this._currentBuffer = '';
             }
