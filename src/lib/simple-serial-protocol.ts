@@ -22,8 +22,8 @@ export class SimpleSerialProtocol {
     private static readonly CHAR_EOT: number = 0x0A; // End of Transmission - Line Feed Zeichen \n
     private static readonly CHAR_NULL: number = 0x00; // 0x00 // End of String
 
+    private _isInitialized: boolean = false;
     private serialPort: SerialPort;
-    private isInitialized: boolean = false;
     private oneByteParser: NodeJS.WritableStream;
     private registeredCommands: Map<string, CommandCallback> = new Map();
     /**
@@ -46,6 +46,7 @@ export class SimpleSerialProtocol {
         }
         this.oneByteParser = this.serialPort.pipe(new ByteLength({length: 1}));
         this.oneByteParser.on('data', this.onData.bind(this));
+
         this.serialPort.open((err) => {
             if (err) {
                 this.dispose()
@@ -56,20 +57,24 @@ export class SimpleSerialProtocol {
                         return Promise.reject(err);
                     });
             }
+        });
 
+        const promiseOpen = new Promise<void>((resolve, reject) => {
+            this.serialPort.on('open', () => {
+                setTimeout(() => {
+                    this._isInitialized = true;
+                    resolve();
+                }, initilizationDelay);
+            });
         });
-        await this.serialPort.on('open', async () => {
-            await setTimeout(async () => {
-                this.isInitialized = true;
-                return Promise.resolve();
-            }, initilizationDelay);
-        });
+
+        await promiseOpen;
     }
 
     async dispose(): Promise<void> {
         this.serialPort.removeAllListeners();
         this.oneByteParser.removeAllListeners();
-        this.isInitialized = true;
+        this._isInitialized = true;
         if (this.isOpen()) {
             await this.serialPort.close(async (err) => {
                 if (err) {
@@ -84,12 +89,16 @@ export class SimpleSerialProtocol {
         return this.serialPort.isOpen;
     }
 
+    public isInitialized(): boolean {
+        return this._isInitialized;
+    }
+
     registerCommand(commandName: string, callback: (...args: any[]) => void, paramTypes: string[] = null) {
         if (commandName.length !== 1) {
-            throw new Error("Could not register command. Length of command name must be 1.")
+            throw new SimpleSerialProtocolError(SimpleSerialProtocolError.ERROR_COMMAND_NAME_TO_LONG);
         }
         if (this.registeredCommands.has(commandName)) {
-            throw new Error(`Command ${commandName} already registered.`);
+            throw new SimpleSerialProtocolError(SimpleSerialProtocolError.ERROR_COMMAND_IS_ALREADY_REGISTERED);
         }
         const command: CommandCallback = new CommandCallback(
             commandName,
@@ -128,6 +137,9 @@ export class SimpleSerialProtocol {
     }
 
     protected onData(data: Uint8Array): void {
+        if (!this._isInitialized) {
+            return;
+        }
         console.log('onData', data, data.toString());
         if (this.currentCommandCallback) {
             /**
