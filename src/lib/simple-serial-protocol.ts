@@ -1,187 +1,213 @@
 import * as SerialPort from 'serialport';
-
-import Dictionary from 'typescript-collections/dist/lib/Dictionary';
-
-import {CommandMessage} from './command-message';
+import * as ByteLength from '@serialport/parser-byte-length';
 import {SimpleSerialProtocolError} from "./simple-serial-protocol-error";
-import {isBoolean} from "util";
+import {CommandCallback} from "./simple-serial-protocol-command";
+import {Baudrate} from "../typings";
+import {ParamType} from "./types/param-type";
 
 export class SimpleSerialProtocol {
 
-    public static readonly ERROR: string = '!';
-    public static readonly DELIMITER: string = ',';
-    public static readonly END: string = ';';
+    // private static readonly COMMAND_GET_DEVICE_ID: string = String.fromCharCode(0x05); //ENQ
+    // private static readonly COMMAND_START: string = String.fromCharCode(0x02); // STX // 0x02
+    // private static readonly COMMAND_STOP: string = String.fromCharCode(0x03); // ETX // 0x03
+    // private static readonly COMMAND_ALREADY_STARTED: string = String.fromCharCode(0x11); // DC1 //  0x11
+    // private static readonly COMMAND_NOT_STARTED: string = String.fromCharCode(0x12); // DC2 //  0x12
+    // private static readonly COMMAND_ERROR: string = String.fromCharCode(0x18); // CAN //  0x18
+    // private static readonly COMMAND_RECEIVED: string = String.fromCharCode(0x06); // ACK //  0x06
+    // private static readonly COMMAND_KEEP_ALIVE: string = String.fromCharCode(0x16); // SYN //  0x16
+    // private static readonly COMMAND_KEEP_ALIVE_TIMEOUT: string = String.fromCharCode(0x1B); // ESC //  0x1B
 
-    public static readonly DELIMITER_ESCAPED: string = '\'';
-    public static readonly END_ESCAPED: string = '#';
+    // private static readonly STATE_: string = String.fromCharCode(0x1B); // ESC //  0x1B
 
-    public static readonly ERROR_NUM_MESSAGE_INCOMPLETE: number = 1;
-    public static readonly ERROR_NUM_INVALID_COMMAND: number = 2;
-    public static readonly ERROR_NUM_UNREGISTERED_COMMAND: number = 3;
-    public static readonly ERROR_NUM_INVALID_ARGUMENTS_COUNT: number = 4;
+    private static readonly CHAR_EOT: number = 0x0A; // End of Transmission - Line Feed Zeichen \n
+    private static readonly CHAR_NULL: number = 0x00; // 0x00 // End of String
 
-    private _serialPort: SerialPort = null;
-    private _portname: string;
-    private _baudrate: number = 115200;
-    private _registeredCommandCallbacks: Dictionary<string, Function> = new Dictionary();
-    private _running: boolean = false;
-    private _currentBuffer: string = '';
-    private _readyTimeout: number;
-    private _maxBufferSize: number;
-    private _onErrorCallback: (error: SimpleSerialProtocolError) => void;
+    private serialPort: SerialPort;
+    private isInitialized: boolean = false;
+    private oneByteParser: NodeJS.WritableStream;
+    private registeredCommands: Map<string, CommandCallback> = new Map();
+    /**
+     * Buffer wird nach jedem empfangenen Command befüllt
+     */
+    private buffer: Buffer = Buffer.allocUnsafe(2);
+    private bufferOffset: number = 0;
+    private currentCommandCallback: CommandCallback;
 
-    constructor(portname: string, baudrate: number = 115200, readyTimeout: number = 1000, maxBufferSize: number = 100) {
-        this._readyTimeout = readyTimeout;
-        this._portname = portname;
-        this._baudrate = baudrate;
-        this._maxBufferSize = maxBufferSize;
-        this._serialPort = new SerialPort(this._portname, {baudRate: baudrate, autoOpen: false});
-    }
-
-    public start(): Promise<any> {
-        return new Promise((resolve, reject) => {
-            if (this.isRunning) {
-                reject(Error('SerialPort already connected'));
-                return;
-            }
-            this._serialPort.open((err) => {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                // TODO: implement following "ready pattern" on Arduino side
-                // Quote:
-                // Some devices, like the Arduino, reset when you open a connection to them.
-                // In such cases, immediately writing to the device will cause lost data as they wont be ready to receive the data.
-                // This is often worked around by having the Arduino send a "ready" byte that your Node program waits for before writing.
-                // You can also often get away with waiting around 400ms.
-                setTimeout(resolve, this._readyTimeout);
-                this._running = true;
-            });
-            this._serialPort.on('data', this.onData.bind(this));
+    constructor(portname: string, baudrate: Baudrate) {
+        this.serialPort = new SerialPort(portname, {
+            autoOpen: false,
+            baudRate: baudrate
         });
-    };
-
-
-    public getPortname(): string {
-        return this._portname;
     }
 
-    public getBaudrate(): number {
-        return this._baudrate;
-    }
-
-    public dispose(callback?: (error: Error) => void): void {
-        this._registeredCommandCallbacks.clear();
-        if (this._serialPort['isOpen']) {
-            this._serialPort.close(callback);
+    async init(initilizationDelay: number = 1000): Promise<void> {
+        if (this.isOpen()) {
+            return Promise.reject('already connected');
         }
-    }
-
-    public get isRunning(): boolean {
-        return this._running;
-        // return this._serialPort.isOpen();
-    }
-
-    public send(msg: string): SimpleSerialProtocol {
-        this._serialPort.write(msg);
-        return this;
-    }
-
-    public sendCommand(commandChar: string, ...args): SimpleSerialProtocol {
-
-        let rawMessage: string = commandChar;
-        if (args && args.length > 0) {
-            let preparedArgs: string[] = args.map(this.prepareArgs.bind(this));
-            rawMessage += preparedArgs.join(SimpleSerialProtocol.DELIMITER);
-        }
-        rawMessage += SimpleSerialProtocol.END;
-        this._serialPort.write(rawMessage);
-        return this;
-    }
-
-    public registerCommand(char: string, callback: Function): SimpleSerialProtocol {
-        this._registeredCommandCallbacks.setValue(char, callback);
-        return this;
-    }
-
-    public unregisterCommand(char: string): SimpleSerialProtocol {
-        this._registeredCommandCallbacks.remove(char);
-        return this;
-    }
-
-    public onErrorCommand(onErrorCallback: (error: SimpleSerialProtocolError) => void): SimpleSerialProtocol {
-        this._onErrorCallback = onErrorCallback;
-        return this;
-    }
-
-    private prepareArgs(arg: any): string {
-        if (isBoolean(arg)) return arg === true ? '1' : '0';
-        return arg;
-    }
-
-
-    // TODO: prevent overflow or implement better invalid message handling
-    // TODO: onError
-    private onData(buf: Buffer): void {
-
-        let msg: string = buf.toString('ascii');
-        // console.log('onData:', msg);
-        let len = msg.length;
-        for (let i = 0; i < len; i++) {
-            let char = msg[i];
-            this._currentBuffer += char;
-
-            if (this._currentBuffer.length > this._maxBufferSize) {
-                this._currentBuffer = '';
-                console.log('warning! maxBufferSize exceeded');
-                this.callOnError(new SimpleSerialProtocolError(SimpleSerialProtocolError.MAX_BUFFERSIZE_EXCEEDED, new CommandMessage(this._currentBuffer)));
-                return;
+        this.oneByteParser = this.serialPort.pipe(new ByteLength({length: 1}));
+        this.oneByteParser.on('data', this.onData.bind(this));
+        this.serialPort.open((err) => {
+            if (err) {
+                this.dispose()
+                    .catch(() => {
+                        return Promise.reject(err);
+                    })
+                    .then(() => {
+                        return Promise.reject(err);
+                    });
             }
-            if (char === SimpleSerialProtocol.END) {
-                let commandChar: string = this._currentBuffer.charAt(0);
-                if (commandChar === SimpleSerialProtocol.ERROR) {
-                    let commandMsg: CommandMessage = new CommandMessage(this._currentBuffer);
-                    let errorNum: number = commandMsg.getIntValueAt(0);
-                    let error: SimpleSerialProtocolError = null;
-                    switch (errorNum) {
-                        case SimpleSerialProtocol.ERROR_NUM_MESSAGE_INCOMPLETE:
-                            error = new SimpleSerialProtocolError(SimpleSerialProtocolError.MESSAGE_INCOMPLETE, commandMsg);
-                            break;
-                        case SimpleSerialProtocol.ERROR_NUM_INVALID_COMMAND:
-                            error = new SimpleSerialProtocolError(SimpleSerialProtocolError.INVALID_COMMAND, commandMsg);
-                            break;
-                        case SimpleSerialProtocol.ERROR_NUM_UNREGISTERED_COMMAND:
-                            error = new SimpleSerialProtocolError(SimpleSerialProtocolError.UNREGISTERED_COMMAND, commandMsg);
-                            break;
-                        case SimpleSerialProtocol.ERROR_NUM_INVALID_ARGUMENTS_COUNT:
-                            error = new SimpleSerialProtocolError(SimpleSerialProtocolError.INVALID_ARGUMENTS_COUNT, commandMsg);
-                            break;
-                        default:
-                            error = new SimpleSerialProtocolError(SimpleSerialProtocolError.UNKNOWN, commandMsg);
-                    }
-                    this.callOnError(error);
-                    this._currentBuffer = '';
-                    return;
+
+        });
+        await this.serialPort.on('open', async () => {
+            await setTimeout(async () => {
+                this.isInitialized = true;
+                return Promise.resolve();
+            }, initilizationDelay);
+        });
+    }
+
+    async dispose(): Promise<void> {
+        this.serialPort.removeAllListeners();
+        this.oneByteParser.removeAllListeners();
+        this.isInitialized = true;
+        if (this.isOpen()) {
+            await this.serialPort.close(async (err) => {
+                if (err) {
+                    console.error(err);
                 }
-                let commandFunc = this._registeredCommandCallbacks.getValue(commandChar);
-                if (commandFunc) {
-                    commandFunc.apply(null, [new CommandMessage(this._currentBuffer)]);
-                } else {
-                    let lastBuffer: string = this._currentBuffer;
-                    this._currentBuffer = '';
-                    console.warn('Could not find callback for command "' + commandChar + '", message: ' + lastBuffer);
-                }
-                this._currentBuffer = '';
-            }
+                return Promise.resolve();
+            });
         }
     }
 
-    private callOnError(simpleSerialProtocolError: SimpleSerialProtocolError): void {
-        if (!this._onErrorCallback) {
-            throw 'no ErrorHandler attached. use SimpleSerialProtocol.onErrorCommand(errorCallbackFuntion)';
+    isOpen(): boolean {
+        return this.serialPort.isOpen;
+    }
+
+    registerCommand(commandName: string, callback: (...args: any[]) => void, paramTypes: string[] = null) {
+        if (commandName.length !== 1) {
+            throw new Error("Could not register command. Length of command name must be 1.")
+        }
+        if (this.registeredCommands.has(commandName)) {
+            throw new Error(`Command ${commandName} already registered.`);
+        }
+        const command: CommandCallback = new CommandCallback(
+            commandName,
+            callback,
+            paramTypes
+        );
+        this.registeredCommands.set(commandName, command);
+        // this.updateBufferSize();
+    }
+
+    // public async getDeviceId(): Promise<string> {
+    //     this.writeCommand(SimpleSerialProtocol.COMMAND_GET_DEVICE_ID);
+    //     this.writeEot();
+    //     return null;
+    // }
+
+    // void init();
+    // void registerCommand(byte command, ExternalCallbackPointer externalCommandCallbackPointer);
+    // byte readCommand();
+    // byte readEot();
+    // void writeCommand(byte command);
+    // void writeEot();
+
+    private writeCommand(command: string): void {
+        this.write(command);
+    }
+
+    // private writeEot(): void {
+    //     this.serialPort.write(SimpleSerialProtocol.CHAR_EOT);
+    //     // this.write(SimpleSerialProtocol.CHAR_EOT);
+    // }
+
+    private write(msg: string): void {
+        console.log('write', msg);
+        this.serialPort.write(msg, "ascii");
+    }
+
+    protected onData(data: Uint8Array): void {
+        console.log('onData', data, data.toString());
+        if (this.currentCommandCallback) {
+            /**
+             * Got command already -> reading param data
+             */
+            this.saveByte(data);
         } else {
-            this._onErrorCallback(simpleSerialProtocolError);
+            const commandName = data.toString();
+            if (!this.registeredCommands.has(commandName)) {
+                /**
+                 * Command not found
+                 */
+                throw new Error("Command not found: " + commandName);
+            } else {
+                /**
+                 * New command -> Preparing buffer for reading
+                 */
+                this.currentCommandCallback = this.registeredCommands.get(commandName);
+                if (this.currentCommandCallback.paramBufferLength > 0) {
+                    this.buffer = Buffer.allocUnsafe(this.currentCommandCallback.paramBufferLength);
+                }
+            }
         }
     }
+
+    private saveByte(data: Uint8Array) {
+        const byte: number = data[0];
+        if (this.buffer.length === this.currentCommandCallback.paramBufferLength) {
+            /**
+             * Buffer full? Awaiting EOT
+             */
+            if (byte === SimpleSerialProtocol.CHAR_EOT) {
+                /**
+                 * Buffer is full -> Parsing params and call callback
+                 */
+                const parsedParams = this.getParamsFromBuffer();
+                this.currentCommandCallback.callback.apply(null, parsedParams);
+            } else {
+                /**
+                 * Wrong EOT byte
+                 */
+                throw new SimpleSerialProtocolError(SimpleSerialProtocolError.ERROR_EOT_WAS_NOT_READ);
+            }
+        } else {
+            /**
+             * Filling buffer
+             */
+            // Buffer.concat()
+            this.buffer.writeUInt8(data[0], this.bufferOffset);
+            this.bufferOffset++;
+        }
+    }
+
+    private getParamsFromBuffer(): any[] {
+        let params: any[] = [];
+        let offset: number = 0;
+        for (const paramType of this.currentCommandCallback.paramTypes) {
+            switch (paramType) {
+                case ParamType.PARAM_INT:
+                    params.push(this.buffer.readInt8(offset));
+                    offset += 1;
+                    break;
+                case ParamType.PARAM_UINT:
+                    params.push(this.buffer.readUInt8(offset));
+                    offset += 1;
+                    break;
+            }
+        }
+        return params;
+    }
+
+    // /**
+    //  * Reallocates buffer memory. Using max Command params length
+    //  */
+    // private updateBufferSize() {
+    //     let maxParamBufferLength: number = 0;
+    //     this.registeredCommands.forEach((command: CommandCallback, key: string) => {
+    //         maxParamBufferLength = Math.max(maxParamBufferLength, command.paramBufferLength);
+    //     });
+    //     console.log("max param buffer length", maxParamBufferLength);
+    //     this.buffer = Buffer.allocUnsafe(maxParamBufferLength);
+    // }
 }

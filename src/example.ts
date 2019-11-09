@@ -1,5 +1,5 @@
-import {SimpleSerialProtocol} from './lib/simple-serial-protocol';
 import {CommandMessage} from './lib/command-message';
+import {SimpleSerialProtocol} from "./lib/simple-serial-protocol";
 
 class Example {
 
@@ -7,15 +7,15 @@ class Example {
     public static readonly BAUDRATE: number = 115200;
 
     public run(): void {
-        let ssp: SimpleSerialProtocol = new SimpleSerialProtocol(Example.PORTNAME, Example.BAUDRATE);
-        ssp.registerCommand('b', this.onCommandB);
-        ssp.registerCommand('c', this.onCommandC);
-        ssp.start().then(() => {
-            console.log('arduino is ready. now sending command "a;"');
-            ssp.send('a;');
-        }).catch((err) => {
-            throw err;
-        });
+        // let ssp: SimpleSerialProtocol = new SimpleSerialProtocol(Example.PORTNAME, Example.BAUDRATE);
+        // ssp.registerCommand('b', this.onCommandB);
+        // ssp.registerCommand('c', this.onCommandC);
+        // ssp.start().then(() => {
+        //     console.log('arduino is ready. now sending command "a;"');
+        //     ssp.send('a;');
+        // }).catch((err) => {
+        //     throw err;
+        // });
     };
 
     private onCommandB(cmdMsg: CommandMessage) {
