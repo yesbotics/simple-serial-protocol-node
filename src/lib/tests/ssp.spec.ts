@@ -1,11 +1,16 @@
 import {SimpleSerialProtocol} from "../simple-serial-protocol";
+import {ParamType} from "../types/param-type";
+import {BaseBinding} from "serialport";
 
 const SerialPort = require('@serialport/stream');
 const MockBinding = require('@serialport/binding-mock');
 
+// https://serialport.io/docs/api-binding-mock
 SerialPort.Binding = MockBinding;
 
-MockBinding.createPort('/dev/ROBOT', {echo: true, record: true});
+
+MockBinding.createPort('/dev/ROBOT', {echo: false, record: true, readyData: ''});
+// const port = new SerialPort('/dev/ROBOT');
 
 const ssp: SimpleSerialProtocol = new SimpleSerialProtocol("/dev/ROBOT", 9600);
 
@@ -23,5 +28,14 @@ describe("Reading data", () => {
         }
         expect(ssp.isOpen()).toBeTruthy();
         expect(ssp.isInitialized()).toBeTruthy();
+    });
+
+    it("registerCommand", async () => {
+        expect.assertions(1);
+        ssp.registerCommand('a', (val: number) => {
+            expect(ssp.isOpen()).toBeTruthy();
+
+        }, [ParamType.PARAM_INT]);
+
     });
 });

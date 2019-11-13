@@ -3,6 +3,7 @@ import {ParamType} from "./types/param-type";
 export class CommandCallback {
 
     paramBufferLength: number = 0;
+    hasString: boolean = false;
 
     constructor(
         public command: string,
@@ -25,6 +26,9 @@ export class CommandCallback {
                 case ParamType.PARAM_UNSIGNED_FLOAT:
                 case ParamType.PARAM_FLOAT:
                     this.paramBufferLength += 4;
+                    break;
+                case ParamType.PARAM_STRING:
+                    this.hasString = true;
                     break;
             }
         }

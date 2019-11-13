@@ -29,9 +29,10 @@ export class SimpleSerialProtocol {
     /**
      * Buffer wird nach jedem empfangenen Command befüllt
      */
-    private buffer: Buffer = Buffer.allocUnsafe(2);
+    private buffer: Buffer;
     private bufferOffset: number = 0;
     private currentCommandCallback: CommandCallback;
+    private currentParams: any[];
 
     constructor(portname: string, baudrate: Baudrate) {
         this.serialPort = new SerialPort(portname, {
@@ -159,6 +160,7 @@ export class SimpleSerialProtocol {
                  */
                 this.currentCommandCallback = this.registeredCommands.get(commandName);
                 if (this.currentCommandCallback.paramBufferLength > 0) {
+                    this.currentParams = [];
                     this.buffer = Buffer.allocUnsafe(this.currentCommandCallback.paramBufferLength);
                 }
             }
@@ -177,6 +179,7 @@ export class SimpleSerialProtocol {
                  */
                 const parsedParams = this.getParamsFromBuffer();
                 this.currentCommandCallback.callback.apply(null, parsedParams);
+                this.currentCommandCallback = null;
             } else {
                 /**
                  * Wrong EOT byte
@@ -193,23 +196,23 @@ export class SimpleSerialProtocol {
         }
     }
 
-    private getParamsFromBuffer(): any[] {
-        let params: any[] = [];
-        let offset: number = 0;
-        for (const paramType of this.currentCommandCallback.paramTypes) {
-            switch (paramType) {
-                case ParamType.PARAM_INT:
-                    params.push(this.buffer.readInt8(offset));
-                    offset += 1;
-                    break;
-                case ParamType.PARAM_UINT:
-                    params.push(this.buffer.readUInt8(offset));
-                    offset += 1;
-                    break;
-            }
-        }
-        return params;
-    }
+    // private getParamsFromBuffer(): any[] {
+    //     let params: any[] = [];
+    //     let offset: number = 0;
+    //     for (const paramType of this.currentCommandCallback.paramTypes) {
+    //         switch (paramType) {
+    //             case ParamType.PARAM_INT:
+    //                 params.push(this.buffer.readInt8(offset));
+    //                 offset += 1;
+    //                 break;
+    //             case ParamType.PARAM_UINT:
+    //                 params.push(this.buffer.readUInt8(offset));
+    //                 offset += 1;
+    //                 break;
+    //         }
+    //     }
+    //     return params;
+    // }
 
     // /**
     //  * Reallocates buffer memory. Using max Command params length
