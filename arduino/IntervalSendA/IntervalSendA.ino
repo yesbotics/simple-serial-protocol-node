@@ -4,7 +4,7 @@
 #include <SimpleSerialProtocol.h>
 #include <dev_printFatalError.h>
 
-const char DEVICE_ID = 'p';
+const char CHAR = 'a';
 #define BAUDRATE 57600
 #define CHARACTER_TIMEOUT 500
 const int PIN_LED = 13;
@@ -17,14 +17,13 @@ SimpleSerialProtocol ssp(
         BAUDRATE,
         CHARACTER_TIMEOUT,
         onFatalError,
-        'a',
-        'c'
+        CHAR,
+        CHAR
 );
 Interval interval;
 
 
 void setup() {
-//    Serial.begin(BAUDRATE);
     ssp.init();
     interval.start(2000, onInterval);
 }
@@ -39,8 +38,7 @@ void onFatalError(unsigned int errorNum) {
 }
 
 void onInterval() {
-//    Serial.print("got interval ");
-    ssp.writeCommand('a');
+    ssp.writeCommand(CHAR);
     ssp.writeEot();
 }
 

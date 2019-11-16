@@ -4,10 +4,9 @@
 #include <SimpleSerialProtocol.h>
 #include <dev_printFatalError.h>
 
-const char DEVICE_ID = 'p';
+const char CHAR = 'b';
 #define BAUDRATE 57600
 #define CHARACTER_TIMEOUT 500
-const int PIN_LED = 13;
 int i = -10;
 
 void onFatalError(unsigned int errorNum);
@@ -18,8 +17,8 @@ SimpleSerialProtocol ssp(
         BAUDRATE,
         CHARACTER_TIMEOUT,
         onFatalError,
-        'b',
-        'b'
+        CHAR,
+        CHAR
 );
 Interval interval;
 
@@ -40,7 +39,7 @@ void onFatalError(unsigned int errorNum) {
 }
 
 void onInterval() {
-    ssp.writeCommand('b');
+    ssp.writeCommand(CHAR);
     ssp.writeInt(i);
     ssp.writeEot();
     i++;

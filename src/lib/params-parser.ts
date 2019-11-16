@@ -1,7 +1,9 @@
 import {ParamType} from "./types/param-type";
 import {ParamTypeInt} from "./types/param-type-int";
 import {ParamTypeString} from "./types/param-type-string";
-import {ParamTypeUint} from "./types/param-type-uint";
+import {ParamTypeUnsignedInt} from "./types/param-type-unsigned-int";
+import {ParamTypeShort} from "./types/param-type-short";
+import {ParamTypeUnsignedShort} from "./types/param-type-unsigned-short";
 
 export class ParamsParser {
     private readonly typeNames: string[];
@@ -24,8 +26,14 @@ export class ParamsParser {
                     case ParamTypeInt.NAME:
                         this.types.push(new ParamTypeInt());
                         break;
-                    case ParamTypeUint.NAME:
-                        this.types.push(new ParamTypeUint());
+                    case ParamTypeUnsignedInt.NAME:
+                        this.types.push(new ParamTypeUnsignedInt());
+                        break;
+                    case ParamTypeShort.NAME:
+                        this.types.push(new ParamTypeShort());
+                        break;
+                    case ParamTypeUnsignedShort.NAME:
+                        this.types.push(new ParamTypeUnsignedShort());
                         break;
                     case ParamTypeString.NAME:
                         this.types.push(new ParamTypeString());

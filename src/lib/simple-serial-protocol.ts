@@ -3,8 +3,6 @@ import * as ByteLength from '@serialport/parser-byte-length';
 import {SimpleSerialProtocolError} from "./simple-serial-protocol-error";
 import {RegisteredCommand} from "./simple-serial-protocol-command";
 import {Baudrate} from "../typings";
-import {ParamType} from "./types/param-type";
-import {ParamsParser} from "./params-parser";
 
 export class SimpleSerialProtocol {
 
