@@ -1,5 +1,6 @@
 import {SimpleSerialProtocol} from "./lib/simple-serial-protocol";
 import {Baudrate} from "./typings";
+import {ParamTypeInt} from "./lib/types/param-type-int";
 
 class Example {
 
@@ -9,7 +10,7 @@ class Example {
     public run(): void {
         let ssp: SimpleSerialProtocol = new SimpleSerialProtocol(Example.PORTNAME, Example.BAUDRATE);
         ssp.registerCommand('a', this.onCommandA);
-        ssp.registerCommand('c', this.onCommandC);
+        ssp.registerCommand('b', this.onCommandInt, [ParamTypeInt.NAME]);
         ssp.init().then(() => {
             console.log('arduino is ready. now sending command "a"');
             // ssp.send('a;');
@@ -23,8 +24,8 @@ class Example {
         console.log('onCommandA');
     }
 
-    private onCommandC() {
-        console.log('onCommandC');
+    private onCommandInt(int: number) {
+        console.log("Got int", int);
     }
 }
 

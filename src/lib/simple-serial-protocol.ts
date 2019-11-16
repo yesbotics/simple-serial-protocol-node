@@ -140,7 +140,7 @@ export class SimpleSerialProtocol {
             return;
         }
         const byte: number = data[0];
-        console.log('onData', data, data.toString());
+        // console.log('onData', data, data.toString());
         if (this.currentCommand) {
             /**
              * Got command already -> reading param data
@@ -149,6 +149,7 @@ export class SimpleSerialProtocol {
                 /**
                  * Check EOT -> call callback
                  */
+                // console.log("ssp - paramsRead", byte);
                 if (byte === SimpleSerialProtocol.CHAR_EOT) {
                     this.currentCommand.callCallback();
                     this.currentCommand = null;
@@ -156,6 +157,7 @@ export class SimpleSerialProtocol {
                     throw new SimpleSerialProtocolError(SimpleSerialProtocolError.ERROR_EOT_WAS_NOT_READ);
                 }
             } else {
+                // console.log("ssp - addByte", byte);
                 this.currentCommand.addByte(byte);
             }
         } else {

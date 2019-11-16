@@ -36,23 +36,27 @@ export class ParamsParser {
     }
 
     addByte(byte: number) {
+        // console.log("parser - add byte", byte);
         if (!this.types) {
             throw new Error("Tried to add byte to params but no types defined.");
         }
         if (this.currentType.isFull()) {
+            // console.log("parser - is full", byte);
             this.typeIndex++;
             if (this.typeIndex >= this.typesLength) {
                 throw new Error("Tried to add byte to param parser but all types filled.");
             }
 
             this.currentType = this.types[this.typeIndex];
-            this.currentType.addByte(byte);
         }
+        this.currentType.addByte(byte);
+        // console.log("parser", "is full");
     }
 
     isFull(): boolean {
         if (this.types) {
             if (this.typeIndex < (this.typesLength - 1)) {
+                // console.log("not reached last type");
                 /**
                  * Not reached last type
                  */
@@ -61,12 +65,14 @@ export class ParamsParser {
                 /**
                  * Last type filled?
                  */
-                this.currentType.isFull();
+                // console.log("last type filled");
+                return this.currentType.isFull();
             }
         } else {
             /**
              * No types defined -> always full
              */
+            // console.log("no types defined");
             return true;
         }
     }

@@ -2,7 +2,7 @@ import {ParamsParser} from "./params-parser";
 
 export class RegisteredCommand {
 
-    private paramsParser: ParamsParser;
+    private readonly paramsParser: ParamsParser;
 
     constructor(
         public command: string,
@@ -11,6 +11,7 @@ export class RegisteredCommand {
     ) {
         if (paramTypes && paramTypes.length > 0) {
             this.paramsParser = new ParamsParser(paramTypes);
+            // console.log("added parser");
         }
     }
 
