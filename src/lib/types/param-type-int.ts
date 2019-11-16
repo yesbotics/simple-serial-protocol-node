@@ -4,8 +4,8 @@ export class ParamTypeInt implements ParamType {
 
     static NAME: string = "int";
 
-    private rawData = Buffer.allocUnsafe(1);
-    private index: number;
+    protected rawData = Buffer.allocUnsafe(1);
+    protected index: number;
 
     reset() {
         this.index = 0;

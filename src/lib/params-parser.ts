@@ -1,6 +1,7 @@
 import {ParamType} from "./types/param-type";
 import {ParamTypeInt} from "./types/param-type-int";
 import {ParamTypeString} from "./types/param-type-string";
+import {ParamTypeUint} from "./types/param-type-uint";
 
 export class ParamsParser {
     private readonly typeNames: string[];
@@ -22,6 +23,9 @@ export class ParamsParser {
                 switch (type) {
                     case ParamTypeInt.NAME:
                         this.types.push(new ParamTypeInt());
+                        break;
+                    case ParamTypeUint.NAME:
+                        this.types.push(new ParamTypeUint());
                         break;
                     case ParamTypeString.NAME:
                         this.types.push(new ParamTypeString());
