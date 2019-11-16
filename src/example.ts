@@ -1,29 +1,30 @@
-import {CommandMessage} from './lib/command-message';
 import {SimpleSerialProtocol} from "./lib/simple-serial-protocol";
+import {Baudrate} from "./typings";
 
 class Example {
 
-    public static readonly PORTNAME: string = 'COM3';
-    public static readonly BAUDRATE: number = 115200;
+    public static readonly PORTNAME: string = 'COM5';
+    public static readonly BAUDRATE: Baudrate = 57600;
 
     public run(): void {
-        // let ssp: SimpleSerialProtocol = new SimpleSerialProtocol(Example.PORTNAME, Example.BAUDRATE);
-        // ssp.registerCommand('b', this.onCommandB);
-        // ssp.registerCommand('c', this.onCommandC);
-        // ssp.start().then(() => {
-        //     console.log('arduino is ready. now sending command "a;"');
-        //     ssp.send('a;');
-        // }).catch((err) => {
-        //     throw err;
-        // });
+        let ssp: SimpleSerialProtocol = new SimpleSerialProtocol(Example.PORTNAME, Example.BAUDRATE);
+        ssp.registerCommand('a', this.onCommandA);
+        ssp.registerCommand('c', this.onCommandC);
+        ssp.init().then(() => {
+            console.log('arduino is ready. now sending command "a"');
+            // ssp.send('a;');
+        }).catch((err) => {
+            console.error('could not init', err);
+            throw err;
+        });
     };
 
-    private onCommandB(cmdMsg: CommandMessage) {
-        console.log('onCommandB', cmdMsg.getMessageString());
+    private onCommandA() {
+        console.log('onCommandA');
     }
 
-    private onCommandC(cmdMsg: CommandMessage) {
-        console.log('onCommandC', cmdMsg.getMessageString());
+    private onCommandC() {
+        console.log('onCommandC');
     }
 }
 

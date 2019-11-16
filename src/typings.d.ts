@@ -20,6 +20,12 @@ declare type Baudrate =
     | 50
     | number;
 
+// declare type RegisteredCommands = {
+//     [typeName: string]: {
+//         'callback':
+//     }
+// }
+
 // declare type PARAM_STRING = "PARAM_STRING";
 // declare type PARAM_STRING = "PARAM_STRING";
 // declare type PARAM_INT = "PARAM_INT";

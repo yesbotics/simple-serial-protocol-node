@@ -15,4 +15,6 @@ export interface ParamType {
     isFull(): boolean;
 
     getData(): any;
+
+    dispose(): void;
 }

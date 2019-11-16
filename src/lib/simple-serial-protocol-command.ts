@@ -1,36 +1,47 @@
-import {ParamType} from "./types/param-type";
+import {ParamsParser} from "./params-parser";
 
-export class CommandCallback {
+export class RegisteredCommand {
 
-    paramBufferLength: number = 0;
-    hasString: boolean = false;
+    private paramsParser: ParamsParser;
 
     constructor(
         public command: string,
-        public callback: (...args: any[]) => void,
-        public paramTypes: string[] = null
+        private callback: (...args: any[]) => void,
+        paramTypes: string[] = null
     ) {
-        /**
-         * Calculate buffer length
-         */
-        for (const paramType of paramTypes) {
-            switch (paramType) {
-                case ParamType.PARAM_UINT:
-                case ParamType.PARAM_INT:
-                    this.paramBufferLength += 1;
-                    break;
-                case ParamType.PARAM_SHORT:
-                case ParamType.PARAM_UNSIGNED_SHORT:
-                    this.paramBufferLength += 2;
-                    break;
-                case ParamType.PARAM_UNSIGNED_FLOAT:
-                case ParamType.PARAM_FLOAT:
-                    this.paramBufferLength += 4;
-                    break;
-                case ParamType.PARAM_STRING:
-                    this.hasString = true;
-                    break;
-            }
+        if (paramTypes && paramTypes.length > 0) {
+            this.paramsParser = new ParamsParser(paramTypes);
+        }
+    }
+
+    paramsRead() {
+        return this.paramsParser ? this.paramsParser.isFull() : true;
+    }
+
+    addByte(byte: number) {
+        if (this.paramsParser) {
+            this.paramsParser.addByte(byte);
+        }
+    }
+
+    resetParamParser() {
+        if (this.paramsParser) {
+            this.paramsParser.reset();
+        }
+    }
+
+    callCallback() {
+        if ( this.paramsParser) {
+            this.callback.apply(null, this.paramsParser.getData());
+        } else {
+            this.callback.apply(null, []);
+        }
+    }
+
+    dispose() {
+        this.callback = null;
+        if ( this.paramsParser ) {
+            this.paramsParser.dispose();
         }
     }
 }

@@ -1,2 +1,1 @@
-export {CommandMessage} from './lib/command-message';
-export {SimpleSerialProtocolError} from './lib/simple-serial-protocol-error';
+// export {SimpleSerialProtocolError} from './lib/simple-serial-protocol-error';

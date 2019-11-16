@@ -1,9 +1,10 @@
 import * as SerialPort from 'serialport';
 import * as ByteLength from '@serialport/parser-byte-length';
 import {SimpleSerialProtocolError} from "./simple-serial-protocol-error";
-import {CommandCallback} from "./simple-serial-protocol-command";
+import {RegisteredCommand} from "./simple-serial-protocol-command";
 import {Baudrate} from "../typings";
 import {ParamType} from "./types/param-type";
+import {ParamsParser} from "./params-parser";
 
 export class SimpleSerialProtocol {
 
@@ -20,19 +21,12 @@ export class SimpleSerialProtocol {
     // private static readonly STATE_: string = String.fromCharCode(0x1B); // ESC //  0x1B
 
     private static readonly CHAR_EOT: number = 0x0A; // End of Transmission - Line Feed Zeichen \n
-    private static readonly CHAR_NULL: number = 0x00; // 0x00 // End of String
 
     private _isInitialized: boolean = false;
     private serialPort: SerialPort;
     private oneByteParser: NodeJS.WritableStream;
-    private registeredCommands: Map<string, CommandCallback> = new Map();
-    /**
-     * Buffer wird nach jedem empfangenen Command befüllt
-     */
-    private buffer: Buffer;
-    private bufferOffset: number = 0;
-    private currentCommandCallback: CommandCallback;
-    private currentParams: any[];
+    private registeredCommands: Map<string, RegisteredCommand> = new Map();
+    private currentCommand: RegisteredCommand;
 
     constructor(portname: string, baudrate: Baudrate) {
         this.serialPort = new SerialPort(portname, {
@@ -76,6 +70,9 @@ export class SimpleSerialProtocol {
         this.serialPort.removeAllListeners();
         this.oneByteParser.removeAllListeners();
         this._isInitialized = true;
+        this.registeredCommands.forEach((value => value.dispose()));
+        this.registeredCommands.clear();
+        this.registeredCommands = null;
         if (this.isOpen()) {
             await this.serialPort.close(async (err) => {
                 if (err) {
@@ -90,24 +87,32 @@ export class SimpleSerialProtocol {
         return this.serialPort.isOpen;
     }
 
-    public isInitialized(): boolean {
+    isInitialized(): boolean {
         return this._isInitialized;
     }
 
     registerCommand(commandName: string, callback: (...args: any[]) => void, paramTypes: string[] = null) {
         if (commandName.length !== 1) {
-            throw new SimpleSerialProtocolError(SimpleSerialProtocolError.ERROR_COMMAND_NAME_TO_LONG);
+            throw new SimpleSerialProtocolError(SimpleSerialProtocolError.ERROR_WRONG_COMMAND_NAME_LENGTH);
         }
         if (this.registeredCommands.has(commandName)) {
             throw new SimpleSerialProtocolError(SimpleSerialProtocolError.ERROR_COMMAND_IS_ALREADY_REGISTERED);
         }
-        const command: CommandCallback = new CommandCallback(
+
+        const command: RegisteredCommand = new RegisteredCommand(
             commandName,
             callback,
             paramTypes
         );
         this.registeredCommands.set(commandName, command);
-        // this.updateBufferSize();
+    }
+
+    unregisterCommand(commandName: string) {
+        if (this.registeredCommands.has(commandName)) {
+            const command = this.registeredCommands.get(commandName);
+            command.dispose();
+            this.registeredCommands.delete(commandName);
+        }
     }
 
     // public async getDeviceId(): Promise<string> {
@@ -115,13 +120,6 @@ export class SimpleSerialProtocol {
     //     this.writeEot();
     //     return null;
     // }
-
-    // void init();
-    // void registerCommand(byte command, ExternalCallbackPointer externalCommandCallbackPointer);
-    // byte readCommand();
-    // byte readEot();
-    // void writeCommand(byte command);
-    // void writeEot();
 
     private writeCommand(command: string): void {
         this.write(command);
@@ -137,18 +135,31 @@ export class SimpleSerialProtocol {
         this.serialPort.write(msg, "ascii");
     }
 
-    protected onData(data: Uint8Array): void {
+    private onData(data: Uint8Array): void {
         if (!this._isInitialized) {
             return;
         }
+        const byte: number = data[0];
         console.log('onData', data, data.toString());
-        if (this.currentCommandCallback) {
+        if (this.currentCommand) {
             /**
              * Got command already -> reading param data
              */
-            this.saveByte(data);
+            if (this.currentCommand.paramsRead()) {
+                /**
+                 * Check EOT -> call callback
+                 */
+                if (byte === SimpleSerialProtocol.CHAR_EOT) {
+                    this.currentCommand.callCallback();
+                    this.currentCommand = null;
+                } else {
+                    throw new SimpleSerialProtocolError(SimpleSerialProtocolError.ERROR_EOT_WAS_NOT_READ);
+                }
+            } else {
+                this.currentCommand.addByte(byte);
+            }
         } else {
-            const commandName = data.toString();
+            const commandName = String.fromCharCode(byte);
             if (!this.registeredCommands.has(commandName)) {
                 /**
                  * Command not found
@@ -158,71 +169,10 @@ export class SimpleSerialProtocol {
                 /**
                  * New command -> Preparing buffer for reading
                  */
-                this.currentCommandCallback = this.registeredCommands.get(commandName);
-                if (this.currentCommandCallback.paramBufferLength > 0) {
-                    this.currentParams = [];
-                    this.buffer = Buffer.allocUnsafe(this.currentCommandCallback.paramBufferLength);
-                }
+                this.currentCommand = this.registeredCommands.get(commandName);
+                this.currentCommand.resetParamParser();
             }
         }
     }
 
-    private saveByte(data: Uint8Array) {
-        const byte: number = data[0];
-        if (this.buffer.length === this.currentCommandCallback.paramBufferLength) {
-            /**
-             * Buffer full? Awaiting EOT
-             */
-            if (byte === SimpleSerialProtocol.CHAR_EOT) {
-                /**
-                 * Buffer is full -> Parsing params and call callback
-                 */
-                const parsedParams = this.getParamsFromBuffer();
-                this.currentCommandCallback.callback.apply(null, parsedParams);
-                this.currentCommandCallback = null;
-            } else {
-                /**
-                 * Wrong EOT byte
-                 */
-                throw new SimpleSerialProtocolError(SimpleSerialProtocolError.ERROR_EOT_WAS_NOT_READ);
-            }
-        } else {
-            /**
-             * Filling buffer
-             */
-            // Buffer.concat()
-            this.buffer.writeUInt8(data[0], this.bufferOffset);
-            this.bufferOffset++;
-        }
-    }
-
-    // private getParamsFromBuffer(): any[] {
-    //     let params: any[] = [];
-    //     let offset: number = 0;
-    //     for (const paramType of this.currentCommandCallback.paramTypes) {
-    //         switch (paramType) {
-    //             case ParamType.PARAM_INT:
-    //                 params.push(this.buffer.readInt8(offset));
-    //                 offset += 1;
-    //                 break;
-    //             case ParamType.PARAM_UINT:
-    //                 params.push(this.buffer.readUInt8(offset));
-    //                 offset += 1;
-    //                 break;
-    //         }
-    //     }
-    //     return params;
-    // }
-
-    // /**
-    //  * Reallocates buffer memory. Using max Command params length
-    //  */
-    // private updateBufferSize() {
-    //     let maxParamBufferLength: number = 0;
-    //     this.registeredCommands.forEach((command: CommandCallback, key: string) => {
-    //         maxParamBufferLength = Math.max(maxParamBufferLength, command.paramBufferLength);
-    //     });
-    //     console.log("max param buffer length", maxParamBufferLength);
-    //     this.buffer = Buffer.allocUnsafe(maxParamBufferLength);
-    // }
 }

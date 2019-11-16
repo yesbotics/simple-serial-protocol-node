@@ -2,6 +2,8 @@ import {ParamType} from "./param-type";
 
 export class ParamTypeInt implements ParamType {
 
+    static NAME: string = "int";
+
     private rawData = Buffer.allocUnsafe(1);
     private index: number;
 
@@ -23,5 +25,9 @@ export class ParamTypeInt implements ParamType {
 
     getData(): number {
         return this.rawData.readInt8(0);
+    }
+
+    dispose(): void {
+        this.rawData = null;
     }
 }
