@@ -7,7 +7,7 @@
     "scripts": {
         "test": "jest",
         "test:w": "jest --watchAll --runInBand --silent=false --verbose",
-        "example": "nodemon ./lib/example.js",
+        "example": "nodemon --inspect=localhost:9001 ./lib/example.js",
         "start": "npm run build:w & npm run example",
         "clean": "rimraf ./lib",
         "list-serial-ports:linux": "dmesg | grep tty",
