@@ -53,7 +53,6 @@ export class ParamsParser {
     }
 
     addByte(byte: number) {
-        // console.log("parser - add byte", byte);
         if (!this.types) {
             throw new Error("Tried to add byte to params but no types defined.");
         }

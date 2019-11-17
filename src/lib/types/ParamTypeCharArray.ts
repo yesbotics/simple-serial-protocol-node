@@ -10,7 +10,7 @@ export class ParamTypeCharArray implements ParamType {
     private full: boolean = false;
 
     static getBuffer(data: string): Buffer {
-        return Buffer.from(data);
+        return Buffer.from(data, 'ascii');
     }
 
     reset() {

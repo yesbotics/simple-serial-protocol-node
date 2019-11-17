@@ -35,10 +35,22 @@ class Example {
             ParamTypeChar.NAME,
             ParamTypeLong.NAME,
         ]);
+        ssp.registerCommand('z', this.onCommandDataResponse.bind(this), [ParamTypeLong.NAME]);
+
+        /**
+         * Init
+         */
         ssp.init().then(() => {
             console.log("Connected.");
             // console.log('arduino is ready. now sending command "a"');
-            // ssp.send('a;');
+
+            setTimeout(() => {
+                ssp.writeCommand('z', [
+                    {type: ParamTypeLong.NAME, value: 123456789}
+                ]);
+            }, 500);
+
+
         }).catch((err) => {
             console.error('could not init', err);
             throw err;
@@ -89,6 +101,10 @@ class Example {
 
     private onCommandULong(f: number) {
         console.log("Got unsigned long", f);
+    }
+
+    private onCommandDataResponse(f: number) {
+        console.log("Got data response", f);
     }
 }
 
