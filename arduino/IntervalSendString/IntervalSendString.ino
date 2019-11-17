@@ -2,7 +2,7 @@
 #include <HardwareSerial.h>
 #include <Interval.h>
 #include <SimpleSerialProtocol.h>
-#include <dev_printFatalError.h>
+//#include <dev_printFatalError.h>
 
 const char CHAR = 's';
 #define BAUDRATE 57600
@@ -35,7 +35,7 @@ void loop() {
 }
 
 void onFatalError(unsigned int errorNum) {
-    dev_printFatalError(errorNum, Serial);
+//    dev_printFatalError(errorNum, Serial);
 }
 
 void onInterval() {
@@ -43,4 +43,3 @@ void onInterval() {
     ssp.writeCharArray(string);
     ssp.writeEot();
 }
-
