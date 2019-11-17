@@ -26,7 +26,7 @@ export class ParamTypeString implements ParamType {
     }
 
     isFull(): boolean {
-        return this.full
+        return this.full;
     }
 
     getData(): string {
