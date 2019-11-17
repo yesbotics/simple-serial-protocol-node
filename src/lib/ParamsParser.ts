@@ -8,8 +8,22 @@ import {ParamTypeChar} from "./types/ParamTypeChar";
 import {ParamTypeLong} from "./types/ParamTypeLong";
 import {ParamTypeFloat} from "./types/ParamTypeFloat";
 import {ParamTypeUnsignedLong} from "./types/ParamTypeUnsignedLong";
+import {SimpleSerialProtocolError} from "./SimpleSerialProtocolError";
 
 export class ParamsParser {
+
+    static readonly TYPES: Map<string, any> = new Map<string, any>([
+        [ParamTypeChar.NAME, ParamTypeChar],
+        [ParamTypeCharArray.NAME, ParamTypeCharArray],
+        [ParamTypeFloat.NAME, ParamTypeFloat],
+        [ParamTypeInt.NAME, ParamTypeInt],
+        [ParamTypeLong.NAME, ParamTypeLong],
+        [ParamTypeShort.NAME, ParamTypeShort],
+        [ParamTypeUnsignedInt.NAME, ParamTypeUnsignedInt],
+        [ParamTypeUnsignedLong.NAME, ParamTypeUnsignedLong],
+        [ParamTypeUnsignedShort.NAME, ParamTypeUnsignedShort],
+    ]);
+
     private readonly typeNames: string[];
     private readonly typesLength: number;
     private types: ParamType[];
@@ -26,36 +40,11 @@ export class ParamsParser {
         if (this.typeNames.length > 0) {
             this.types = [];
             for (const type of this.typeNames) {
-                switch (type) {
-                    case ParamTypeInt.NAME:
-                        this.types.push(new ParamTypeInt());
-                        break;
-                    case ParamTypeUnsignedInt.NAME:
-                        this.types.push(new ParamTypeUnsignedInt());
-                        break;
-                    case ParamTypeShort.NAME:
-                        this.types.push(new ParamTypeShort());
-                        break;
-                    case ParamTypeUnsignedShort.NAME:
-                        this.types.push(new ParamTypeUnsignedShort());
-                        break;
-                    case ParamTypeCharArray.NAME:
-                        this.types.push(new ParamTypeCharArray());
-                        break;
-                    case ParamTypeChar.NAME:
-                        this.types.push(new ParamTypeChar());
-                        break;
-                    case ParamTypeFloat.NAME:
-                        this.types.push(new ParamTypeFloat());
-                        break;
-                    case ParamTypeLong.NAME:
-                        this.types.push(new ParamTypeLong());
-                        break;
-                    case ParamTypeUnsignedLong.NAME:
-                        this.types.push(new ParamTypeUnsignedLong());
-                        break;
-                    default:
-                        throw new Error("Param type unknown to parser: " + type);
+                if (ParamsParser.TYPES.has(type)) {
+                    const clazz = ParamsParser.TYPES.get(type);
+                    this.types.push(new clazz());
+                } else {
+                    throw new SimpleSerialProtocolError(SimpleSerialProtocolError.ERROR_PARAM_TYPE_UNKNOWN);
                 }
             }
             this.currentType = this.types[0];

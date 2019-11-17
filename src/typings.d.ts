@@ -18,7 +18,10 @@ declare type Baudrate =
     | 50
     | number;
 
-
+declare type CommandData = {
+    type: string,
+    value: any
+}
 // declare type RegisteredCommands = {
 //     [typeName: string]: {
 //         'callback':

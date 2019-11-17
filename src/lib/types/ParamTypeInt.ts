@@ -7,6 +7,12 @@ export class ParamTypeInt implements ParamType {
     protected rawData = Buffer.allocUnsafe(1);
     protected index: number;
 
+    static getBuffer(data: number): Buffer {
+        const buffer = Buffer.allocUnsafe(1);
+        buffer.writeIntLE(data, 0, 1);
+        return buffer;
+    }
+
     reset() {
         this.index = 0;
     }

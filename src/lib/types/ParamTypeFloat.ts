@@ -7,6 +7,12 @@ export class ParamTypeFloat implements ParamType {
     protected rawData = Buffer.allocUnsafe(4);
     protected index: number;
 
+    static getBuffer(data: number): Buffer {
+        const buffer = Buffer.allocUnsafe(4);
+        buffer.writeFloatLE(data, 0);
+        return buffer;
+    }
+
     reset() {
         this.index = 0;
     }

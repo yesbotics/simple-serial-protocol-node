@@ -2,6 +2,7 @@ import * as SerialPort from 'serialport';
 import * as ByteLength from '@serialport/parser-byte-length';
 import {RegisteredCommand} from "./RegisteredCommand";
 import {SimpleSerialProtocolError} from "./SimpleSerialProtocolError";
+import {ParamsParser} from "./ParamsParser";
 
 export class SimpleSerialProtocol {
 
@@ -112,22 +113,26 @@ export class SimpleSerialProtocol {
         }
     }
 
-    // public async getDeviceId(): Promise<string> {
-    //     this.writeCommand(SimpleSerialProtocol.COMMAND_GET_DEVICE_ID);
-    //     this.writeEot();
-    //     return null;
-    // }
-
-    private writeCommand(command: string): void {
+    writeCommand(command: string, params: CommandData[] = null): void {
+        if (command.length !== 0) {
+            throw new SimpleSerialProtocolError(SimpleSerialProtocolError.ERROR_WRONG_COMMAND_NAME_LENGTH);
+        }
         this.write(command);
+        if (params) {
+            for (const param of params) {
+                if (ParamsParser.TYPES.has(param.type)) {
+                    const typeClass = ParamsParser.TYPES.get(param.type);
+                    const buffer = typeClass.getBuffer(param.value);
+                    this.write(buffer);
+                } else {
+                    throw new SimpleSerialProtocolError(SimpleSerialProtocolError.ERROR_PARAM_TYPE_UNKNOWN);
+                }
+            }
+        }
+        this.write(SimpleSerialProtocol.CHAR_EOT);
     }
 
-    // private writeEot(): void {
-    //     this.serialPort.write(SimpleSerialProtocol.CHAR_EOT);
-    //     // this.write(SimpleSerialProtocol.CHAR_EOT);
-    // }
-
-    private write(msg: string): void {
+    private write(msg: any): void {
         console.log('write', msg);
         this.serialPort.write(msg, "ascii");
     }

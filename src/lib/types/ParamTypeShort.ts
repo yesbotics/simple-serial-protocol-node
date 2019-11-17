@@ -7,6 +7,12 @@ export class ParamTypeShort implements ParamType {
     protected rawData = Buffer.allocUnsafe(2);
     protected index: number;
 
+    static getBuffer(data: number): Buffer {
+        const buffer = Buffer.allocUnsafe(2);
+        buffer.writeInt16LE(data, 0);
+        return buffer;
+    }
+
     reset() {
         this.index = 0;
     }
