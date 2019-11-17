@@ -4,10 +4,9 @@
 #include <SimpleSerialProtocol.h>
 //#include <dev_printFatalError.h>
 
-const char CHAR = 'd';
+const char CHAR = 'x';
 #define BAUDRATE 57600
 #define CHARACTER_TIMEOUT 500
-short i = -10;
 
 void onFatalError(unsigned int errorNum);
 void onInterval();
@@ -39,12 +38,18 @@ void onFatalError(unsigned int errorNum) {
 }
 
 void onInterval() {
+//ParamTypeInt.NAME,
+//ParamTypeString.NAME,
+//ParamTypeShort.NAME,
+//ParamTypeChar.NAME,
+//ParamTypeLong.NAME,
+
     ssp.writeCommand(CHAR);
-    ssp.writeShort(i);
+    ssp.writeInt(-12);
+    ssp.writeCharArray("ein string.");
+    ssp.writeShort(746);
+    ssp.writeChar('x');
+    ssp.writeLong(123456789);
     ssp.writeEot();
-    i++;
-    if (i > 255) {
-        i = -255;
-    }
 }
 

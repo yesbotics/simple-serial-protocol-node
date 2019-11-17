@@ -1,9 +1,13 @@
 import {ParamType} from "./types/param-type";
 import {ParamTypeInt} from "./types/param-type-int";
-import {ParamTypeString} from "./types/param-type-string";
+import {ParamTypeCharArray} from "./types/param-type-char-array";
 import {ParamTypeUnsignedInt} from "./types/param-type-unsigned-int";
 import {ParamTypeShort} from "./types/param-type-short";
 import {ParamTypeUnsignedShort} from "./types/param-type-unsigned-short";
+import {ParamTypeChar} from "./types/param-type-char";
+import {ParamTypeLong} from "./types/param-type-long";
+import {ParamTypeUnsignedLong} from "./types/param-type-unsigned-long";
+import {ParamTypeFloat} from "./types/param-type-float";
 
 export class ParamsParser {
     private readonly typeNames: string[];
@@ -35,8 +39,20 @@ export class ParamsParser {
                     case ParamTypeUnsignedShort.NAME:
                         this.types.push(new ParamTypeUnsignedShort());
                         break;
-                    case ParamTypeString.NAME:
-                        this.types.push(new ParamTypeString());
+                    case ParamTypeCharArray.NAME:
+                        this.types.push(new ParamTypeCharArray());
+                        break;
+                    case ParamTypeChar.NAME:
+                        this.types.push(new ParamTypeChar());
+                        break;
+                    case ParamTypeFloat.NAME:
+                        this.types.push(new ParamTypeFloat());
+                        break;
+                    case ParamTypeLong.NAME:
+                        this.types.push(new ParamTypeLong());
+                        break;
+                    case ParamTypeUnsignedLong.NAME:
+                        this.types.push(new ParamTypeUnsignedLong());
                         break;
                     default:
                         throw new Error("Param type unknown to parser: " + type);
@@ -95,6 +111,8 @@ export class ParamsParser {
                 type.reset();
             }
         }
+        this.typeIndex = 0;
+        this.currentType = this.types[0];
     }
 
     getData() {

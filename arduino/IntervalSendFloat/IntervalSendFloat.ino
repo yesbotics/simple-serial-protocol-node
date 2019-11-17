@@ -2,12 +2,11 @@
 #include <HardwareSerial.h>
 #include <Interval.h>
 #include <SimpleSerialProtocol.h>
-//#include <dev_printFatalError.h>
 
-const char CHAR = 'd';
+const char CHAR = 'f';
 #define BAUDRATE 57600
-#define CHARACTER_TIMEOUT 500
-short i = -10;
+#define CHARACTER_TIMEOUT 200
+float f = -1.0;
 
 void onFatalError(unsigned int errorNum);
 void onInterval();
@@ -40,11 +39,11 @@ void onFatalError(unsigned int errorNum) {
 
 void onInterval() {
     ssp.writeCommand(CHAR);
-    ssp.writeShort(i);
+    ssp.writeFloat(f);
     ssp.writeEot();
-    i++;
-    if (i > 255) {
-        i = -255;
+    f += 0.123;
+    if (f > 3000) {
+        f = -1.0;
     }
 }
 

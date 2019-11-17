@@ -1,8 +1,8 @@
 import {ParamType} from "./param-type";
 
-export class ParamTypeString implements ParamType {
+export class ParamTypeCharArray implements ParamType {
 
-    static readonly NAME: string = "string";
+    static readonly NAME: string = "char_array";
 
     private static readonly CHAR_NULL: number = 0x00; // 0x00 // End of String
 
@@ -18,7 +18,7 @@ export class ParamTypeString implements ParamType {
         if (this.isFull()) {
             throw new Error("Added byte to already filled  param var.");
         }
-        if (byte === ParamTypeString.CHAR_NULL) {
+        if (byte === ParamTypeCharArray.CHAR_NULL) {
             this.full = true;
             return;
         }

@@ -4,10 +4,10 @@
 #include <SimpleSerialProtocol.h>
 //#include <dev_printFatalError.h>
 
-const char CHAR = 'd';
+const char CHAR = 't';
 #define BAUDRATE 57600
 #define CHARACTER_TIMEOUT 500
-short i = -10;
+char string = 'c';
 
 void onFatalError(unsigned int errorNum);
 void onInterval();
@@ -40,11 +40,6 @@ void onFatalError(unsigned int errorNum) {
 
 void onInterval() {
     ssp.writeCommand(CHAR);
-    ssp.writeShort(i);
+    ssp.writeChar(string);
     ssp.writeEot();
-    i++;
-    if (i > 255) {
-        i = -255;
-    }
 }
-
