@@ -1,8 +1,7 @@
 import * as SerialPort from 'serialport';
 import * as ByteLength from '@serialport/parser-byte-length';
-import {SimpleSerialProtocolError} from "./simple-serial-protocol-error";
-import {RegisteredCommand} from "./simple-serial-protocol-command";
-import {Baudrate} from "../typings";
+import {RegisteredCommand} from "./RegisteredCommand";
+import {SimpleSerialProtocolError} from "./SimpleSerialProtocolError";
 
 export class SimpleSerialProtocol {
 

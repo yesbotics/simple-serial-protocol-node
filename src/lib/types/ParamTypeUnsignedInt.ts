@@ -1,5 +1,5 @@
-import {ParamType} from "./param-type";
-import {ParamTypeInt} from "./param-type-int";
+import {ParamTypeInt} from "./ParamTypeInt";
+import {ParamType} from "./ParamType";
 
 export class ParamTypeUnsignedInt extends ParamTypeInt implements ParamType {
 

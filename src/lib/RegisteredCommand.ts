@@ -1,4 +1,4 @@
-import {ParamsParser} from "./params-parser";
+import {ParamsParser} from "./ParamsParser";
 
 export class RegisteredCommand {
 

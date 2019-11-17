@@ -1,5 +1,5 @@
-import {ParamType} from "./param-type";
-import {ParamTypeLong} from "./param-type-long";
+import {ParamTypeLong} from "./ParamTypeLong";
+import {ParamType} from "./ParamType";
 
 export class ParamTypeUnsignedLong extends ParamTypeLong implements ParamType {
 

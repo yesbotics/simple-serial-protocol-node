@@ -1,5 +1,5 @@
-import {ParamType} from "./param-type";
-import {ParamTypeShort} from "./param-type-short";
+import {ParamTypeShort} from "./ParamTypeShort";
+import {ParamType} from "./ParamType";
 
 export class ParamTypeUnsignedShort extends ParamTypeShort implements ParamType {
 

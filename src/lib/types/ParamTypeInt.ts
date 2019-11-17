@@ -1,10 +1,10 @@
-import {ParamType} from "./param-type";
+import {ParamType} from "./ParamType";
 
-export class ParamTypeLong implements ParamType {
+export class ParamTypeInt implements ParamType {
 
-    static NAME: string = "long";
+    static NAME: string = "int";
 
-    protected rawData = Buffer.allocUnsafe(4);
+    protected rawData = Buffer.allocUnsafe(1);
     protected index: number;
 
     reset() {
@@ -20,11 +20,11 @@ export class ParamTypeLong implements ParamType {
     }
 
     isFull(): boolean {
-        return this.index > 3;
+        return this.index > 0;
     }
 
     getData(): number {
-        return this.rawData.readInt32LE(0);
+        return this.rawData.readInt8(0);
     }
 
     dispose(): void {

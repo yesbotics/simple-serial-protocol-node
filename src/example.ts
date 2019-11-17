@@ -1,19 +1,19 @@
-import {SimpleSerialProtocol} from "./lib/simple-serial-protocol";
-import {Baudrate} from "./typings";
-import {ParamTypeInt} from "./lib/types/param-type-int";
-import {ParamTypeUnsignedInt} from "./lib/types/param-type-unsigned-int";
-import {ParamTypeShort} from "./lib/types/param-type-short";
-import {ParamTypeUnsignedShort} from "./lib/types/param-type-unsigned-short";
-import {ParamTypeCharArray} from "./lib/types/param-type-char-array";
-import {ParamTypeChar} from "./lib/types/param-type-char";
-import {ParamTypeFloat} from "./lib/types/param-type-float";
-import {ParamTypeLong} from "./lib/types/param-type-long";
-import {ParamTypeUnsignedLong} from "./lib/types/param-type-unsigned-long";
+import {ParamTypeLong} from "./lib/types/ParamTypeLong";
+import {ParamTypeUnsignedLong} from "./lib/types/ParamTypeUnsignedLong";
+import {SimpleSerialProtocol} from "./lib/SimpleSerialProtocol";
+import {ParamTypeInt} from "./lib/types/ParamTypeInt";
+import {ParamTypeUnsignedInt} from "./lib/types/ParamTypeUnsignedInt";
+import {ParamTypeShort} from "./lib/types/ParamTypeShort";
+import {ParamTypeUnsignedShort} from "./lib/types/ParamTypeUnsignedShort";
+import {ParamTypeFloat} from "./lib/types/ParamTypeFloat";
+import {ParamTypeCharArray} from "./lib/types/ParamTypeCharArray";
+import {ParamTypeChar} from "./lib/types/ParamTypeChar";
 
 class Example {
 
     public static readonly PORTNAME: string = 'COM5';
     public static readonly BAUDRATE: Baudrate = 57600;
+
 
     public run(): void {
         console.log("Starting ssp connection.");

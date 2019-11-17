@@ -1,7 +1,6 @@
-import {SimpleSerialProtocol} from "../simple-serial-protocol";
-import {ParamType} from "../types/param-type";
 import {BaseBinding} from "serialport";
-import {ParamTypeInt} from "../types/param-type-int";
+import {SimpleSerialProtocol} from "../SimpleSerialProtocol";
+import {ParamTypeInt} from "../types/ParamTypeInt";
 
 const SerialPort = require('@serialport/stream');
 const MockBinding = require('@serialport/binding-mock');
@@ -11,7 +10,6 @@ SerialPort.Binding = MockBinding;
 
 
 MockBinding.createPort('/dev/ROBOT', {echo: false, record: true, readyData: ''});
-// const port = new SerialPort('/dev/ROBOT');
 
 const ssp: SimpleSerialProtocol = new SimpleSerialProtocol("/dev/ROBOT", 9600);
 

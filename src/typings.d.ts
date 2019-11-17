@@ -1,5 +1,3 @@
-import {ParamType} from "./lib/types/param-type";
-
 declare type Baudrate =
     115200
     | 57600
@@ -19,6 +17,7 @@ declare type Baudrate =
     | 75
     | 50
     | number;
+
 
 // declare type RegisteredCommands = {
 //     [typeName: string]: {

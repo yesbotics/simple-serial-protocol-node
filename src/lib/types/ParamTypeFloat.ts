@@ -1,10 +1,10 @@
-import {ParamType} from "./param-type";
+import {ParamType} from "./ParamType";
 
-export class ParamTypeInt implements ParamType {
+export class ParamTypeFloat implements ParamType {
 
-    static NAME: string = "int";
+    static NAME: string = "float";
 
-    protected rawData = Buffer.allocUnsafe(1);
+    protected rawData = Buffer.allocUnsafe(4);
     protected index: number;
 
     reset() {
@@ -20,11 +20,11 @@ export class ParamTypeInt implements ParamType {
     }
 
     isFull(): boolean {
-        return this.index > 0;
+        return this.index > 3;
     }
 
     getData(): number {
-        return this.rawData.readInt8(0);
+        return this.rawData.readFloatLE(0);
     }
 
     dispose(): void {

@@ -1,8 +1,8 @@
-import {ParamType} from "./param-type";
+import {ParamType} from "./ParamType";
 
-export class ParamTypeFloat implements ParamType {
+export class ParamTypeLong implements ParamType {
 
-    static NAME: string = "float";
+    static NAME: string = "long";
 
     protected rawData = Buffer.allocUnsafe(4);
     protected index: number;
@@ -24,7 +24,7 @@ export class ParamTypeFloat implements ParamType {
     }
 
     getData(): number {
-        return this.rawData.readFloatLE(0);
+        return this.rawData.readInt32LE(0);
     }
 
     dispose(): void {

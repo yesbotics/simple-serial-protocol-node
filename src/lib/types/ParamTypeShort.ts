@@ -1,4 +1,4 @@
-import {ParamType} from "./param-type";
+import {ParamType} from "./ParamType";
 
 export class ParamTypeShort implements ParamType {
 
