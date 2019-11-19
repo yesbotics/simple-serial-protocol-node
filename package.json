@@ -31,14 +31,13 @@
   },
   "homepage": "https://github.com/einspunktnull/node-simple-serial-protocol#readme",
   "dependencies": {
-    "@types/serialport": "^4.0.9",
-    "serialport": "^6.0.0",
-    "typescript-collections": "^1.2.3"
+    "@types/serialport": "4.0.9",
+    "serialport": "6.0.0",
+    "typescript-collections": "1.2.3"
   },
   "devDependencies": {
-    "concurrently": "^3.5.0",
-    "nodemon": "^1.11.0",
-    "tslint": "^5.7.0",
-    "typescript": "^2.5.1"
+    "concurrently": "3.5.0",
+    "nodemon": "1.11.0",
+    "typescript": "2.5.1"
   }
 }
