@@ -1,6 +1,6 @@
 {
   "name": "simple-serial-protocol-node",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Library for communication with arduino",
   "main": "./dist/index.js",
   "scripts": {
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/einspunktnull/node-simple-serial-protocol.git"
+    "url": "git+https://gitlab.com/yesbotics/simple-serial-protocol/simple-serial-protocol-node/tree/legacy/einspunktnull/1.x"
   },
   "keywords": [
     "arduino",
@@ -27,9 +27,9 @@
   "author": "Albrecht Nitsche",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/einspunktnull/node-simple-serial-protocol/issues"
+    "url": "https://gitlab.com/yesbotics/simple-serial-protocol/simple-serial-protocol-node/issues"
   },
-  "homepage": "https://github.com/einspunktnull/node-simple-serial-protocol#readme",
+  "homepage": "https://gitlab.com/yesbotics/simple-serial-protocol/simple-serial-protocol-node#readme",
   "dependencies": {
     "@types/serialport": "4.0.9",
     "serialport": "6.0.0",
