@@ -9,6 +9,7 @@ import {ParamTypeUnsignedShort} from "./lib/types/ParamTypeUnsignedShort";
 import {ParamTypeFloat} from "./lib/types/ParamTypeFloat";
 import {ParamTypeCharArray} from "./lib/types/ParamTypeCharArray";
 import {ParamTypeChar} from "./lib/types/ParamTypeChar";
+import {Baudrate} from "./lib/Baudrate";
 
 class Example {
 

@@ -13,6 +13,8 @@ import {ParamTypeUnsignedInt} from "./types/ParamTypeUnsignedInt";
 import {ParamTypeUnsignedLong} from "./types/ParamTypeUnsignedLong";
 import {ParamTypeUnsignedShort} from "./types/ParamTypeUnsignedShort";
 import {ParamType} from "./types/ParamType";
+import {Baudrate} from "./Baudrate";
+import {CommandData} from "./CommandData";
 
 export class SimpleSerialProtocol {
 
