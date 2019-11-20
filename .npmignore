@@ -1,2 +1,5 @@
-/package-lock.json
 .idea
+/package-lock.json
+/arduino
+/src
+/tsconfig.json
