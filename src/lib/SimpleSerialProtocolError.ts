@@ -1,11 +1,4 @@
 export class SimpleSerialProtocolError extends Error {
-    // public static readonly MAX_BUFFERSIZE_EXCEEDED: string = 'MAX_BUFFERSIZE_EXCEEDED';
-    //
-    // public static readonly MESSAGE_INCOMPLETE: string = 'MESSAGE_INCOMPLETE';
-    // public static readonly INVALID_COMMAND: string = 'INVALID_COMMAND';
-    // public static readonly UNREGISTERED_COMMAND: string = 'UNREGISTERED_COMMAND';
-    // public static readonly INVALID_ARGUMENTS_COUNT: string = 'INVALID_ARGUMENTS_COUNT';
-
 
     public static readonly ERROR_COMMAND_IS_ALREADY_REGISTERED = "ERROR_COMMAND_IS_ALREADY_REGISTERED";
     public static readonly ERROR_COMMAND_IS_NOT_REGISTERED = "ERROR_COMMAND_IS_NOT_REGISTERED";
@@ -14,10 +7,12 @@ export class SimpleSerialProtocolError extends Error {
     public static readonly ERROR_PARAM_TYPE_UNKNOWN = "ERROR_PARAM_TYPE_UNKNOWN";
     public static readonly UNKNOWN: string = 'UNKNOWN';
     public static readonly ERROR_WRONG_COMMAND_NAME_LENGTH: string = 'ERROR_WRONG_COMMAND_NAME_LENGTH';
+    public static readonly ERROR_PARAM_TYPE_IS_ALREADY_REGISTERED: string = 'ERROR_PARAM_TYPE_IS_ALREADY_REGISTERED';
+    public static readonly ERROR_PARSER_TOO_MANY_BYTES: string = 'ERROR_PARSER_TOO_MANY_BYTES';
 
     constructor(
         private _type: string,
-        // private _message: CommandMessage
+        private _message: string = ''
     ) {
         super(_type);
     }
@@ -26,7 +21,7 @@ export class SimpleSerialProtocolError extends Error {
         return this._type;
     }
 
-    // public get message(): CommandMessage {
-    //     return this._message;
-    // }
+    public get message(): string {
+        return this._message;
+    }
 }

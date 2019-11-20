@@ -1,13 +1,13 @@
 import {ParamType} from "./ParamType";
 
-export class ParamTypeChar implements ParamType {
+export class ParamTypeChar implements ParamType<string> {
 
     static readonly NAME: string = "char";
 
     private rawData: string = "";
     private full: boolean = false;
 
-    static getBuffer(data: string): Buffer {
+    getBuffer(data: string): Buffer {
         return Buffer.from(data, 'ascii');
     }
 

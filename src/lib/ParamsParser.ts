@@ -1,39 +1,32 @@
 import {ParamType} from "./types/ParamType";
-import {ParamTypeInt} from "./types/ParamTypeInt";
-import {ParamTypeUnsignedInt} from "./types/ParamTypeUnsignedInt";
-import {ParamTypeShort} from "./types/ParamTypeShort";
-import {ParamTypeUnsignedShort} from "./types/ParamTypeUnsignedShort";
-import {ParamTypeCharArray} from "./types/ParamTypeCharArray";
-import {ParamTypeChar} from "./types/ParamTypeChar";
-import {ParamTypeLong} from "./types/ParamTypeLong";
-import {ParamTypeFloat} from "./types/ParamTypeFloat";
-import {ParamTypeUnsignedLong} from "./types/ParamTypeUnsignedLong";
 import {SimpleSerialProtocolError} from "./SimpleSerialProtocolError";
 
 export class ParamsParser {
 
-    static readonly TYPES: Map<string, any> = new Map<string, any>([
-        [ParamTypeChar.NAME, ParamTypeChar],
-        [ParamTypeCharArray.NAME, ParamTypeCharArray],
-        [ParamTypeFloat.NAME, ParamTypeFloat],
-        [ParamTypeInt.NAME, ParamTypeInt],
-        [ParamTypeLong.NAME, ParamTypeLong],
-        [ParamTypeShort.NAME, ParamTypeShort],
-        [ParamTypeUnsignedInt.NAME, ParamTypeUnsignedInt],
-        [ParamTypeUnsignedLong.NAME, ParamTypeUnsignedLong],
-        [ParamTypeUnsignedShort.NAME, ParamTypeUnsignedShort],
-    ]);
+    private static TYPES: Map<string, any> = new Map();
 
     private readonly typeNames: string[];
     private readonly typesLength: number;
-    private types: ParamType[];
+    private types: ParamType<any>[];
     private typeIndex: number;
-    private currentType: ParamType;
+    private currentType: ParamType<any>;
 
     constructor(typeNames: string[] = null) {
         this.typeNames = typeNames;
         this.typesLength = typeNames ? typeNames.length : null;
         this.init();
+    }
+
+    static hasType(name: string): any {
+        return this.TYPES.has(name);
+    }
+
+    static getType(name: string): any {
+        return this.TYPES.get(name);
+    }
+
+    static addType(name: string, clazz: any): any {
+        return this.TYPES.set(name, clazz);
     }
 
     init() {
@@ -60,7 +53,7 @@ export class ParamsParser {
             // console.log("parser - is full", byte);
             this.typeIndex++;
             if (this.typeIndex >= this.typesLength) {
-                throw new Error("Tried to add byte to param parser but all types filled.");
+                throw new SimpleSerialProtocolError(SimpleSerialProtocolError.ERROR_PARSER_TOO_MANY_BYTES, "Tried to add byte to param parser but all types filled.");
             }
 
             this.currentType = this.types[this.typeIndex];

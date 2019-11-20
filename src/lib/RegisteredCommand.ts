@@ -11,7 +11,6 @@ export class RegisteredCommand {
     ) {
         if (paramTypes && paramTypes.length > 0) {
             this.paramsParser = new ParamsParser(paramTypes);
-            // console.log("added parser");
         }
     }
 

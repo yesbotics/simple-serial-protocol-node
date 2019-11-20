@@ -1,4 +1,5 @@
-export interface ParamType {
+export interface ParamType<T> {
+
     reset();
 
     addByte(byte: number): void;
@@ -8,4 +9,6 @@ export interface ParamType {
     getData(): any;
 
     dispose(): void;
+
+    getBuffer(data: T): Buffer;
 }

@@ -1,13 +1,13 @@
 import {ParamType} from "./ParamType";
 
-export class ParamTypeInt implements ParamType {
+export class ParamTypeInt implements ParamType<number> {
 
     static NAME: string = "int";
 
     protected rawData = Buffer.allocUnsafe(1);
     protected index: number;
 
-    static getBuffer(data: number): Buffer {
+    getBuffer(data: number): Buffer {
         const buffer = Buffer.allocUnsafe(1);
         buffer.writeIntLE(data, 0, 1);
         return buffer;
