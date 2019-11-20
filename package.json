@@ -1,7 +1,7 @@
 {
     "name": "@yesbotics/simple-serial-protocol-node",
     "version": "2.0.1",
-    "description": "Library for communication with Arduino",
+    "description": "Event-based library for Node-vs-Arduino communication. Powered by the usage of microcontroller-friendly primitive dataypes.",
     "main": "./lib/index.js",
     "types": "./lib/index.d.ts",
     "scripts": {
@@ -19,8 +19,17 @@
         "type": "git",
         "url": "git@gitlab.com:yesbotics/simple-serial-protocol/simple-serial-protocol-node.git"
     },
+    "bugs": {
+        "url": "https://gitlab.com/yesbotics/simple-serial-protocol/simple-serial-protocol-node/issues"
+    },
     "keywords": [
+        "node",
+        "nodejs",
+        "node.js",
         "arduino",
+        "microcontroller",
+        "c/c++",
+        "c/cpp",
         "serial",
         "protocol"
     ],
