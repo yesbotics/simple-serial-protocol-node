@@ -1,6 +1,6 @@
 import {ParamType} from "./ParamType";
 
-export class ParamTypeCharArray implements ParamType {
+export class ParamTypeCharArray implements ParamType<string> {
 
     static readonly NAME: string = "char_array";
 
@@ -9,7 +9,7 @@ export class ParamTypeCharArray implements ParamType {
     private rawData: string = "";
     private full: boolean = false;
 
-    static getBuffer(data: string): Buffer {
+    getBuffer(data: string): Buffer {
         return Buffer.from(data, 'ascii');
     }
 

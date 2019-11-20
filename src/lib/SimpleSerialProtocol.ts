@@ -5,20 +5,16 @@ import {SimpleSerialProtocolError} from "./SimpleSerialProtocolError";
 import {ParamsParser} from "./ParamsParser";
 import {ParamTypeInt} from "./types/ParamTypeInt";
 import {ParamTypeChar} from "./types/ParamTypeChar";
+import {ParamTypeCharArray} from "./types/ParamTypeCharArray";
+import {ParamTypeFloat} from "./types/ParamTypeFloat";
+import {ParamTypeLong} from "./types/ParamTypeLong";
+import {ParamTypeShort} from "./types/ParamTypeShort";
+import {ParamTypeUnsignedInt} from "./types/ParamTypeUnsignedInt";
+import {ParamTypeUnsignedLong} from "./types/ParamTypeUnsignedLong";
+import {ParamTypeUnsignedShort} from "./types/ParamTypeUnsignedShort";
+import {ParamType} from "./types/ParamType";
 
 export class SimpleSerialProtocol {
-
-    // private static readonly COMMAND_GET_DEVICE_ID: string = String.fromCharCode(0x05); //ENQ
-    // private static readonly COMMAND_START: string = String.fromCharCode(0x02); // STX // 0x02
-    // private static readonly COMMAND_STOP: string = String.fromCharCode(0x03); // ETX // 0x03
-    // private static readonly COMMAND_ALREADY_STARTED: string = String.fromCharCode(0x11); // DC1 //  0x11
-    // private static readonly COMMAND_NOT_STARTED: string = String.fromCharCode(0x12); // DC2 //  0x12
-    // private static readonly COMMAND_ERROR: string = String.fromCharCode(0x18); // CAN //  0x18
-    // private static readonly COMMAND_RECEIVED: string = String.fromCharCode(0x06); // ACK //  0x06
-    // private static readonly COMMAND_KEEP_ALIVE: string = String.fromCharCode(0x16); // SYN //  0x16
-    // private static readonly COMMAND_KEEP_ALIVE_TIMEOUT: string = String.fromCharCode(0x1B); // ESC //  0x1B
-
-    // private static readonly STATE_: string = String.fromCharCode(0x1B); // ESC //  0x1B
 
     private static readonly CHAR_EOT: number = 0x0A; // End of Transmission - Line Feed Zeichen \n
 
@@ -27,15 +23,17 @@ export class SimpleSerialProtocol {
     private oneByteParser: NodeJS.WritableStream;
     private registeredCommands: Map<string, RegisteredCommand> = new Map();
     private currentCommand: RegisteredCommand;
+    private paramTypeInstances: Map<string, ParamType<any>> = new Map();
 
     constructor(portname: string, baudrate: Baudrate) {
+        this.initParamTypes();
         this.serialPort = new SerialPort(portname, {
             autoOpen: false,
             baudRate: baudrate
         });
     }
 
-    async init(initilizationDelay: number = 1000): Promise<void> {
+    async init(initilizationDelay: number = 2500): Promise<void> {
         if (this.isOpen()) {
             return Promise.reject('already connected');
         }
@@ -46,10 +44,10 @@ export class SimpleSerialProtocol {
             if (err) {
                 this.dispose()
                     .catch(() => {
-                        return Promise.reject(err);
+                        throw err;
                     })
                     .then(() => {
-                        return Promise.reject(err);
+                        throw err;
                     });
             }
         });
@@ -64,6 +62,18 @@ export class SimpleSerialProtocol {
         });
 
         await promiseOpen;
+    }
+
+    private initParamTypes() {
+        this.addParamType(ParamTypeChar.NAME, ParamTypeChar);
+        this.addParamType(ParamTypeCharArray.NAME, ParamTypeCharArray);
+        this.addParamType(ParamTypeFloat.NAME, ParamTypeFloat);
+        this.addParamType(ParamTypeInt.NAME, ParamTypeInt);
+        this.addParamType(ParamTypeLong.NAME, ParamTypeLong);
+        this.addParamType(ParamTypeShort.NAME, ParamTypeShort);
+        this.addParamType(ParamTypeUnsignedInt.NAME, ParamTypeUnsignedInt);
+        this.addParamType(ParamTypeUnsignedLong.NAME, ParamTypeUnsignedLong);
+        this.addParamType(ParamTypeUnsignedShort.NAME, ParamTypeUnsignedShort);
     }
 
     async dispose(): Promise<void> {
@@ -119,11 +129,11 @@ export class SimpleSerialProtocol {
         if (command.length !== 1) {
             throw new SimpleSerialProtocolError(SimpleSerialProtocolError.ERROR_WRONG_COMMAND_NAME_LENGTH);
         }
-        this.write(ParamTypeChar.getBuffer(command));
+        this.write(this.paramTypeInstances.get(ParamTypeChar.NAME).getBuffer(command));
         if (params) {
             for (const param of params) {
-                if (ParamsParser.TYPES.has(param.type)) {
-                    const typeClass = ParamsParser.TYPES.get(param.type);
+                if (ParamsParser.hasType(param.type)) {
+                    const typeClass = this.paramTypeInstances.get(param.type);
                     const buffer: Buffer = typeClass.getBuffer(param.value);
                     this.write(buffer);
                 } else {
@@ -131,8 +141,15 @@ export class SimpleSerialProtocol {
                 }
             }
         }
-        // this.write([SimpleSerialProtocol.CHAR_EOT]);
-        this.write(ParamTypeInt.getBuffer(SimpleSerialProtocol.CHAR_EOT));
+        this.write(this.paramTypeInstances.get(ParamTypeInt.NAME).getBuffer(SimpleSerialProtocol.CHAR_EOT));
+    }
+
+    addParamType(name: string, clazz: any) {
+        if (ParamsParser.hasType(name)) {
+            throw new SimpleSerialProtocolError(SimpleSerialProtocolError.ERROR_PARAM_TYPE_IS_ALREADY_REGISTERED);
+        }
+        ParamsParser.addType(name, clazz);
+        this.paramTypeInstances.set(name, new clazz());
     }
 
     private write(buffer: string | number[] | Buffer): void {

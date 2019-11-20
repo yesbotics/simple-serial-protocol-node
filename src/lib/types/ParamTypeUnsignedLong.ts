@@ -1,11 +1,11 @@
 import {ParamTypeLong} from "./ParamTypeLong";
 import {ParamType} from "./ParamType";
 
-export class ParamTypeUnsignedLong extends ParamTypeLong implements ParamType {
+export class ParamTypeUnsignedLong extends ParamTypeLong implements ParamType<number> {
 
     static NAME: string = "unsigned_long";
 
-    static getBuffer(data: number): Buffer {
+    getBuffer(data: number): Buffer {
         const buffer = Buffer.allocUnsafe(4);
         buffer.writeUInt32LE(data, 0);
         return buffer;

@@ -1,13 +1,13 @@
 import {ParamType} from "./ParamType";
 
-export class ParamTypeFloat implements ParamType {
+export class ParamTypeFloat implements ParamType<number> {
 
     static NAME: string = "float";
 
     protected rawData = Buffer.allocUnsafe(4);
     protected index: number;
 
-    static getBuffer(data: number): Buffer {
+    getBuffer(data: number): Buffer {
         const buffer = Buffer.allocUnsafe(4);
         buffer.writeFloatLE(data, 0);
         return buffer;

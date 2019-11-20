@@ -15,8 +15,8 @@ class Example {
     public static readonly PORTNAME: string = 'COM5';
     public static readonly BAUDRATE: Baudrate = 57600;
 
-
     public run(): void {
+
         console.log("Starting ssp connection.");
         let ssp: SimpleSerialProtocol = new SimpleSerialProtocol(Example.PORTNAME, Example.BAUDRATE);
         ssp.registerCommand('a', this.onCommandA.bind(this));
@@ -41,16 +41,13 @@ class Example {
         /**
          * Init
          */
-        ssp.init().then(() => {
+        ssp.init(2000).then(() => {
             console.log("Connected.");
             // console.log('arduino is ready. now sending command "a"');
 
-            setTimeout(() => {
-                ssp.writeCommand('z', [
-                    {type: ParamTypeLong.NAME, value: 123456789}
-                ]);
-            }, 500);
-
+            ssp.writeCommand('z', [
+                {type: ParamTypeLong.NAME, value: 123456789}
+            ]);
 
         }).catch((err) => {
             console.error('could not init', err);
