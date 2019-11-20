@@ -3,8 +3,10 @@
         "target": "es6",
         "module": "commonjs",
         "moduleResolution": "node",
+        "declaration": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
+        "outDir": "./dist/",
         "lib": [
             "es5",
             "es6",
@@ -19,9 +21,13 @@
             "node_modules/@types"
         ],
         "removeComments": false,
-        "noImplicitAny": false
-        //"baseUrl": "./src"
+        "noImplicitAny": false,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true
     },
+    "include": [
+        "src/**/*"
+    ],
     "exclude": [
         "node_modules",
         "dist"
