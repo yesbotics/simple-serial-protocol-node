@@ -1,5 +1,4 @@
-import {SimpleSerialProtocol} from './lib/simple-serial-protocol';
-import {CommandMessage} from './lib/command-message';
+import {CommandMessage, SimpleSerialProtocol} from ".";
 
 class Example {
 
