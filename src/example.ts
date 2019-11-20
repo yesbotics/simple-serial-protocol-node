@@ -1,3 +1,4 @@
+import 'source-map-support/register';
 import {ParamTypeLong} from "./lib/types/ParamTypeLong";
 import {ParamTypeUnsignedLong} from "./lib/types/ParamTypeUnsignedLong";
 import {SimpleSerialProtocol} from "./lib/SimpleSerialProtocol";
