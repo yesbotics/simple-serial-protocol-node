@@ -1,5 +1,5 @@
-import * as SerialPort from 'serialport';
-import * as ByteLength from '@serialport/parser-byte-length';
+import SerialPort from "serialport";
+import ByteLength from '@serialport/parser-byte-length';
 import {RegisteredCommand} from "./RegisteredCommand";
 import {SimpleSerialProtocolError} from "./SimpleSerialProtocolError";
 import {ParamsParser} from "./ParamsParser";
