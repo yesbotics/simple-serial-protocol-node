@@ -11,7 +11,7 @@
         "start": "npm run build:w & npm run example",
         "clean": "rimraf ./lib",
         "list-serial-ports:linux": "dmesg | grep tty",
-        "prepublish": "npm run build && npm version patch",
+        "prepublish": "npm run build",
         "build": "npm run clean && tsc",
         "build:w": "npm run clean && tsc -w --inlineSourceMap"
     },
