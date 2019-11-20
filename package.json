@@ -5,22 +5,25 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "tsc": "tsc --rootDir \"./src\" --outDir \"./dist\"",
-    "tsc:w": "tsc -w --rootDir \"./src\" --outDir \"./dist\" --inlineSourceMap",
-    "app": "nodemon ./dist/example.js",
-    "start": "concurrently --kill-others \"npm run tsc:w\" \"npm run app\" ",
+    "example": "nodemon ./dist/example.js",
     "compile": "npm run tsc",
     "dev": "nodemon -e ts  --exec \"npm run compile\"",
-    "prepare": "npm run compile",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently --kill-others \"npm run tsc:w\" \"npm run example\" ",
     "list-serial-ports:linux": "dmesg | grep tty",
-    "prepublish": "npm run compile"
+    "prepare": "npm run compile",
+    "prepublish": "npm run compile",
+    "tsc": "tsc --rootDir \"./src\" --outDir \"./dist\"",
+    "tsc:w": "tsc -w --rootDir \"./src\" --outDir \"./dist\" --inlineSourceMap"
   },
   "repository": {
     "type": "git",
     "url": "git+https://gitlab.com/yesbotics/simple-serial-protocol/simple-serial-protocol-node/tree/legacy/einspunktnull/1.x"
   },
   "keywords": [
+    "node",
+    "nodejs",
+    "node.js",
     "arduino",
     "serial",
     "protocol"
@@ -32,11 +35,11 @@
   },
   "homepage": "https://gitlab.com/yesbotics/simple-serial-protocol/simple-serial-protocol-node#readme",
   "dependencies": {
-    "@types/serialport": "4.0.9",
     "serialport": "6.0.0",
     "typescript-collections": "1.2.3"
   },
   "devDependencies": {
+    "@types/serialport": "4.0.9",
     "concurrently": "3.5.0",
     "nodemon": "1.11.0",
     "typescript": "2.5.1"
