@@ -6,7 +6,7 @@
         "declaration": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-        "outDir": "./lib/",
+        "outDir": "./dist/",
         "lib": [
             "es5",
             "es6",
@@ -21,7 +21,9 @@
             "node_modules/@types"
         ],
         "removeComments": false,
-        "noImplicitAny": false
+        "noImplicitAny": false,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true
     },
     "include": [
         "src/**/*"
