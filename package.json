@@ -3,6 +3,7 @@
   "version": "1.0.1",
   "description": "Library for communication with arduino",
   "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc --rootDir \"./src\" --outDir \"./dist\"",
