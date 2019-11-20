@@ -1,6 +1,6 @@
 {
     "name": "@yesbotics/simple-serial-protocol-node",
-    "version": "2.0.1",
+    "version": "2.0.0",
     "description": "Event-based library for Node-vs-Arduino communication. Powered by the usage of microcontroller-friendly primitive dataypes.",
     "main": "./lib/index.js",
     "types": "./lib/index.d.ts",
@@ -43,7 +43,6 @@
     "devDependencies": {
         "@types/jest": "^24.0.22",
         "@types/serialport": "^7.0.4",
-        "concurrently": "^5.0.0",
         "jest": "^24.9.0",
         "nodemon": "^1.19.4",
         "rimraf": "^3.0.0",
