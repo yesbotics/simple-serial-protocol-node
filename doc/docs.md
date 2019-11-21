@@ -12,6 +12,6 @@ an für sich lowlevel aber auch brücke zwischen low-level und highlevel languag
 wie? 
 
 
-## inspired by Antonin Raffin's minmalsistic primitive datentypes ()
+## inspired by Antonin Raffin's minmalistic primitive datentypes
 * [simple-and-robust-computer-arduino-serial-communication](https://medium.com/@araffin/simple-and-robust-computer-arduino-serial-communication-f91b95596788)
-*  inspiriert von: [araffin/arduino-robust-serial](https://github.com/araffin/arduino-robust-serial)
+* gitrepo [araffin/arduino-robust-serial](https://github.com/araffin/arduino-robust-serial)
