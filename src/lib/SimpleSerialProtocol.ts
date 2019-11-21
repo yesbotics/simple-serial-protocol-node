@@ -66,18 +66,6 @@ export class SimpleSerialProtocol {
         await promiseOpen;
     }
 
-    private initParamTypes() {
-        this.addParamType(ParamTypeChar.NAME, ParamTypeChar);
-        this.addParamType(ParamTypeCharArray.NAME, ParamTypeCharArray);
-        this.addParamType(ParamTypeFloat.NAME, ParamTypeFloat);
-        this.addParamType(ParamTypeInt.NAME, ParamTypeInt);
-        this.addParamType(ParamTypeLong.NAME, ParamTypeLong);
-        this.addParamType(ParamTypeShort.NAME, ParamTypeShort);
-        this.addParamType(ParamTypeUnsignedInt.NAME, ParamTypeUnsignedInt);
-        this.addParamType(ParamTypeUnsignedLong.NAME, ParamTypeUnsignedLong);
-        this.addParamType(ParamTypeUnsignedShort.NAME, ParamTypeUnsignedShort);
-    }
-
     async dispose(): Promise<void> {
         this.serialPort.removeAllListeners();
         this.oneByteParser.removeAllListeners();
@@ -152,6 +140,34 @@ export class SimpleSerialProtocol {
         }
         ParamsParser.addType(name, clazz);
         this.paramTypeInstances.set(name, new clazz());
+    }
+
+    addErrorListener(listener: (err: Error) => void) {
+        this.serialPort.addListener("error", listener);
+    }
+
+    addCloseListener(listener: () => void) {
+        this.serialPort.addListener("close", listener);
+    }
+
+    removeErrorListener(listener: (err: Error) => void) {
+        this.serialPort.removeListener('error', listener);
+    }
+
+    removeCloseListener(listener: () => void) {
+        this.serialPort.removeListener('close', listener);
+    }
+
+    private initParamTypes() {
+        this.addParamType(ParamTypeChar.NAME, ParamTypeChar);
+        this.addParamType(ParamTypeCharArray.NAME, ParamTypeCharArray);
+        this.addParamType(ParamTypeFloat.NAME, ParamTypeFloat);
+        this.addParamType(ParamTypeInt.NAME, ParamTypeInt);
+        this.addParamType(ParamTypeLong.NAME, ParamTypeLong);
+        this.addParamType(ParamTypeShort.NAME, ParamTypeShort);
+        this.addParamType(ParamTypeUnsignedInt.NAME, ParamTypeUnsignedInt);
+        this.addParamType(ParamTypeUnsignedLong.NAME, ParamTypeUnsignedLong);
+        this.addParamType(ParamTypeUnsignedShort.NAME, ParamTypeUnsignedShort);
     }
 
     private write(buffer: string | number[] | Buffer): void {
