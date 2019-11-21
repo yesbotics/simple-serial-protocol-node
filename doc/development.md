@@ -5,3 +5,6 @@
 ### Gitflow
 
 https://gitversion.readthedocs.io/en/latest/git-branching-strategies/gitflow-examples/
+
+### Inspired by
+https://github.com/araffin/arduino-robust-serial
