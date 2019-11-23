@@ -1,4 +1,4 @@
-### Simple Serial Prototcol
+# Simple Serial Prototcol
 
 ## ziel dieser lib 
 * serial communication between PC und Arduino (and compatible) devices
@@ -11,6 +11,6 @@
 an für sich lowlevel aber auch brücke zwischen low-level und highlevel language
 wie? 
 
-## inspired by Antonin Raffin's minmalistic primitive datentypes approach
+## Inspired by Antonin Raffin's minmalistic primitive datentypes approach
 * [simple-and-robust-computer-arduino-serial-communication](https://medium.com/@araffin/simple-and-robust-computer-arduino-serial-communication-f91b95596788)
 * gitrepo [araffin/arduino-robust-serial](https://github.com/araffin/arduino-robust-serial)
