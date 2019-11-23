@@ -19,5 +19,8 @@ You can find arduino examples in the `/arduino` folder. All arduino examples can
 with the [Arduino IDE](https://www.arduino.cc/en/main/software) 
 or [Arduino-CLI](https://github.com/arduino/arduino-cli).
 
+You need the Arduino library [Interval](https://gitlab.com/yesbotics/libs/arduino/interval) 
+to build the examples.
+
 
 _Better documentation in progress!_
