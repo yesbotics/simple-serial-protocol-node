@@ -10,8 +10,11 @@ Node.js implementation of our [Simple Serial Protocol](https://gitlab.com/yesbot
  
 ## typescript example usage
 This example sends two values to Arduino and get same values sent back from Arduino.
-This example can be found as running npm application in the `./examples/echo-example` folder.
-It corresponds with the Arduino sketch echo example sketch in the Arduino implementation **LINK**
+The first value is an text of max 50 chars length (in this example. more is possible).
+The second value is an floating point value. We have choosen 3.14159265359.
+This example can be found as npm application in the `./examples/echo-example` folder.
+This example corresponds with the Arduino sketch inside the folder `<arduino-lib-folder>/examples/echo_example` of 
+[Simple Serial Protocol for Arduino](https://gitlab.com/yesbotics/simple-serial-protocol/simple-serial-protocol-arduino) .
 ```
 import {SimpleSerialProtocol, ParamTypeCharArray, ParamTypeFloat, Baudrate} from '@yesbotics/simple-serial-protocol-node';
 
@@ -22,22 +25,23 @@ const bautrate: Baudrate = 9600;
 // create instance
 const arduino: SimpleSerialProtocol = new SimpleSerialProtocol(portname, bautrate);
 
-// define command char, callback function and expected dataytpes
+// define command id, callback function and expected dataytpes
 arduino.registerCommand('r', (someString: string, someFloatingPointValue: number) => {
     console.log('Received values from Arduino:');
     console.log('someString', someString);
     console.log('someFloatingPointValue', someFloatingPointValue);
 }, [ParamTypeCharArray.NAME, ParamTypeFloat.NAME]);
 
-// establish connection to arduino and wait two seconds
-// give arduino time to start after getting connected (resetted), so we've choosen convenient 2 seconds
+// establish connection to arduino and wait 2 seconds
+// give arduino time to start after getting connected (and resetted too)
 arduino.init(2000).catch((err) => {
-    console.error('could not minit connection', err)
+    console.error('Could not init connection. reason:', err);
 }).then(() => {
-    console.log('Arduino connected. Sending two values to Arduino');
+    console.log('Arduino connected. Sending 2 values to Arduino');
     arduino.writeCommand('s', [
+        // in this example text should not be longer than 50 chars (max length is defined in Arduiono sketch)
         {type: ParamTypeCharArray.NAME, value: 'hey i\'m a text'},
-        {type: ParamTypeFloat.NAME, value: 3.14}
+        {type: ParamTypeFloat.NAME, value: 3.14159265359}
     ]);
 });
 ```
