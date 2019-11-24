@@ -6,12 +6,12 @@ export class ParamTypeUnsignedInt extends ParamTypeInt implements ParamType<numb
     static NAME: string = "unsigned_int";
 
     getBuffer(data: number): Buffer {
-        const buffer = Buffer.allocUnsafe(1);
-        buffer.writeUIntLE(data, 0, 1);
+        const buffer = Buffer.allocUnsafe(2);
+        buffer.writeUInt16LE(data, 0);
         return buffer;
     }
 
     getData(): number {
-        return this.rawData.readUInt8(0);
+        return this.rawData.readUInt16LE(0);
     }
 }
