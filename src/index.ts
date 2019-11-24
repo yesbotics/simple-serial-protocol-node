@@ -9,6 +9,7 @@ export * from "./lib/RegisteredCommand";
 export * from "./lib/SimpleSerialProtocol";
 export * from "./lib/SimpleSerialProtocolError";
 export * from "./lib/types/ParamType";
+export * from "./lib/types/ParamTypeBoolean";
 export * from "./lib/types/ParamTypeChar";
 export * from "./lib/types/ParamTypeCharArray";
 export * from "./lib/types/ParamTypeFloat";
