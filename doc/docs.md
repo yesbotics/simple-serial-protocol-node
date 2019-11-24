@@ -49,11 +49,13 @@ serial communication between Node und Arduino (and compatible) devices
 ### usage (typescript) >>> ECHO-EXAMPLE >>> <lib root>/src/examples/echo-example.ts
 this example sends two values to arduino and get this values sent back from arduino. look corresponding arduino side
 ```
+import {SimpleSerialProtocol, ParamTypeCharArray, ParamTypeFloat} from '@yesbotics/simple-serial-protocol-node';
+
 // create instance and defining comport identifier and baudrate
-const arduino:SimpleSerialProtocol = new SimpleSerialProtocol('COM4', 9600);
+const arduino: SimpleSerialProtocol = new SimpleSerialProtocol('COM4', 9600);
 
 // define command id, callback function and expected dataytpes
-arduino.registerCommand('r', (someString: string, someFloatingPointValue: number)=>{
+arduino.registerCommand('r', (someString: string, someFloatingPointValue: number) => {
     console.log('received values from arduino:');
     console.log('someString', someString);
     console.log('someFloatingPointValue', someFloatingPointValue);
@@ -64,10 +66,11 @@ arduino.registerCommand('r', (someString: string, someFloatingPointValue: number
 arduino.init(2000).catch(console.error).then(() => {
     console.log('arduino connected. Sending two values to arduino');
     arduino.writeCommand('s', [
-        {type: ParamTypeCharArray.NAME, value: 'hey i'm a text'},
+        {type: ParamTypeCharArray.NAME, value: 'hey i\'m a text'},
         {type: ParamTypeFloat.NAME, value: 3.14}
     ]);
 });
+
 ```
 bigger more detailed example <lib root>/src/examples/advanced-example.ts
 
