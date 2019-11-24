@@ -1,6 +1,7 @@
+.idea
+*.iml
 /package-lock.json
 /node_modules
-/.idea
 /node-simple-serial-protocol.iml
 /dist
 /.project
