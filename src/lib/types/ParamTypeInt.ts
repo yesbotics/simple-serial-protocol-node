@@ -4,12 +4,12 @@ export class ParamTypeInt implements ParamType<number> {
 
     static NAME: string = "int";
 
-    protected rawData = Buffer.allocUnsafe(1);
+    protected rawData = Buffer.allocUnsafe(2);
     protected index: number;
 
     getBuffer(data: number): Buffer {
-        const buffer = Buffer.allocUnsafe(1);
-        buffer.writeIntLE(data, 0, 1);
+        const buffer = Buffer.allocUnsafe(2);
+        buffer.writeIntLE(data, 0, 2);
         return buffer;
     }
 
@@ -30,7 +30,7 @@ export class ParamTypeInt implements ParamType<number> {
     }
 
     getData(): number {
-        return this.rawData.readInt8(0);
+        return this.rawData.readInt16LE(0);
     }
 
     dispose(): void {
