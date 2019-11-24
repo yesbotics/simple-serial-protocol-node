@@ -15,6 +15,7 @@ import {ParamTypeUnsignedShort} from "./types/ParamTypeUnsignedShort";
 import {ParamType} from "./types/ParamType";
 import {Baudrate} from "./Baudrate";
 import {CommandData} from "./CommandData";
+import {ParamTypeBoolean} from "./types/ParamTypeBoolean";
 
 export class SimpleSerialProtocol {
 
@@ -159,6 +160,7 @@ export class SimpleSerialProtocol {
     }
 
     private initParamTypes() {
+        this.addParamType(ParamTypeBoolean.NAME, ParamTypeBoolean);
         this.addParamType(ParamTypeChar.NAME, ParamTypeChar);
         this.addParamType(ParamTypeCharArray.NAME, ParamTypeCharArray);
         this.addParamType(ParamTypeFloat.NAME, ParamTypeFloat);
