@@ -37,7 +37,8 @@ arduino.registerCommand('r', (someString: string, someFloatingPointValue: number
 arduino.init(2000).catch((err) => {
     console.error('Could not init connection. reason:', err);
 }).then(() => {
-    console.log('Arduino connected. Sending 2 values to Arduino');
+    console.log('Arduino connected.');
+    console.log('Now sending 2 values to Arduino');
     arduino.writeCommand('s', [
         // in this example text should not be longer than 50 chars (max length is defined in Arduiono sketch)
         {type: ParamTypeCharArray.NAME, value: 'hey i\'m a text'},
