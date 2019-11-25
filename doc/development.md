@@ -1,8 +1,8 @@
-### NPM Version Management
-[Tutorial@medium.com](https://medium.com/@kevinkreuzer/publishing-a-beta-or-alpha-version-to-npm-46035b630dd7)
+# Development
+dev dev dev
 
-### Branches (Gitflow) 
-Siehe https://gitversion.readthedocs.io/en/latest/git-branching-strategies/gitflow-examples/
+## Branches (Gitflow) 
+inspiriert durch [GitFlow Examples]
 * `master`: live. echte releases. (erst, wenn was published wurde kommt hier zeug aus'm 
 develop branch rein)
 * `develop`: nur fertige candidates hier drin (getestet und lauffähig)
@@ -10,7 +10,14 @@ develop branch rein)
 definiert ist (bsp: `release/2.0.1` oder `release/2.0.1-beta.0`)
 * `hotfix`: echte fixes und workarounds für live (published) releases
 
-## TODOs: 
+## TODOs
+### Kommunikation, wie?
+* modrob/yesbotics tg-channel
+* via textdateien wie im hierigen fall
+* via issues gitlab
+
+### DevOps DevOps DevOps: 
+* simple-serial-protocol-docs aufbauen unter zuhilfenahme von [Markdown: Links and Cross References]
 * @kappaj: more examples readme
     * hier kommt kappaj's extrakt rein (aus der `README.md.old`) 
     * einzelinterval-examples zusammenfassen in einem standalone `AdvancedExample`
@@ -19,8 +26,17 @@ definiert ist (bsp: `release/2.0.1` oder `release/2.0.1-beta.0`)
 * das deployment müssen wir entwickeln:
     * npm scripte 
     * halbautomatisches script (also mit bestätigen)
+        * npm login
+        * npm publish
+            * prepublish muss testen
     * jest test
     * ne release ablauf dokumentieren, was abgearbeitet werden muss:
         * getestet?
         * version korrekt erhöht?
         * müssen wir zusammen drüber sprechen
+
+## Links
+[GitFlow Examples](https://gitversion.readthedocs.io/en/latest/git-branching-strategies/gitflow-examples)
+[Markdown-Cheatsheet#links](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#links)
+[Markdown: Links and Cross References](https://dotnet.github.io/docfx/tutorial/links_and_cross_references.html)
+[Publishing a beta or alpha version to NPM](https://medium.com/@kevinkreuzer/publishing-a-beta-or-alpha-version-to-npm-46035b630dd7)
