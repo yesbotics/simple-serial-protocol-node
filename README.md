@@ -47,8 +47,6 @@ arduino.init(3000).catch((err) => {
 });
 ```
 
-## TODO: more examples:
-hier kommt kappaj's extrakt rein (aus der `README.md.old`)
 
 
 
