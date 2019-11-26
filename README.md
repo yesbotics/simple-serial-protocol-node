@@ -1,5 +1,4 @@
 # Simple Serial Protocol for Node.js (TypeScript and ES6)
-
 Easy and robust general purpose serial communication between Node.js and Arduino(-compatible) devices.
 Node.js implementation of our [Simple Serial Protocol]
 
