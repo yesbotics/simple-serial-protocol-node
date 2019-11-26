@@ -36,7 +36,8 @@ definiert ist (bsp: `release/2.0.1` oder `release/2.0.1-beta.0`)
         * müssen wir zusammen drüber sprechen
 
 ## Links
-* [GitFlow Examples](https://gitversion.readthedocs.io/en/latest/git-branching-strategies/gitflow-examples)
-* [Markdown-Cheatsheet#links](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#links)
-* [Markdown: Links and Cross References](https://dotnet.github.io/docfx/tutorial/links_and_cross_references.html)
-* [Publishing a beta or alpha version to NPM](https://medium.com/@kevinkreuzer/publishing-a-beta-or-alpha-version-to-npm-46035b630dd7)
+* [GitFlow Examples]:https://gitversion.readthedocs.io/en/latest/git-branching-strategies/gitflow-examples
+* [Markdown-Cheatsheet#links]:https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#links
+* [Markdown: Links and Cross References]:https://dotnet.github.io/docfx/tutorial/links_and_cross_references.html
+* [Publishing a beta or alpha version to NPM]:https://medium.com/@kevinkreuzer/publishing-a-beta-or-alpha-version-to-npm-46035b630dd7
+* [Have `npm version` not prepend “v” to the git tag]:https://stackoverflow.com/questions/37788907/have-npm-version-not-prepend-v-to-the-git-tag
