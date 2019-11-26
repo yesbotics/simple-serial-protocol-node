@@ -1,20 +1,18 @@
 # Simple Serial Protocol for Node.js (TypeScript and ES6)
 
-## description
 Easy and robust general purpose serial communication between Node.js and Arduino(-compatible) devices.
-
-Node.js implementation of our [Simple Serial Protocol](https://gitlab.com/yesbotics/simple-serial-protocol/simple-serial-protocol-docs)
+Node.js implementation of our [Simple Serial Protocol]
 
 ## install
 `npm install --save @yesbotics/simple-serial-protocol-node`
  
-## typescript example usage
+## example usage (TypeScript)
 This example sends two values to Arduino and get same values sent back from Arduino.
 The first value is an text of max 50 chars length (in this example. more is possible).
 The second value is an floating point value. We have choosen 3.14159265359.
-This example can be found as npm application in the `./examples/echo-example` folder.
-This example corresponds with the Arduino sketch inside the folder `<arduino-lib-folder>/SimpleSerialProtocol/examples/echo_example` of 
-[Simple Serial Protocol for Arduino](https://gitlab.com/yesbotics/simple-serial-protocol/simple-serial-protocol-arduino) .
+This example can be found as npm application in the `simple-serial-protocol-node/examples/echo-example` folder.
+This example corresponds with the Arduino sketch at [Simple Serial Protocol for Arduino].
+
 ```typescript
 import {SimpleSerialProtocol, ParamTypeCharArray, ParamTypeFloat, Baudrate} from '@yesbotics/simple-serial-protocol-node';
 
@@ -47,6 +45,7 @@ arduino.init(3000).catch((err) => {
 });
 ```
 
-
-
+## links
+[Simple Serial Protocol]:https://gitlab.com/yesbotics/simple-serial-protocol/simple-serial-protocol-docs
+[Simple Serial Protocol for Arduino]:https://gitlab.com/yesbotics/simple-serial-protocol/simple-serial-protocol-arduino
 
