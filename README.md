@@ -5,12 +5,12 @@ Node.js implementation of our [Simple Serial Protocol]
 ## install
 `npm install --save @yesbotics/simple-serial-protocol-node`
  
-## example usage (TypeScript)
-This example sends two values to Arduino and get same values sent back from Arduino.
-The first value is an text of max 50 chars length (in this example. more is possible).
+## Usage example (echo-example written in TypeScript)
+This example sends two values to Arduino and get same values immediately sent back from Arduino.
+The first value is an text of 50 chars length (in this example only. more is possible).
 The second value is an floating point value. We have choosen 3.14159265359.
 This example can be found as npm application in the `simple-serial-protocol-node/examples/echo-example` folder.
-This example corresponds with the Arduino sketch at [Simple Serial Protocol for Arduino].
+It corresponds with the Arduino sketch at [Simple Serial Protocol for Arduino].
 
 ```typescript
 import {SimpleSerialProtocol, ParamTypeCharArray, ParamTypeFloat, Baudrate} from '@yesbotics/simple-serial-protocol-node';
@@ -44,7 +44,7 @@ arduino.init(3000).catch((err) => {
 });
 ```
 
-## links
+## Links
 [Simple Serial Protocol]:https://gitlab.com/yesbotics/simple-serial-protocol/simple-serial-protocol-docs
 [Simple Serial Protocol for Arduino]:https://gitlab.com/yesbotics/simple-serial-protocol/simple-serial-protocol-arduino
 
