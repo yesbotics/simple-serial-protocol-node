@@ -16,14 +16,16 @@ arduino.registerCommand('s', (someString: string, someFloatingPointValue: number
 
 // establish connection to arduino and wait 3 seconds
 // give arduino time to start after getting connected (and resetted too)
-arduino.init(3000).catch((err) => {
-    console.error('Could not init connection. reason:', err);
-}).then(() => {
-    console.log('Arduino connected.');
-    console.log('Now sending 2 values to Arduino');
-    arduino.writeCommand('r', [
-        // in this example text should not be longer than 50 chars (max length is defined in Arduiono sketch)
-        {type: ParamTypeCharArray.NAME, value: 'hey i am a text'},
-        {type: ParamTypeFloat.NAME, value: 3.14159265359}
-    ]);
-});
+arduino.init(3000)
+    .catch((err) => {
+        console.error('Could not init connection. reason:', err);
+    })
+    .then(() => {
+        console.log('Arduino connected.');
+        console.log('Now sending 2 values to Arduino');
+        arduino.writeCommand('r', [
+            // in this example text should not be longer than 49 chars (max length is defined in Arduiono sketch)
+            {type: ParamTypeCharArray.NAME, value: 'hey i am a text'},
+            {type: ParamTypeFloat.NAME, value: 3.14159265359}
+        ]);
+    });
