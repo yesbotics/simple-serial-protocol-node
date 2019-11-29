@@ -14,7 +14,6 @@ export class ParamTypeCharArray implements ParamType<string> {
         data += '#';
         const buffer: Buffer = Buffer.from(data, 'ascii');
         buffer[data.length - 1] = ParamTypeCharArray.CHAR_NULL;
-        console.log('buffer', buffer);
         return buffer;
     }
 
