@@ -15,6 +15,7 @@ import {ParamTypeUnsignedShort} from "./types/ParamTypeUnsignedShort";
 import {ParamType} from "./types/ParamType";
 import {Baudrate} from "./Baudrate";
 import {CommandData} from "./CommandData";
+import {ParamTypeBoolean} from "./types/ParamTypeBoolean";
 
 export class SimpleSerialProtocol {
 
@@ -54,7 +55,7 @@ export class SimpleSerialProtocol {
             }
         });
 
-        const promiseOpen = new Promise<void>((resolve, reject) => {
+        const promiseOpen: Promise<void> = new Promise<void>((resolve, reject) => {
             this.serialPort.on('open', () => {
                 setTimeout(() => {
                     this._isInitialized = true;
@@ -123,8 +124,8 @@ export class SimpleSerialProtocol {
         if (params) {
             for (const param of params) {
                 if (ParamsParser.hasType(param.type)) {
-                    const typeClass = this.paramTypeInstances.get(param.type);
-                    const buffer: Buffer = typeClass.getBuffer(param.value);
+                    const typeClassInstance: ParamType<any> = this.paramTypeInstances.get(param.type);
+                    const buffer: Buffer = typeClassInstance.getBuffer(param.value);
                     this.write(buffer);
                 } else {
                     throw new SimpleSerialProtocolError(SimpleSerialProtocolError.ERROR_PARAM_TYPE_UNKNOWN);
@@ -159,6 +160,7 @@ export class SimpleSerialProtocol {
     }
 
     private initParamTypes() {
+        this.addParamType(ParamTypeBoolean.NAME, ParamTypeBoolean);
         this.addParamType(ParamTypeChar.NAME, ParamTypeChar);
         this.addParamType(ParamTypeCharArray.NAME, ParamTypeCharArray);
         this.addParamType(ParamTypeFloat.NAME, ParamTypeFloat);

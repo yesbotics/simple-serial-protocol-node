@@ -1,7 +1,7 @@
 {
     "name": "@yesbotics/simple-serial-protocol-node",
-    "version": "2.0.0",
-    "description": "Event-based library for Node-vs-Arduino communication. Powered by the usage of microcontroller-friendly primitive dataypes.",
+    "version": "2.0.1",
+    "description": "General purpose library for the communication between Node.js applications and Arduino devices. Powered by the usage of resource-effecient microcontroller-friendly primitive dataypes.",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
     "scripts": {
@@ -25,21 +25,20 @@
     },
     "keywords": [
         "node",
-        "nodejs",
         "node.js",
         "arduino",
         "microcontroller",
+        "serial",
+        "protocol",
         "c/c++",
         "c/cpp",
-        "serial",
-        "protocol"
+        "iot"
     ],
     "author": "Albrecht Nitsche, Jens Kabisch",
     "license": "MIT",
     "homepage": "https://gitlab.com/yesbotics/simple-serial-protocol/simple-serial-protocol-node",
     "dependencies": {
-        "serialport": "^8.0.5",
-        "typescript-collections": "^1.3.3"
+        "serialport": "^8.0.5"
     },
     "devDependencies": {
         "@types/jest": "^24.0.22",

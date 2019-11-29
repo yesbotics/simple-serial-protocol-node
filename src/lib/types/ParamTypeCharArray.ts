@@ -10,7 +10,11 @@ export class ParamTypeCharArray implements ParamType<string> {
     private full: boolean = false;
 
     getBuffer(data: string): Buffer {
-        return Buffer.from(data, 'ascii');
+        //expand length for last signt
+        data += '#';
+        const buffer: Buffer = Buffer.from(data, 'ascii');
+        buffer[data.length - 1] = ParamTypeCharArray.CHAR_NULL;
+        return buffer;
     }
 
     reset() {

@@ -6,7 +6,7 @@ export interface ParamType<T> {
 
     isFull(): boolean;
 
-    getData(): any;
+    getData(): T;
 
     dispose(): void;
 
