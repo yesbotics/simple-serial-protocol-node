@@ -2,6 +2,9 @@
 Provides easy and robust general purpose serial communication between Node.js and Arduino(-compatible) devices.
 Node.js implementation of [Simple Serial Protocol].
 
+## NPM registry
+This package is distributed as [simple-serial-protocol-node npm package].
+
 ## Install
 `npm install --save @yesbotics/simple-serial-protocol-node`
  
@@ -55,6 +58,7 @@ You need the Arduino library [IntervalCallback] to build the examples.
 
 ## Links
 [Simple Serial Protocol]:https://gitlab.com/yesbotics/simple-serial-protocol/simple-serial-protocol-docs
+[simple-serial-protocol-node npm package]:https://www.npmjs.com/package/@yesbotics/simple-serial-protocol-node
 [Simple Serial Protocol for Arduino]:https://gitlab.com/yesbotics/simple-serial-protocol/simple-serial-protocol-arduino
 [Arduino IDE]:https://www.arduino.cc/en/main/software
 [Arduino-CLI]:https://github.com/arduino/arduino-cli
