@@ -1,6 +1,6 @@
 # Simple Serial Protocol for Node.js (TypeScript and ES6)
 Provides easy and robust general purpose serial communication between Node.js and Arduino(-compatible) devices.
-Node.js implementation of [Simple Serial Protocol].
+This package covers the Node.js implementation of [Simple Serial Protocol].
 
 ## NPM registry
 This package is distributed as [simple-serial-protocol-node npm package].
