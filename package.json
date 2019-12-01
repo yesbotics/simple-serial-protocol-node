@@ -1,6 +1,6 @@
 {
     "name": "@yesbotics/simple-serial-protocol-node",
-    "version": "2.0.1",
+    "version": "2.1.0",
     "description": "General purpose library for the communication between Node.js applications and Arduino devices. Powered by the usage of resource-effecient microcontroller-friendly primitive dataypes.",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",

@@ -3,19 +3,20 @@ import ByteLength from '@serialport/parser-byte-length';
 import {RegisteredCommand} from "./RegisteredCommand";
 import {SimpleSerialProtocolError} from "./SimpleSerialProtocolError";
 import {ParamsParser} from "./ParamsParser";
-import {ParamTypeInt} from "./types/ParamTypeInt";
 import {ParamTypeChar} from "./types/ParamTypeChar";
 import {ParamTypeCharArray} from "./types/ParamTypeCharArray";
 import {ParamTypeFloat} from "./types/ParamTypeFloat";
-import {ParamTypeLong} from "./types/ParamTypeLong";
-import {ParamTypeShort} from "./types/ParamTypeShort";
-import {ParamTypeUnsignedInt} from "./types/ParamTypeUnsignedInt";
-import {ParamTypeUnsignedLong} from "./types/ParamTypeUnsignedLong";
-import {ParamTypeUnsignedShort} from "./types/ParamTypeUnsignedShort";
 import {ParamType} from "./types/ParamType";
 import {Baudrate} from "./Baudrate";
 import {CommandData} from "./CommandData";
 import {ParamTypeBoolean} from "./types/ParamTypeBoolean";
+import {ParamTypeInt8} from "./types/ParamTypeInt8";
+import {ParamTypeInt16} from "./types/ParamTypeInt16";
+import {ParamTypeInt32} from "./types/ParamTypeInt32";
+import {ParamTypeUnsignedInt8} from "./types/ParamTypeUnsignedInt8";
+import {ParamTypeUnsignedInt16} from "./types/ParamTypeUnsignedInt16";
+import {ParamTypeUnsignedInt32} from "./types/ParamTypeUnsignedInt32";
+import {ParamTypeByte} from "./types/ParamTypeByte";
 
 export class SimpleSerialProtocol {
 
@@ -132,7 +133,7 @@ export class SimpleSerialProtocol {
                 }
             }
         }
-        this.write(this.paramTypeInstances.get(ParamTypeInt.NAME).getBuffer(SimpleSerialProtocol.CHAR_EOT));
+        this.write(this.paramTypeInstances.get(ParamTypeInt8.NAME).getBuffer(SimpleSerialProtocol.CHAR_EOT));
     }
 
     addParamType(name: string, clazz: any) {
@@ -160,16 +161,17 @@ export class SimpleSerialProtocol {
     }
 
     private initParamTypes() {
+        this.addParamType(ParamTypeByte.NAME, ParamTypeByte);
         this.addParamType(ParamTypeBoolean.NAME, ParamTypeBoolean);
         this.addParamType(ParamTypeChar.NAME, ParamTypeChar);
         this.addParamType(ParamTypeCharArray.NAME, ParamTypeCharArray);
         this.addParamType(ParamTypeFloat.NAME, ParamTypeFloat);
-        this.addParamType(ParamTypeInt.NAME, ParamTypeInt);
-        this.addParamType(ParamTypeLong.NAME, ParamTypeLong);
-        this.addParamType(ParamTypeShort.NAME, ParamTypeShort);
-        this.addParamType(ParamTypeUnsignedInt.NAME, ParamTypeUnsignedInt);
-        this.addParamType(ParamTypeUnsignedLong.NAME, ParamTypeUnsignedLong);
-        this.addParamType(ParamTypeUnsignedShort.NAME, ParamTypeUnsignedShort);
+        this.addParamType(ParamTypeInt8.NAME, ParamTypeInt8);
+        this.addParamType(ParamTypeInt16.NAME, ParamTypeInt16);
+        this.addParamType(ParamTypeInt32.NAME, ParamTypeInt32);
+        this.addParamType(ParamTypeUnsignedInt8.NAME, ParamTypeUnsignedInt8);
+        this.addParamType(ParamTypeUnsignedInt16.NAME, ParamTypeUnsignedInt16);
+        this.addParamType(ParamTypeUnsignedInt32.NAME, ParamTypeUnsignedInt32);
     }
 
     private write(buffer: string | number[] | Buffer): void {

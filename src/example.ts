@@ -1,11 +1,6 @@
 import 'source-map-support/register';
-import {ParamTypeLong} from "./lib/types/ParamTypeLong";
-import {ParamTypeUnsignedLong} from "./lib/types/ParamTypeUnsignedLong";
 import {SimpleSerialProtocol} from "./lib/SimpleSerialProtocol";
-import {ParamTypeInt} from "./lib/types/ParamTypeInt";
-import {ParamTypeUnsignedInt} from "./lib/types/ParamTypeUnsignedInt";
-import {ParamTypeShort} from "./lib/types/ParamTypeShort";
-import {ParamTypeUnsignedShort} from "./lib/types/ParamTypeUnsignedShort";
+import {ParamTypeInt8} from "./lib/types/ParamTypeInt8";
 import {ParamTypeFloat} from "./lib/types/ParamTypeFloat";
 import {ParamTypeCharArray} from "./lib/types/ParamTypeCharArray";
 import {ParamTypeChar} from "./lib/types/ParamTypeChar";
@@ -21,23 +16,23 @@ class Example {
         console.log("Starting ssp connection.");
         let ssp: SimpleSerialProtocol = new SimpleSerialProtocol(Example.PORTNAME, Example.BAUDRATE);
         ssp.registerCommand('a', this.onCommandA.bind(this));
-        ssp.registerCommand('b', this.onCommandInt.bind(this), [ParamTypeInt.NAME]);
-        ssp.registerCommand('c', this.onCommandUint.bind(this), [ParamTypeUnsignedInt.NAME]);
-        ssp.registerCommand('d', this.onCommandShort.bind(this), [ParamTypeShort.NAME]);
-        ssp.registerCommand('e', this.onCommandUshort.bind(this), [ParamTypeUnsignedShort.NAME]);
+        ssp.registerCommand('b', this.onCommandInt.bind(this), [ParamTypeInt8.NAME]);
+        // ssp.registerCommand('c', this.onCommandUint.bind(this), [ParamTypeUnsignedInt.NAME]);
+        // ssp.registerCommand('d', this.onCommandShort.bind(this), [ParamTypeShort.NAME]);
+        // ssp.registerCommand('e', this.onCommandUshort.bind(this), [ParamTypeUnsignedShort.NAME]);
         ssp.registerCommand('f', this.onCommandFloat.bind(this), [ParamTypeFloat.NAME]);
         ssp.registerCommand('s', this.onCommandCharArray.bind(this), [ParamTypeCharArray.NAME]);
         ssp.registerCommand('t', this.onCommandChar.bind(this), [ParamTypeChar.NAME]);
-        ssp.registerCommand('l', this.onCommandLong.bind(this), [ParamTypeLong.NAME]);
-        ssp.registerCommand('m', this.onCommandULong.bind(this), [ParamTypeUnsignedLong.NAME]);
-        ssp.registerCommand('x', this.onCommandMultiple.bind(this), [
-            ParamTypeInt.NAME,
-            ParamTypeCharArray.NAME,
-            ParamTypeShort.NAME,
-            ParamTypeChar.NAME,
-            ParamTypeLong.NAME,
-        ]);
-        ssp.registerCommand('z', this.onCommandDataResponse.bind(this), [ParamTypeLong.NAME]);
+        // ssp.registerCommand('l', this.onCommandLong.bind(this), [ParamTypeLong.NAME]);
+        // ssp.registerCommand('m', this.onCommandULong.bind(this), [ParamTypeUnsignedLong.NAME]);
+        // ssp.registerCommand('x', this.onCommandMultiple.bind(this), [
+        //     ParamTypeInt8.NAME,
+        //     ParamTypeCharArray.NAME,
+        //     // ParamTypeShort.NAME,
+        //     ParamTypeChar.NAME,
+        //     ParamTypeLong.NAME,
+        // ]);
+        // ssp.registerCommand('z', this.onCommandDataResponse.bind(this), [ParamTypeLong.NAME]);
 
         /**
          * Init
@@ -46,9 +41,9 @@ class Example {
             console.log("Connected.");
             // console.log('arduino is ready. now sending command "a"');
 
-            ssp.writeCommand('z', [
-                {type: ParamTypeLong.NAME, value: 123456789}
-            ]);
+            // ssp.writeCommand('z', [
+            //     {type: ParamTypeLong.NAME, value: 123456789}
+            // ]);
 
         }).catch((err) => {
             console.error('could not init', err);

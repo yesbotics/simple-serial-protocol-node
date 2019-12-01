@@ -16,6 +16,6 @@
     "typescript": "^3.7.2"
   },
   "dependencies": {
-    "@yesbotics/simple-serial-protocol-node": "^2.0.0"
+    "@yesbotics/simple-serial-protocol-node": "^2.1.0"
   }
 }
