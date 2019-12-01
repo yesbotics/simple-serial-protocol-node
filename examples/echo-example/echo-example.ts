@@ -17,7 +17,7 @@ import {
 } from '@yesbotics/simple-serial-protocol-node';
 
 // define serial port identifier and baudrate
-const portname: string = 'COM5';
+const portname: string = 'COM4';
 const bautrate: Baudrate = 9600;
 
 // create instance
@@ -25,34 +25,34 @@ const arduino: SimpleSerialProtocol = new SimpleSerialProtocol(portname, bautrat
 
 // define command id, callback function and expected dataytpes
 arduino.registerCommand('s', (
-    byte: number,
-    boolean: boolean,
-    int8: number,
-    uint8: number,
-    int16: number,
-    uint16: number,
-    int32: number,
-    uint32: number,
-    int64: bigint,
-    uint64: bigint,
-    float: number,
-    char: string,
-    charArray: string,
+    byteValue: number,
+    booleanValue: boolean,
+    int8Value: number,
+    uint8Value: number,
+    int16Value: number,
+    uint16Value: number,
+    int32Value: number,
+    uint32Value: number,
+    int64Value: bigint,
+    uint64Value: bigint,
+    floatValue: number,
+    charValue: string,
+    charArrayValue: string,
 ) => {
-    console.log('Received values from Arduino:',
-        byte,
-        boolean,
-        int8,
-        uint8,
-        int16,
-        uint16,
-        int32,
-        uint32,
-        int64,
-        uint64,
-        float,
-        char,
-        charArray,
+    console.log('Received several values from Arduino:',
+        byteValue,
+        booleanValue,
+        int8Value,
+        uint8Value,
+        int16Value,
+        uint16Value,
+        int32Value,
+        uint32Value,
+        int64Value,
+        uint64Value,
+        floatValue,
+        charValue,
+        charArrayValue,
     );
 }, [
     ParamTypeByte.NAME,
@@ -78,7 +78,7 @@ arduino.init(3000)
     })
     .then(() => {
         console.log('Arduino connected.');
-
+        console.log('Send several values to Arduino');
         arduino.writeCommand('r', [
             // in this example text should not be longer than 49 chars (max length is defined in Arduiono sketch)
             {type: ParamTypeByte.NAME, value: 0xff},
