@@ -37,6 +37,9 @@
     "author": "Albrecht Nitsche, Jens Kabisch",
     "license": "MIT",
     "homepage": "https://gitlab.com/yesbotics/simple-serial-protocol/simple-serial-protocol-node",
+    "engines": {
+        "node": ">=10.4.0"
+    },
     "dependencies": {
         "serialport": "^8.0.5"
     },

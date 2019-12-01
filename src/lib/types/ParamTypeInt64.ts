@@ -1,21 +1,43 @@
 import {ParamType} from "./ParamType";
-import {ParamTypeInt8} from "./ParamTypeInt8";
 
-export class ParamTypeInt32 extends ParamTypeInt8 implements ParamType<number> {
+export class ParamTypeInt64 implements ParamType<bigint> {
 
-    static NAME: string = "int32";
+    static NAME: string = "int64";
+
+    protected rawData: Buffer = Buffer.allocUnsafe(this.getLength());
+    protected index: number = 0;
 
     getLength(): number {
-        return 4;
+        return 8;
     }
 
-    getBuffer(data: number): Buffer {
+    getBuffer(data: bigint): Buffer {
         const buffer = Buffer.allocUnsafe(this.getLength());
-        buffer.writeInt32LE(data, 0);
+        buffer.writeBigInt64LE(data, 0);
         return buffer;
     }
 
-    getData(): number {
-        return this.rawData.readInt32LE(0);
+    reset() {
+        this.index = 0;
+    }
+
+    addByte(byte: number): void {
+        if (this.isFull()) {
+            return;
+        }
+        this.rawData[this.index] = byte;
+        this.index++;
+    }
+
+    isFull(): boolean {
+        return this.index >= this.getLength();
+    }
+
+    getData(): bigint {
+        return this.rawData.readBigInt64LE(0);
+    }
+
+    dispose(): void {
+        this.rawData = null;
     }
 }

@@ -6,12 +6,14 @@ import {
     ParamTypeByte,
     ParamTypeBoolean,
     ParamTypeChar,
+    ParamTypeInt8,
     ParamTypeInt16,
     ParamTypeInt32,
-    ParamTypeInt8,
+    ParamTypeInt64,
+    ParamTypeUnsignedInt8,
     ParamTypeUnsignedInt16,
     ParamTypeUnsignedInt32,
-    ParamTypeUnsignedInt8
+    ParamTypeUnsignedInt64
 } from '@yesbotics/simple-serial-protocol-node';
 
 // define serial port identifier and baudrate
@@ -31,6 +33,8 @@ arduino.registerCommand('s', (
     uint16: number,
     int32: number,
     uint32: number,
+    int64: bigint,
+    uint64: bigint,
     float: number,
     char: string,
     charArray: string,
@@ -44,6 +48,8 @@ arduino.registerCommand('s', (
         uint16,
         int32,
         uint32,
+        int64,
+        uint64,
         float,
         char,
         charArray,
@@ -57,6 +63,8 @@ arduino.registerCommand('s', (
     ParamTypeUnsignedInt16.NAME,
     ParamTypeInt32.NAME,
     ParamTypeUnsignedInt32.NAME,
+    ParamTypeInt64.NAME,
+    ParamTypeUnsignedInt64.NAME,
     ParamTypeFloat.NAME,
     ParamTypeChar.NAME,
     ParamTypeCharArray.NAME,
@@ -81,6 +89,8 @@ arduino.init(3000)
             {type: ParamTypeUnsignedInt16.NAME, value: 65523},
             {type: ParamTypeInt32.NAME, value: -2147483648},
             {type: ParamTypeUnsignedInt32.NAME, value: 4294967295},
+            {type: ParamTypeInt64.NAME, value: BigInt(-2147483648000)},
+            {type: ParamTypeUnsignedInt64.NAME, value: BigInt(4294967295000)},
             {type: ParamTypeFloat.NAME, value: -3.12345},
             {type: ParamTypeChar.NAME, value: 'J'},
             {type: ParamTypeCharArray.NAME, value: "Hey, I'm a täxt!"},

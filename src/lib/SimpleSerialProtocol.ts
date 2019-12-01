@@ -17,6 +17,8 @@ import {ParamTypeUnsignedInt8} from "./types/ParamTypeUnsignedInt8";
 import {ParamTypeUnsignedInt16} from "./types/ParamTypeUnsignedInt16";
 import {ParamTypeUnsignedInt32} from "./types/ParamTypeUnsignedInt32";
 import {ParamTypeByte} from "./types/ParamTypeByte";
+import {ParamTypeUnsignedInt64} from "./types/ParamTypeUnsignedInt64";
+import {ParamTypeInt64} from "./types/ParamTypeInt64";
 
 export class SimpleSerialProtocol {
 
@@ -169,9 +171,11 @@ export class SimpleSerialProtocol {
         this.addParamType(ParamTypeInt8.NAME, ParamTypeInt8);
         this.addParamType(ParamTypeInt16.NAME, ParamTypeInt16);
         this.addParamType(ParamTypeInt32.NAME, ParamTypeInt32);
+        this.addParamType(ParamTypeInt64.NAME, ParamTypeInt64);
         this.addParamType(ParamTypeUnsignedInt8.NAME, ParamTypeUnsignedInt8);
         this.addParamType(ParamTypeUnsignedInt16.NAME, ParamTypeUnsignedInt16);
         this.addParamType(ParamTypeUnsignedInt32.NAME, ParamTypeUnsignedInt32);
+        this.addParamType(ParamTypeUnsignedInt64.NAME, ParamTypeUnsignedInt64);
     }
 
     private write(buffer: string | number[] | Buffer): void {
