@@ -6,13 +6,14 @@
   "scripts": {
     "clean": "rimraf ./dist",
     "compile": "tsc",
-    "run-example": "node ./dist/echo-example.js",
+    "run-example": "node --inspect=localhost:3000 ./dist/echo-example.js",
     "start": "npm run clean && npm run compile && npm run run-example"
   },
   "author": "Albrecht Nitsche, Jens Kabisch",
   "license": "MIT",
   "devDependencies": {
     "rimraf": "^3.0.0",
+    "source-map-support": "^0.5.16",
     "typescript": "^3.7.2"
   },
   "dependencies": {
