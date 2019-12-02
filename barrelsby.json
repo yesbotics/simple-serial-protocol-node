@@ -1,14 +1,16 @@
 {
+    "name": "generated-barrels.ts",
     "directory": "src",
     "delete": true,
-        "structure": "flat",
+    "structure": "flat",
     "include": [
         ".ts$"
     ],
     "exclude": [
-        "node_modules",
-        "tests",
-        "example.ts"
+        "generated-barrels.ts",
+        "index.ts",
+        "example.ts",
+        "tests"
     ],
     "exportDefault": true
 }
