@@ -19,6 +19,7 @@ import {ParamTypeUnsignedInt32} from "./types/ParamTypeUnsignedInt32";
 import {ParamTypeByte} from "./types/ParamTypeByte";
 import {ParamTypeUnsignedInt64} from "./types/ParamTypeUnsignedInt64";
 import {ParamTypeInt64} from "./types/ParamTypeInt64";
+import {Command} from "./Command";
 
 export class SimpleSerialProtocol {
 
@@ -117,6 +118,10 @@ export class SimpleSerialProtocol {
             command.dispose();
             this.registeredCommands.delete(commandName);
         }
+    }
+
+    writeCommand2(command: Command): void {
+
     }
 
     writeCommand(command: string, params: CommandData[] = null): void {

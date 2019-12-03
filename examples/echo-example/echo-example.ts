@@ -81,6 +81,9 @@ arduino.init(3000)
     .then(() => {
         console.log('Arduino connected.');
         console.log('Send several values to Arduino');
+
+        arduino.writ
+
         arduino.writeCommand('r', [
             // in this example text should not be longer than 49 chars (max length is defined in Arduiono sketch)
             {type: ParamTypeByte.NAME, value: 0xff},
