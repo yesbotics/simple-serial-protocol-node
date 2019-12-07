@@ -5,6 +5,7 @@ import {ParamTypeFloat} from "./lib/types/ParamTypeFloat";
 import {ParamTypeCharArray} from "./lib/types/ParamTypeCharArray";
 import {ParamTypeChar} from "./lib/types/ParamTypeChar";
 import {Baudrate} from "./lib/Baudrate";
+import {Command} from "./lib/Command";
 
 class Example {
 
@@ -41,6 +42,9 @@ class Example {
             console.log("Connected.");
             // console.log('arduino is ready. now sending command "a"');
 
+            const command: Command = new Command('z');
+            command.addInt32Value(123456789);
+            ssp.writeCommand(command);
             // ssp.writeCommand('z', [
             //     {type: ParamTypeLong.NAME, value: 123456789}
             // ]);

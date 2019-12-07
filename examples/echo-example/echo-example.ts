@@ -1,6 +1,7 @@
 import 'source-map-support/register';
 
 import {
+    Command,
     SimpleSerialProtocol,
     ParamTypeCharArray,
     ParamTypeFloat,
@@ -82,22 +83,37 @@ arduino.init(3000)
         console.log('Arduino connected.');
         console.log('Send several values to Arduino');
 
-        arduino.writ
+        const command: Command = new Command('r');
+        command.addByteValue(0xff)
+            .addBooleanValue(true)
+            .addInt8Value(-128)
+            .addUint8Value(255)
+            .addInt16Value(-32768)
+            .addUint16Value(65523)
+            .addInt32Value(-2147483648)
+            .addUint32Value(4294967295)
+            .addInt64Value(BigInt(-2147483648000))
+            .addUint64Value(BigInt(4294967295000))
+            .addFloatValue(-3.12345)
+            .addCharValue('J')
+            .addCharArrayValue("Hey, I'm a täxt!");
 
-        arduino.writeCommand('r', [
-            // in this example text should not be longer than 49 chars (max length is defined in Arduiono sketch)
-            {type: ParamTypeByte.NAME, value: 0xff},
-            {type: ParamTypeBoolean.NAME, value: true},
-            {type: ParamTypeInt8.NAME, value: -128},
-            {type: ParamTypeUnsignedInt8.NAME, value: 255},
-            {type: ParamTypeInt16.NAME, value: -32768},
-            {type: ParamTypeUnsignedInt16.NAME, value: 65523},
-            {type: ParamTypeInt32.NAME, value: -2147483648},
-            {type: ParamTypeUnsignedInt32.NAME, value: 4294967295},
-            {type: ParamTypeInt64.NAME, value: BigInt(-2147483648000)},
-            {type: ParamTypeUnsignedInt64.NAME, value: BigInt(4294967295000)},
-            {type: ParamTypeFloat.NAME, value: -3.12345},
-            {type: ParamTypeChar.NAME, value: 'J'},
-            {type: ParamTypeCharArray.NAME, value: "Hey, I'm a täxt!"},
-        ]);
+        arduino.writeCommand(command);
+
+        // arduino.writeCommand('r', [
+        //     // in this example text should not be longer than 49 chars (max length is defined in Arduiono sketch)
+        //     {type: ParamTypeByte.NAME, value: 0xff},
+        //     {type: ParamTypeBoolean.NAME, value: true},
+        //     {type: ParamTypeInt8.NAME, value: -128},
+        //     {type: ParamTypeUnsignedInt8.NAME, value: 255},
+        //     {type: ParamTypeInt16.NAME, value: -32768},
+        //     {type: ParamTypeUnsignedInt16.NAME, value: 65523},
+        //     {type: ParamTypeInt32.NAME, value: -2147483648},
+        //     {type: ParamTypeUnsignedInt32.NAME, value: 4294967295},
+        //     {type: ParamTypeInt64.NAME, value: BigInt(-2147483648000)},
+        //     {type: ParamTypeUnsignedInt64.NAME, value: BigInt(4294967295000)},
+        //     {type: ParamTypeFloat.NAME, value: -3.12345},
+        //     {type: ParamTypeChar.NAME, value: 'J'},
+        //     {type: ParamTypeCharArray.NAME, value: "Hey, I'm a täxt!"},
+        // ]);
     });
