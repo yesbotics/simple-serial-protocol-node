@@ -1,0 +1,13 @@
+{
+    "verbose": true,
+    "ignore": [
+        "src/index.ts"
+    ],
+    "watch": [
+        "src/"
+    ],
+    "events": {
+        "restart": "npm run build"
+    },
+    "ext": "ts"
+}

@@ -100,21 +100,4 @@ arduino.init(3000)
             .addCharArrayValue("Hey, I'm a täxt!");
 
         arduino.writeCommand(command);
-
-        // arduino.writeCommand('r', [
-        //     // in this example text should not be longer than 49 chars (max length is defined in Arduiono sketch)
-        //     {type: ParamTypeByte.NAME, value: 0xff},
-        //     {type: ParamTypeBoolean.NAME, value: true},
-        //     {type: ParamTypeInt8.NAME, value: -128},
-        //     {type: ParamTypeUnsignedInt8.NAME, value: 255},
-        //     {type: ParamTypeInt16.NAME, value: -32768},
-        //     {type: ParamTypeUnsignedInt16.NAME, value: 65523},
-        //     {type: ParamTypeInt32.NAME, value: -2147483648},
-        //     {type: ParamTypeUnsignedInt32.NAME, value: 4294967295},
-        //     {type: ParamTypeInt64.NAME, value: BigInt(-2147483648000)},
-        //     {type: ParamTypeUnsignedInt64.NAME, value: BigInt(4294967295000)},
-        //     {type: ParamTypeFloat.NAME, value: -3.12345},
-        //     {type: ParamTypeChar.NAME, value: 'J'},
-        //     {type: ParamTypeCharArray.NAME, value: "Hey, I'm a täxt!"},
-        // ]);
     });

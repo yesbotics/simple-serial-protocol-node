@@ -19,7 +19,7 @@
         "list-serial-ports:linux": "dmesg | grep tty",
         "prepublish": "npm run build && npm run test",
         "build": "npm run clean && npm run generate-barrels && tsc",
-        "build:w": "npm run clean && tsc -w --inlineSourceMap",
+        "build:w": "npm run build && nodemon",
         "generate-barrels": "barrelsby --config barrelsby.json"
     },
     "repository": {
@@ -48,7 +48,7 @@
         "@types/serialport": "^7.0.4",
         "barrelsby": "^2.2.0",
         "jest": "^24.9.0",
-        "nodemon": "^1.19.4",
+        "nodemon": "^2.0.1",
         "rimraf": "^3.0.0",
         "source-map-support": "^0.5.16",
         "ts-jest": "^24.1.0",

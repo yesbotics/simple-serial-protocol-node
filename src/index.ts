@@ -3,7 +3,8 @@
  */
 
 export * from "./lib/Baudrate";
-export * from "./lib/CommandData";
+export * from "./lib/Command";
+export * from "./lib/CommandParam";
 export * from "./lib/ParamsParser";
 export * from "./lib/RegisteredCommand";
 export * from "./lib/SimpleSerialProtocol";
