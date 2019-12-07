@@ -7,6 +7,10 @@ export class ParamTypeBoolean implements ParamType<boolean> {
     protected rawData = Buffer.allocUnsafe(1);
     protected index: number;
 
+    getLength(): number {
+        return 1;
+    }
+
     getBuffer(data: boolean): Buffer {
         const buffer = Buffer.allocUnsafe(1);
         buffer.writeIntLE(data ? 1 : 0, 0, 1);
@@ -36,4 +40,5 @@ export class ParamTypeBoolean implements ParamType<boolean> {
     dispose(): void {
         this.rawData = null;
     }
+
 }

@@ -7,6 +7,10 @@ export class ParamTypeChar implements ParamType<string> {
     private rawData: string = "";
     private full: boolean = false;
 
+    getLength(): number {
+        return 1;
+    }
+
     getBuffer(data: string): Buffer {
         return Buffer.from(data, 'ascii');
     }

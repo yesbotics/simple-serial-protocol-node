@@ -9,8 +9,12 @@ export class ParamTypeCharArray implements ParamType<string> {
     private rawData: string = "";
     private full: boolean = false;
 
+    getLength(): number {
+        return this.rawData.length;
+    }
+
     getBuffer(data: string): Buffer {
-        //expand length for last signt
+        // expand length for end-of-string char
         data += '#';
         const buffer: Buffer = Buffer.from(data, 'ascii');
         buffer[data.length - 1] = ParamTypeCharArray.CHAR_NULL;

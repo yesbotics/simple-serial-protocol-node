@@ -1,6 +1,6 @@
 import {BaseBinding} from "serialport";
 import {SimpleSerialProtocol} from "../SimpleSerialProtocol";
-import {ParamTypeInt} from "../types/ParamTypeInt";
+import {ParamTypeInt8} from "../types/ParamTypeInt8";
 
 const SerialPort = require('@serialport/stream');
 const MockBinding = require('@serialport/binding-mock');
@@ -32,7 +32,7 @@ describe("Reading data", () => {
     it("registerCommand", async () => {
         // expect.assertions(1);
         ssp.registerCommand('a', (val: number) => {
-        }, [ParamTypeInt.NAME]);
+        }, [ParamTypeInt8.NAME]);
         // expect(ssp.isOpen()).toBeTruthy();
 
     });
