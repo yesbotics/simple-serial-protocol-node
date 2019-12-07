@@ -3,7 +3,7 @@ import 'source-map-support/register';
 import {
     Command,
     SimpleSerialProtocol,
-    ParamTypeCharArray,
+    ParamTypeString,
     ParamTypeFloat,
     Baudrate,
     ParamTypeByte,
@@ -40,7 +40,8 @@ arduino.registerCommand('s', (
     uint64Value: bigint,
     floatValue: number,
     charValue: string,
-    charArrayValue: string,
+    stringValue0: string,
+    stringValue1: string,
 ) => {
     console.log('Received several values from Arduino:',
         byteValue,
@@ -55,7 +56,8 @@ arduino.registerCommand('s', (
         uint64Value,
         floatValue,
         charValue,
-        charArrayValue,
+        stringValue0,
+        stringValue1,
     );
 }, [
     ParamTypeByte.NAME,
@@ -70,12 +72,13 @@ arduino.registerCommand('s', (
     ParamTypeUnsignedInt64.NAME,
     ParamTypeFloat.NAME,
     ParamTypeChar.NAME,
-    ParamTypeCharArray.NAME,
+    ParamTypeString.NAME,
+    ParamTypeString.NAME,
 ]);
 
-// establish connection to arduino and wait 3 seconds
+// establish connection to arduino and wait 2 seconds
 // give arduino time to start after getting connected (and resetted too)
-arduino.init(3000)
+arduino.init(2000)
     .catch((err) => {
         console.error('Could not init connection. reason:', err);
     })
@@ -93,11 +96,12 @@ arduino.init(3000)
             .addUint16Value(65523)
             .addInt32Value(-2147483648)
             .addUint32Value(4294967295)
-            .addInt64Value(BigInt(-2147483648000))
-            .addUint64Value(BigInt(4294967295000))
+            .addInt64Value(BigInt(-2147483648000999))
+            .addUint64Value(BigInt(4294967295000999))
             .addFloatValue(-3.12345)
             .addCharValue('J')
-            .addCharArrayValue("Hey, I'm a täxt!");
+            .addStringValue("Hey, I'm text one!")
+            .addStringValue("And I am his brother text two!");
 
         arduino.writeCommand(command);
     });

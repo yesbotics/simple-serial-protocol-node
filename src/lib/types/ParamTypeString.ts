@@ -1,8 +1,8 @@
 import {ParamType} from "./ParamType";
 
-export class ParamTypeCharArray implements ParamType<string> {
+export class ParamTypeString implements ParamType<string> {
 
-    static readonly NAME: string = "char_array";
+    static readonly NAME: string = "string";
 
     private static readonly CHAR_NULL: number = 0x00; // 0x00 // End of String
 
@@ -17,7 +17,7 @@ export class ParamTypeCharArray implements ParamType<string> {
         // expand length for end-of-string char
         data += '#';
         const buffer: Buffer = Buffer.from(data, 'ascii');
-        buffer[data.length - 1] = ParamTypeCharArray.CHAR_NULL;
+        buffer[data.length - 1] = ParamTypeString.CHAR_NULL;
         return buffer;
     }
 
@@ -30,7 +30,7 @@ export class ParamTypeCharArray implements ParamType<string> {
         if (this.isFull()) {
             throw new Error("Added byte to already filled  param var.");
         }
-        if (byte === ParamTypeCharArray.CHAR_NULL) {
+        if (byte === ParamTypeString.CHAR_NULL) {
             this.full = true;
             return;
         }

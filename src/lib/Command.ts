@@ -12,7 +12,7 @@ import {ParamTypeUnsignedInt32} from "./types/ParamTypeUnsignedInt32";
 import {ParamTypeInt64} from "./types/ParamTypeInt64";
 import {ParamTypeUnsignedInt64} from "./types/ParamTypeUnsignedInt64";
 import {ParamTypeFloat} from "./types/ParamTypeFloat";
-import {ParamTypeCharArray} from "./types/ParamTypeCharArray";
+import {ParamTypeString} from "./types/ParamTypeString";
 
 export class Command {
     private readonly commandId: string;
@@ -129,10 +129,10 @@ export class Command {
         return this;
     }
 
-    public addCharArrayValue(charArrayValue: string): Command {
+    public addStringValue(stringValue: string): Command {
         this.commandParams.push({
-            type: ParamTypeCharArray.NAME,
-            value: charArrayValue
+            type: ParamTypeString.NAME,
+            value: stringValue
         });
         return this;
     }

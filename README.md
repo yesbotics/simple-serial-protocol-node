@@ -9,7 +9,7 @@ This package is distributed as [simple-serial-protocol-node npm package].
 `npm install --save @yesbotics/simple-serial-protocol-node`
 
 ## Requirements
-* Node.js >= 10.4.0 
+* Node.js >= 12.0.0 
  
 ## Usage example (echo-example written in TypeScript)
 This example sends two values to Arduino and get same values immediately sent back from Arduino.
@@ -19,9 +19,12 @@ This example can be found as npm application in the `simple-serial-protocol-node
 It corresponds with the Arduino sketch at [Simple Serial Protocol for Arduino].
 
 ```typescript
+import 'source-map-support/register';
+
 import {
+    Command,
     SimpleSerialProtocol,
-    ParamTypeCharArray,
+    ParamTypeString,
     ParamTypeFloat,
     Baudrate,
     ParamTypeByte,
@@ -39,41 +42,43 @@ import {
 
 // define serial port identifier and baudrate
 const portname: string = 'COM5';
-const bautrate: Baudrate = 9600;
+const baudrate: Baudrate = 9600;
 
 // create instance
-const arduino: SimpleSerialProtocol = new SimpleSerialProtocol(portname, bautrate);
+const arduino: SimpleSerialProtocol = new SimpleSerialProtocol(portname, baudrate);
 
 // define command id, callback function and expected dataytpes
 arduino.registerCommand('s', (
-    byte: number,
-    boolean: boolean,
-    int8: number,
-    uint8: number,
-    int16: number,
-    uint16: number,
-    int32: number,
-    uint32: number,
-    int64: bigint,
-    uint64: bigint,
-    float: number,
-    char: string,
-    charArray: string,
+    byteValue: number,
+    booleanValue: boolean,
+    int8Value: number,
+    uint8Value: number,
+    int16Value: number,
+    uint16Value: number,
+    int32Value: number,
+    uint32Value: number,
+    int64Value: bigint,
+    uint64Value: bigint,
+    floatValue: number,
+    charValue: string,
+    stringValue0: string,
+    stringValue1: string,
 ) => {
-    console.log('Received values from Arduino:',
-        byte,
-        boolean,
-        int8,
-        uint8,
-        int16,
-        uint16,
-        int32,
-        uint32,
-        int64,
-        uint64,
-        float,
-        char,
-        charArray,
+    console.log('Received several values from Arduino:',
+        byteValue,
+        booleanValue,
+        int8Value,
+        uint8Value,
+        int16Value,
+        uint16Value,
+        int32Value,
+        uint32Value,
+        int64Value,
+        uint64Value,
+        floatValue,
+        charValue,
+        stringValue0,
+        stringValue1,
     );
 }, [
     ParamTypeByte.NAME,
@@ -88,34 +93,38 @@ arduino.registerCommand('s', (
     ParamTypeUnsignedInt64.NAME,
     ParamTypeFloat.NAME,
     ParamTypeChar.NAME,
-    ParamTypeCharArray.NAME,
+    ParamTypeString.NAME,
+    ParamTypeString.NAME,
 ]);
 
-// establish connection to arduino and wait 3 seconds
+// establish connection to arduino and wait 2 seconds
 // give arduino time to start after getting connected (and resetted too)
-arduino.init(3000)
+arduino.init(2000)
     .catch((err) => {
         console.error('Could not init connection. reason:', err);
     })
     .then(() => {
         console.log('Arduino connected.');
+        console.log('Send several values to Arduino');
 
-        arduino.writeCommand('r', [
-            // in this example text should not be longer than 49 chars (max length is defined in Arduiono sketch)
-            {type: ParamTypeByte.NAME, value: 0xff},
-            {type: ParamTypeBoolean.NAME, value: true},
-            {type: ParamTypeInt8.NAME, value: -128},
-            {type: ParamTypeUnsignedInt8.NAME, value: 255},
-            {type: ParamTypeInt16.NAME, value: -32768},
-            {type: ParamTypeUnsignedInt16.NAME, value: 65523},
-            {type: ParamTypeInt32.NAME, value: -2147483648},
-            {type: ParamTypeUnsignedInt32.NAME, value: 4294967295},
-            {type: ParamTypeInt64.NAME, value: BigInt(-2147483648000)},
-            {type: ParamTypeUnsignedInt64.NAME, value: BigInt(4294967295000)},
-            {type: ParamTypeFloat.NAME, value: -3.12345},
-            {type: ParamTypeChar.NAME, value: 'J'},
-            {type: ParamTypeCharArray.NAME, value: "Hey, I'm a täxt!"},
-        ]);
+        const command: Command = new Command('r');
+        command
+            .addByteValue(0xff)
+            .addBooleanValue(true)
+            .addInt8Value(-128)
+            .addUint8Value(255)
+            .addInt16Value(-32768)
+            .addUint16Value(65523)
+            .addInt32Value(-2147483648)
+            .addUint32Value(4294967295)
+            .addInt64Value(BigInt(-2147483648000999))
+            .addUint64Value(BigInt(4294967295000999))
+            .addFloatValue(-3.12345)
+            .addCharValue('J')
+            .addStringValue("Hey, I'm text one!")
+            .addStringValue("And I am his brother text two!");
+
+        arduino.writeCommand(command);
     });
 ```
 

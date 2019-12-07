@@ -4,7 +4,7 @@ import {RegisteredCommand} from "./RegisteredCommand";
 import {SimpleSerialProtocolError} from "./SimpleSerialProtocolError";
 import {ParamsParser} from "./ParamsParser";
 import {ParamTypeChar} from "./types/ParamTypeChar";
-import {ParamTypeCharArray} from "./types/ParamTypeCharArray";
+import {ParamTypeString} from "./types/ParamTypeString";
 import {ParamTypeFloat} from "./types/ParamTypeFloat";
 import {ParamType} from "./types/ParamType";
 import {Baudrate} from "./Baudrate";
@@ -120,6 +120,9 @@ export class SimpleSerialProtocol {
         }
     }
 
+    /**
+     * Pseudooverloading
+     */
     writeCommand(command: Command): void;
     writeCommand(commandId: string): void;
     writeCommand(commandId: string, params: CommandParam[]): void;
@@ -179,7 +182,7 @@ export class SimpleSerialProtocol {
         this.addParamType(ParamTypeByte.NAME, ParamTypeByte);
         this.addParamType(ParamTypeBoolean.NAME, ParamTypeBoolean);
         this.addParamType(ParamTypeChar.NAME, ParamTypeChar);
-        this.addParamType(ParamTypeCharArray.NAME, ParamTypeCharArray);
+        this.addParamType(ParamTypeString.NAME, ParamTypeString);
         this.addParamType(ParamTypeFloat.NAME, ParamTypeFloat);
         this.addParamType(ParamTypeInt8.NAME, ParamTypeInt8);
         this.addParamType(ParamTypeInt16.NAME, ParamTypeInt16);
