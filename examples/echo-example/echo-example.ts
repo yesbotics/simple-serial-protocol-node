@@ -19,11 +19,11 @@ import {
 } from '@yesbotics/simple-serial-protocol-node';
 
 // define serial port identifier and baudrate
-const portname: string = 'COM4';
-const bautrate: Baudrate = 9600;
+const portname: string = 'COM5';
+const baudrate: Baudrate = 9600;
 
 // create instance
-const arduino: SimpleSerialProtocol = new SimpleSerialProtocol(portname, bautrate);
+const arduino: SimpleSerialProtocol = new SimpleSerialProtocol(portname, baudrate);
 
 // define command id, callback function and expected dataytpes
 arduino.registerCommand('s', (
