@@ -5,11 +5,13 @@ This package covers the Node.js implementation of [Simple Serial Protocol].
 ## NPM registry
 This package is distributed as [simple-serial-protocol-node npm package].
 
-## Install
-    npm install --save @yesbotics/simple-serial-protocol-node`
-
 ## Requirements
 * Node.js >= 12.0.0 
+### Typescript
+* add `esnext` to your tsconfig lib section
+
+## Install
+    npm install --save @yesbotics/simple-serial-protocol-node`
  
 ## Usage example (echo-example written in TypeScript)
 This example sends values of each supported datatype and listen for them sent back. 
