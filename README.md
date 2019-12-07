@@ -6,7 +6,7 @@ This package covers the Node.js implementation of [Simple Serial Protocol].
 This package is distributed as [simple-serial-protocol-node npm package].
 
 ## Install
-`npm install --save @yesbotics/simple-serial-protocol-node`
+    npm install --save @yesbotics/simple-serial-protocol-node`
 
 ## Requirements
 * Node.js >= 12.0.0 
