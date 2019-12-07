@@ -1,5 +1,5 @@
 {
-    "name": "generated-barrels.ts",
+    "name": "index.ts",
     "directory": "src",
     "delete": true,
     "structure": "flat",
@@ -7,7 +7,6 @@
         ".ts$"
     ],
     "exclude": [
-        "generated-barrels.ts",
         "index.ts",
         "example.ts",
         "tests"
