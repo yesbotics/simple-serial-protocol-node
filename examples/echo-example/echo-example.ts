@@ -96,9 +96,12 @@ arduino.init(2000)
             .addUint16Value(65523)
             .addInt32Value(-2147483648)
             .addUint32Value(4294967295)
-            .addInt64Value(BigInt(-2147483648000999))
-            .addUint64Value(BigInt(4294967295000999))
-            .addFloatValue(-3.12345)
+
+            // For BigInt Support add `esnext` to your tsconfig lib section
+            .addInt64Value(BigInt(-21474836480009990190111111143242323411))
+            .addUint64Value(BigInt(72949672950009995436784232138773276543))
+
+            .addFloatValue(-1.23456789101112)
             .addCharValue('J')
             .addStringValue("Hey, I'm text one!")
             .addStringValue("And I am his brother text two!");
