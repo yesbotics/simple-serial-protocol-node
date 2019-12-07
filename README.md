@@ -12,9 +12,7 @@ This package is distributed as [simple-serial-protocol-node npm package].
 * Node.js >= 12.0.0 
  
 ## Usage example (echo-example written in TypeScript)
-This example sends two values to Arduino and get same values immediately sent back from Arduino.
-The first value is an text of maximum 49 chars length (in this example only - more is possible).
-The second value is an floating point value.
+This example sends values of each supported datatype and listen for them sent back. 
 This example can be found as npm application in the `simple-serial-protocol-node/examples/echo-example` folder.
 It corresponds with the Arduino sketch at [Simple Serial Protocol for Arduino].
 
