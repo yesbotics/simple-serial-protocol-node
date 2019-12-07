@@ -14,7 +14,7 @@
         "prepublish": "npm run build",
         "build": "npm run clean && npm run generate-barrels && tsc",
         "build:w": "npm run clean && tsc -w --inlineSourceMap",
-        "generate-barrels": "npm run && barrelsby --config barrelsby.json"
+        "generate-barrels": "barrelsby --config barrelsby.json"
     },
     "repository": {
         "type": "git",

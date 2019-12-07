@@ -16,7 +16,7 @@ import {ParamTypeCharArray} from "./types/ParamTypeCharArray";
 
 export class Command {
     private readonly commandId: string;
-    private commandParams: CommandParam[];
+    private commandParams: CommandParam[] = [];
 
     public constructor(commandId: string) {
         if (commandId.length !== 1) {

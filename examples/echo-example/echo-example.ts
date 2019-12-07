@@ -20,11 +20,11 @@ import {
 } from '@yesbotics/simple-serial-protocol-node';
 
 // define serial port identifier and baudrate
-const portname: string = 'COM4';
-const bautrate: Baudrate = 9600;
+const portname: string = 'COM5';
+const baudrate: Baudrate = 9600;
 
 // create instance
-const arduino: SimpleSerialProtocol = new SimpleSerialProtocol(portname, bautrate);
+const arduino: SimpleSerialProtocol = new SimpleSerialProtocol(portname, baudrate);
 
 // define command id, callback function and expected dataytpes
 arduino.registerCommand('s', (
@@ -84,7 +84,8 @@ arduino.init(3000)
         console.log('Send several values to Arduino');
 
         const command: Command = new Command('r');
-        command.addByteValue(0xff)
+        command
+            .addByteValue(0xff)
             .addBooleanValue(true)
             .addInt8Value(-128)
             .addUint8Value(255)

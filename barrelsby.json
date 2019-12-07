@@ -11,6 +11,5 @@
         "index.ts",
         "example.ts",
         "tests"
-    ],
-    "exportDefault": true
+    ]
 }
