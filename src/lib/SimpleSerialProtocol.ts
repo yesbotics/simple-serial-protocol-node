@@ -8,7 +8,7 @@ import {ParamTypeCharArray} from "./types/ParamTypeCharArray";
 import {ParamTypeFloat} from "./types/ParamTypeFloat";
 import {ParamType} from "./types/ParamType";
 import {Baudrate} from "./Baudrate";
-import {CommandData} from "./CommandData";
+import {CommandParam} from "./CommandParam";
 import {ParamTypeBoolean} from "./types/ParamTypeBoolean";
 import {ParamTypeInt8} from "./types/ParamTypeInt8";
 import {ParamTypeInt16} from "./types/ParamTypeInt16";
@@ -120,11 +120,19 @@ export class SimpleSerialProtocol {
         }
     }
 
-    writeCommand2(command: Command): void {
+    writeCommand(command: Command): void;
+    writeCommand(commandId: string): void;
+    writeCommand(commandId: string, params: CommandParam[]): void;
 
-    }
+    writeCommand(commandIdOrCommand: string | Command, params: CommandParam[] = null): void {
+        let command = '';
+        if (commandIdOrCommand instanceof Command) {
+            command = commandIdOrCommand.getCommandId();
+            params = commandIdOrCommand.getCommandParams();
+        } else {
+            command = commandIdOrCommand;
+        }
 
-    writeCommand(command: string, params: CommandData[] = null): void {
         if (command.length !== 1) {
             throw new SimpleSerialProtocolError(SimpleSerialProtocolError.ERROR_WRONG_COMMAND_NAME_LENGTH);
         }
