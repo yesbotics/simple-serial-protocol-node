@@ -128,13 +128,6 @@ arduino.init(2000)
     });
 ```
 
-## More Arduino examples
-
-You can find more arduino examples in the `simple-serial-protocol-node/arduino/` folder. All arduino examples can be built
-with the [Arduino IDE] or [Arduino-CLI]. These examples correspond to the `simple-serial-protocol-node/src/example.ts`.
-
-You need the Arduino library [IntervalCallback] to build the examples.
-
 ## Links
 [Simple Serial Protocol]:https://gitlab.com/yesbotics/simple-serial-protocol/simple-serial-protocol-docs
 [simple-serial-protocol-node npm package]:https://www.npmjs.com/package/@yesbotics/simple-serial-protocol-node
