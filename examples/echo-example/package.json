@@ -6,8 +6,10 @@
   "scripts": {
     "clean": "rimraf ./dist",
     "compile": "tsc",
-    "run-example": "node --inspect=localhost:3000 ./dist/echo-example.js",
-    "start": "npm run clean && npm run compile && npm run run-example"
+    "run-app": "node ./dist/echo-example.js",
+    "run-app:dev": "node --inspect=localhost:3000 --require source-map-support/register ./dist/echo-example.js",
+    "start": "npm run clean && npm run compile && npm run run-app",
+    "start:dev": "npm run clean && npm run compile && npm run run-app:dev"
   },
   "author": "Albrecht Nitsche, Jens Kabisch",
   "license": "MIT",

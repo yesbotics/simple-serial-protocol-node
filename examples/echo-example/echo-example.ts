@@ -1,5 +1,4 @@
-// yo
-import 'source-map-support/register';
+// yo,
 
 import {
     Command,
