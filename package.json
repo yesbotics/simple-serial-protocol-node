@@ -1,69 +1,72 @@
 {
-  "name": "@yesbotics/simple-serial-protocol-node",
-  "version": "2.2.0",
-  "description": "General Purpose Library for the communication between Node.js applications and Arduino devices. Powered by the usage of resource-efficient and microcontroller-friendly Primitive Dataypes.",
-  "author": "Albrecht Nitsche, Jens Kabisch",
-  "license": "MIT",
-  "homepage": "https://gitlab.com/yesbotics/simple-serial-protocol/simple-serial-protocol-node",
-  "engines": {
-    "node": ">=12.0.0"
-  },
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "scripts": {
-    "test": "jest",
-    "test:w": "jest --watchAll --runInBand --silent=false --verbose",
-    "clean": "rimraf ./dist",
-    "list-serial-ports:linux": "dmesg | grep tty",
-    "prepublish": "npm run build && npm run test",
-    "build": "npm run clean && npm run generate-barrels && tsc",
-    "build:w": "npm run build && nodemon --config nodemon.js",
-    "generate-barrels": "barrelsby --config barrelsby.json"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@gitlab.com:yesbotics/simple-serial-protocol/simple-serial-protocol-node.git"
-  },
-  "bugs": {
-    "url": "https://gitlab.com/yesbotics/simple-serial-protocol/simple-serial-protocol-node/issues"
-  },
-  "keywords": [
-    "node",
-    "node.js",
-    "arduino",
-    "microcontroller",
-    "serial",
-    "protocol",
-    "c/c++",
-    "c/cpp",
-    "iot"
-  ],
-  "dependencies": {
-    "serialport": "^8.0.5"
-  },
-  "devDependencies": {
-    "@types/jest": "^24.0.22",
-    "@types/serialport": "^7.0.4",
-    "barrelsby": "^2.2.0",
-    "jest": "^24.9.0",
-    "nodemon": "^2.0.1",
-    "rimraf": "^3.0.0",
-    "source-map-support": "^0.5.16",
-    "ts-jest": "^24.1.0",
-    "tslint": "^5.20.1",
-    "typescript": "^3.7.2"
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
+    "name": "@yesbotics/simple-serial-protocol-node",
+    "version": "2.2.0",
+    "description": "General Purpose Library for the communication between Node.js applications and Arduino devices. Powered by the usage of resource-efficient and microcontroller-friendly Primitive Dataypes.",
+    "author": "Albrecht Nitsche, Jens Kabisch",
+    "license": "MIT",
+    "homepage": "https://gitlab.com/yesbotics/simple-serial-protocol/simple-serial-protocol-node",
+    "engines": {
+        "node": ">=12.0.0"
     },
-    "moduleFileExtensions": [
-      "ts",
-      "js"
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "scripts": {
+        "test": "jest",
+        "test:w": "jest --watchAll --runInBand --silent=false --verbose",
+        "clean": "rimraf ./dist",
+        "list-serial-ports:linux": "dmesg | grep tty",
+        "prepublish": "npm run build && npm run test && npm run update-readme",
+        "build": "npm run clean && npm run generate-barrels && tsc",
+        "build:w": "npm run build && nodemon --config nodemon.json",
+        "watch-echo-example": "nodemon --config nodemon.echoExample.json npm",
+        "generate-barrels": "barrelsby --config barrelsby.json",
+        "update-readme": "embedme README.md"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@gitlab.com:yesbotics/simple-serial-protocol/simple-serial-protocol-node.git"
+    },
+    "bugs": {
+        "url": "https://gitlab.com/yesbotics/simple-serial-protocol/simple-serial-protocol-node/issues"
+    },
+    "keywords": [
+        "node",
+        "node.js",
+        "arduino",
+        "microcontroller",
+        "serial",
+        "protocol",
+        "c/c++",
+        "c/cpp",
+        "iot"
     ],
-    "testRegex": "^.+\\.spec\\.ts$"
-  },
-  "directories": {
-    "example": "examples"
-  }
+    "dependencies": {
+        "serialport": "latest"
+    },
+    "devDependencies": {
+        "@types/jest": "latest",
+        "@types/serialport": "latest",
+        "barrelsby": "^2.2.0",
+        "embedme": "^1.18.1",
+        "jest": "latest",
+        "nodemon": "latest",
+        "rimraf": "latest",
+        "source-map-support": "latest",
+        "ts-jest": "latest",
+        "tslint": "latest",
+        "typescript": "latest"
+    },
+    "jest": {
+        "transform": {
+            "^.+\\.tsx?$": "ts-jest"
+        },
+        "moduleFileExtensions": [
+            "ts",
+            "js"
+        ],
+        "testRegex": "^.+\\.spec\\.ts$"
+    },
+    "directories": {
+        "example": "examples"
+    }
 }
