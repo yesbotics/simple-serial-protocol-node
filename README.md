@@ -1,5 +1,7 @@
 # Simple Serial Protocol for Node.js written in Typescript
-Provides easy and robust general purpose serial communication between Node.js and Arduino(-compatible) devices.
+
+Easy and robust General Purpose Library for the Communication between Node.js applications and Arduino devices.
+Powered by the Usage of resource-effecient and microcontroller-friendly Primitive Dataypes.
 This package covers the Node.js implementation of [Simple Serial Protocol].
 
 ## NPM registry
