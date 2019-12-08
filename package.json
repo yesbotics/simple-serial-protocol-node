@@ -13,8 +13,6 @@
   "scripts": {
     "test": "jest",
     "test:w": "jest --watchAll --runInBand --silent=false --verbose",
-    "example": "nodemon --inspect=localhost:9001 ./dist/example.js",
-    "start": "npm run build:w & npm run example",
     "clean": "rimraf ./dist",
     "list-serial-ports:linux": "dmesg | grep tty",
     "prepublish": "npm run build && npm run test",
