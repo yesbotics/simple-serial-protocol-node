@@ -23,6 +23,7 @@ It corresponds with the Arduino sketch at [Simple Serial Protocol for Arduino].
 ```ts
 // examples/echo-example/echo-example.ts
 
+/ yo
 import 'source-map-support/register';
 
 import {

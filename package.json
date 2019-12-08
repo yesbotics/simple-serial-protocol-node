@@ -15,12 +15,13 @@
         "test:w": "jest --watchAll --runInBand --silent=false --verbose",
         "clean": "rimraf ./dist",
         "list-serial-ports:linux": "dmesg | grep tty",
-        "prepublish": "npm run build && npm run test && npm run update-readme",
+        "prepublish": "npm run build && npm run test && npm run readme",
         "build": "npm run clean && npm run generate-barrels && tsc",
         "build:w": "npm run build && nodemon --config nodemon.json",
-        "watch-echo-example": "nodemon --config nodemon.echoExample.json npm",
+        "readme": "embedme README.md",
+        "readme:w": "npm run readme && nodemon --config nodemon.readme.json",
         "generate-barrels": "barrelsby --config barrelsby.json",
-        "update-readme": "embedme README.md"
+        "start": "concurrently \"npm run build:w\" \"npm run readme:w\""
     },
     "repository": {
         "type": "git",
@@ -47,6 +48,7 @@
         "@types/jest": "latest",
         "@types/serialport": "latest",
         "barrelsby": "^2.2.0",
+        "concurrently": "latest",
         "embedme": "^1.18.1",
         "jest": "latest",
         "nodemon": "latest",
