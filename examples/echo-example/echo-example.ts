@@ -40,8 +40,9 @@ arduino.registerCommand('s', (
     uint64Value: bigint,
     floatValue: number,
     charValue: string,
-    stringValue0: string,
     stringValue1: string,
+    stringValue2: string,
+    stringValue3: string,
 ) => {
     console.log('Received several values from Arduino:',
         byteValue,
@@ -56,8 +57,9 @@ arduino.registerCommand('s', (
         uint64Value,
         floatValue,
         charValue,
-        stringValue0,
         stringValue1,
+        stringValue2,
+        stringValue3,
     );
 }, [
     ParamTypeByte.NAME,
@@ -74,6 +76,7 @@ arduino.registerCommand('s', (
     ParamTypeChar.NAME,
     ParamTypeString.NAME,
     ParamTypeString.NAME,
+    ParamTypeString.NAME
 ]);
 
 // establish connection to arduino and wait 2 seconds
@@ -103,8 +106,10 @@ arduino.init(2000)
 
             .addFloatValue(-1.23456789101112)
             .addCharValue('J')
-            .addStringValue("Hey, I'm text one!")
-            .addStringValue("And I am his brother text two!");
+
+            .addStringValue("text1: Hey, I'm text one!")
+            .addStringValue("text2: And I am his brother text two!")
+            .addStringValue("text3: Nice!");
 
         arduino.writeCommand(command);
     });
