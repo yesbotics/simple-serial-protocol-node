@@ -20,10 +20,10 @@ This example sends values of each supported datatype and listen for them sent ba
 This example can be found as npm application in the `simple-serial-protocol-node/examples/echo-example` folder.
 It corresponds with the Arduino sketch at [Simple Serial Protocol for Arduino].
 
-```ts
-// examples/echo-example/echo-example.ts
+<!-- embedme examples/echo-example/echo-example.ts -->
 
-/ yo,
+```ts
+// hohoho
 
 import {
     Command,
