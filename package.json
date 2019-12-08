@@ -17,7 +17,7 @@
     "list-serial-ports:linux": "dmesg | grep tty",
     "prepublish": "npm run build && npm run test",
     "build": "npm run clean && npm run generate-barrels && tsc",
-    "build:w": "npm run build && nodemon",
+    "build:w": "npm run build && nodemon --config nodemon.js",
     "generate-barrels": "barrelsby --config barrelsby.json"
   },
   "repository": {
