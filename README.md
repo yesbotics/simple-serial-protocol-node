@@ -11,7 +11,10 @@ This package is distributed as [simple-serial-protocol-node npm package].
 * Node.js >= 12.0.0 
 
 ## Install
-    npm install --save @yesbotics/simple-serial-protocol-node`
+
+```npm
+npm install --save @yesbotics/simple-serial-protocol-node
+```
  
 ## Usage example (echo-example written in TypeScript)
 This example sends values of each supported datatype and listen for them sent back. 
