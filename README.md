@@ -11,7 +11,6 @@ This package is distributed as [simple-serial-protocol-node npm package].
 * Node.js >= 12.0.0 
 
 ## Install
-
 ```npm
 npm install --save @yesbotics/simple-serial-protocol-node
 ```
