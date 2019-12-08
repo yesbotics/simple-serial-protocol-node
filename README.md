@@ -21,7 +21,9 @@ This example sends values of each supported datatype and listen for them sent ba
 This example can be found as npm application in the `simple-serial-protocol-node/examples/echo-example` folder.
 It corresponds with the Arduino sketch at [Simple Serial Protocol for Arduino].
 
-```typescript
+```ts
+// examples/echo-example/echo-example.ts
+
 import 'source-map-support/register';
 
 import {
@@ -64,8 +66,9 @@ arduino.registerCommand('s', (
     uint64Value: bigint,
     floatValue: number,
     charValue: string,
-    stringValue0: string,
     stringValue1: string,
+    stringValue2: string,
+    stringValue3: string,
 ) => {
     console.log('Received several values from Arduino:',
         byteValue,
@@ -80,8 +83,9 @@ arduino.registerCommand('s', (
         uint64Value,
         floatValue,
         charValue,
-        stringValue0,
         stringValue1,
+        stringValue2,
+        stringValue3,
     );
 }, [
     ParamTypeByte.NAME,
@@ -98,6 +102,7 @@ arduino.registerCommand('s', (
     ParamTypeChar.NAME,
     ParamTypeString.NAME,
     ParamTypeString.NAME,
+    ParamTypeString.NAME
 ]);
 
 // establish connection to arduino and wait 2 seconds
@@ -122,13 +127,15 @@ arduino.init(2000)
             .addUint32Value(4294967295)
 
             // For BigInt Support add `esnext` to your tsconfig lib section
-            .addInt64Value(BigInt(-21474836480009990190111111143242323411))
-            .addUint64Value(BigInt(72949672950009995436784232138773276543))
+            .addInt64Value(BigInt(-2147483648000999))
+            .addUint64Value(BigInt(7294967295000999))
 
             .addFloatValue(-1.23456789101112)
             .addCharValue('J')
-            .addStringValue("Hey, I'm text one!")
-            .addStringValue("And I am his brother text two!");
+
+            .addStringValue("text1: Hey, I'm text one!")
+            .addStringValue("text2: And I am his brother text two!")
+            .addStringValue("text3: Nice!");
 
         arduino.writeCommand(command);
     });
