@@ -1,6 +1,6 @@
 {
   "name": "echo-example",
-  "version": "1.0.0",
+  "version": "2.2.0",
   "description": "",
   "main": "./dist/echo-example.js",
   "scripts": {
