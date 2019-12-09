@@ -9,7 +9,7 @@
     "run-app": "node ./dist/echo-example.js",
     "run-app:dev": "node --inspect=localhost:3000 --require source-map-support/register ./dist/echo-example.js",
     "start": "npm run clean && npm run compile && npm run run-app",
-    "start:dev": "npm run clean && npm run compile && npm run run-app:dev"
+    "start:dev": "npm run clean && npm run compile && npm run run-app:dev -- COM5 9600"
   },
   "author": "Albrecht Nitsche, Jens Kabisch",
   "license": "MIT",
