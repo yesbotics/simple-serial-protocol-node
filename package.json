@@ -21,7 +21,8 @@
         "readme": "embedme README.md",
         "readme:w": "npm run readme && nodemon --config nodemon.readme.json",
         "generate-barrels": "barrelsby --config barrelsby.json",
-        "start": "concurrently \"npm run build:w\" \"npm run readme:w\""
+        "start": "concurrently \"npm run build:w\" \"npm run readme:w\"",
+        "linker": "npm link"
     },
     "repository": {
         "type": "git",

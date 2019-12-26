@@ -14,15 +14,15 @@ import {ParamTypeUnsignedInt64} from "./types/ParamTypeUnsignedInt64";
 import {ParamTypeFloat} from "./types/ParamTypeFloat";
 import {ParamTypeString} from "./types/ParamTypeString";
 
-export class Command {
-    private readonly commandId: string;
+export class WriteCommandConfig {
     private commandParams: CommandParam[] = [];
 
-    public constructor(commandId: string) {
+    public constructor(
+        private readonly commandId: string,
+    ) {
         if (commandId.length !== 1) {
             throw new SimpleSerialProtocolError(SimpleSerialProtocolError.ERROR_WRONG_COMMAND_NAME_LENGTH);
         }
-        this.commandId = commandId;
     }
 
     public getCommandId(): string {
@@ -33,7 +33,7 @@ export class Command {
         return this.commandParams;
     }
 
-    public addByteValue(byteValue: number): Command {
+    public addByteValue(byteValue: number): WriteCommandConfig {
         this.commandParams.push({
             type: ParamTypeByte.NAME,
             value: byteValue
@@ -41,7 +41,7 @@ export class Command {
         return this;
     }
 
-    public addBooleanValue(booleanValue: boolean): Command {
+    public addBooleanValue(booleanValue: boolean): WriteCommandConfig {
         this.commandParams.push({
             type: ParamTypeBoolean.NAME,
             value: booleanValue
@@ -49,7 +49,7 @@ export class Command {
         return this;
     }
 
-    public addInt8Value(int8Value: number): Command {
+    public addInt8Value(int8Value: number): WriteCommandConfig {
         this.commandParams.push({
             type: ParamTypeInt8.NAME,
             value: int8Value
@@ -57,7 +57,7 @@ export class Command {
         return this;
     }
 
-    public addUint8Value(uint8Value: number): Command {
+    public addUInt8Value(uint8Value: number): WriteCommandConfig {
         this.commandParams.push({
             type: ParamTypeUnsignedInt8.NAME,
             value: uint8Value
@@ -65,7 +65,7 @@ export class Command {
         return this;
     }
 
-    public addInt16Value(int16Value: number): Command {
+    public addInt16Value(int16Value: number): WriteCommandConfig {
         this.commandParams.push({
             type: ParamTypeInt16.NAME,
             value: int16Value
@@ -73,7 +73,7 @@ export class Command {
         return this;
     }
 
-    public addUint16Value(uint16Value: number): Command {
+    public addUInt16Value(uint16Value: number): WriteCommandConfig {
         this.commandParams.push({
             type: ParamTypeUnsignedInt16.NAME,
             value: uint16Value
@@ -81,7 +81,7 @@ export class Command {
         return this;
     }
 
-    public addInt32Value(int32Value: number): Command {
+    public addInt32Value(int32Value: number): WriteCommandConfig {
         this.commandParams.push({
             type: ParamTypeInt32.NAME,
             value: int32Value
@@ -89,7 +89,7 @@ export class Command {
         return this;
     }
 
-    public addUint32Value(uint32Value: number): Command {
+    public addUInt32Value(uint32Value: number): WriteCommandConfig {
         this.commandParams.push({
             type: ParamTypeUnsignedInt32.NAME,
             value: uint32Value
@@ -97,7 +97,7 @@ export class Command {
         return this;
     }
 
-    public addInt64Value(int64Value: bigint): Command {
+    public addInt64Value(int64Value: bigint): WriteCommandConfig {
         this.commandParams.push({
             type: ParamTypeInt64.NAME,
             value: int64Value
@@ -105,7 +105,7 @@ export class Command {
         return this;
     }
 
-    public addUint64Value(uint64Value: bigint): Command {
+    public addUInt64Value(uint64Value: bigint): WriteCommandConfig {
         this.commandParams.push({
             type: ParamTypeUnsignedInt64.NAME,
             value: uint64Value
@@ -113,7 +113,7 @@ export class Command {
         return this;
     }
 
-    public addFloatValue(floatValue: number): Command {
+    public addFloatValue(floatValue: number): WriteCommandConfig {
         this.commandParams.push({
             type: ParamTypeFloat.NAME,
             value: floatValue
@@ -121,7 +121,7 @@ export class Command {
         return this;
     }
 
-    public addCharValue(charValue: string): Command {
+    public addCharValue(charValue: string): WriteCommandConfig {
         this.commandParams.push({
             type: ParamTypeChar.NAME,
             value: charValue
@@ -129,7 +129,7 @@ export class Command {
         return this;
     }
 
-    public addStringValue(stringValue: string): Command {
+    public addStringValue(stringValue: string): WriteCommandConfig {
         this.commandParams.push({
             type: ParamTypeString.NAME,
             value: stringValue
@@ -137,7 +137,7 @@ export class Command {
         return this;
     }
 
-    public addCustomValue(customValue: any, paramTypeName: string): Command {
+    public addCustomValue(customValue: any, paramTypeName: string): WriteCommandConfig {
         this.commandParams.push({
             type: paramTypeName,
             value: customValue

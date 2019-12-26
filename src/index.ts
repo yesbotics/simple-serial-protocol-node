@@ -3,12 +3,13 @@
  */
 
 export * from "./lib/Baudrate";
-export * from "./lib/Command";
 export * from "./lib/CommandParam";
 export * from "./lib/ParamsParser";
+export * from "./lib/ReadCommandConfig";
 export * from "./lib/RegisteredCommand";
 export * from "./lib/SimpleSerialProtocol";
 export * from "./lib/SimpleSerialProtocolError";
+export * from "./lib/WriteCommandConfig";
 export * from "./lib/types/ParamType";
 export * from "./lib/types/ParamTypeBoolean";
 export * from "./lib/types/ParamTypeByte";

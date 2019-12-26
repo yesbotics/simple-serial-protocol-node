@@ -19,7 +19,8 @@ import {ParamTypeUnsignedInt32} from "./types/ParamTypeUnsignedInt32";
 import {ParamTypeByte} from "./types/ParamTypeByte";
 import {ParamTypeUnsignedInt64} from "./types/ParamTypeUnsignedInt64";
 import {ParamTypeInt64} from "./types/ParamTypeInt64";
-import {Command} from "./Command";
+import {ReadCommandConfig} from "./ReadCommandConfig";
+import {WriteCommandConfig} from "./WriteCommandConfig";
 
 export class SimpleSerialProtocol {
 
@@ -96,50 +97,65 @@ export class SimpleSerialProtocol {
         return this._isInitialized;
     }
 
-    registerCommand(commandName: string, callback: (...args: any[]) => void, paramTypes: string[] = null) {
-        if (commandName.length !== 1) {
-            throw new SimpleSerialProtocolError(SimpleSerialProtocolError.ERROR_WRONG_COMMAND_NAME_LENGTH);
+    /**
+     * Pseudooverloading
+     */
+    registerCommand(readCommandConfig: ReadCommandConfig): void;
+    registerCommand(commandId: string, callback: (...args: any[]) => void): void;
+    registerCommand(commandId: string, callback: (...args: any[]) => void, paramTypes: string[]): void;
+
+    registerCommand(commandIdOrConfig: string | ReadCommandConfig, callback: (...args: any[]) => void = null, paramTypes: string[] = null): void {
+        let commandId;
+        if (commandIdOrConfig instanceof ReadCommandConfig) {
+            commandId = commandIdOrConfig.getCommandId();
+            callback = commandIdOrConfig.getCallback();
+            paramTypes = commandIdOrConfig.getCommandParamTypes();
+        } else {
+            commandId = commandIdOrConfig;
         }
-        if (this.registeredCommands.has(commandName)) {
+        if (!callback) {
+            throw new SimpleSerialProtocolError(SimpleSerialProtocolError.ERROR_CALLBACK_IS_NULL);
+        }
+        if (this.registeredCommands.has(commandId)) {
             throw new SimpleSerialProtocolError(SimpleSerialProtocolError.ERROR_COMMAND_IS_ALREADY_REGISTERED);
         }
 
-        const command: RegisteredCommand = new RegisteredCommand(
-            commandName,
+        const registeredCommand: RegisteredCommand = new RegisteredCommand(
+            commandId,
             callback,
             paramTypes
         );
-        this.registeredCommands.set(commandName, command);
+        this.registeredCommands.set(commandId, registeredCommand);
     }
 
-    unregisterCommand(commandName: string) {
-        if (this.registeredCommands.has(commandName)) {
-            const command = this.registeredCommands.get(commandName);
+    unregisterCommand(commandId: string) {
+        if (this.registeredCommands.has(commandId)) {
+            const command = this.registeredCommands.get(commandId);
             command.dispose();
-            this.registeredCommands.delete(commandName);
+            this.registeredCommands.delete(commandId);
         }
     }
 
     /**
      * Pseudooverloading
      */
-    writeCommand(command: Command): void;
+    writeCommand(writeCommandConfig: WriteCommandConfig): void;
     writeCommand(commandId: string): void;
     writeCommand(commandId: string, params: CommandParam[]): void;
 
-    writeCommand(commandIdOrCommand: string | Command, params: CommandParam[] = null): void {
-        let command = '';
-        if (commandIdOrCommand instanceof Command) {
-            command = commandIdOrCommand.getCommandId();
-            params = commandIdOrCommand.getCommandParams();
+    writeCommand(commandIdOrConfig: string | WriteCommandConfig, params: CommandParam[] = null): void {
+        let commandId = '';
+        if (commandIdOrConfig instanceof WriteCommandConfig) {
+            commandId = commandIdOrConfig.getCommandId();
+            params = commandIdOrConfig.getCommandParams();
         } else {
-            command = commandIdOrCommand;
+            commandId = commandIdOrConfig;
         }
 
-        if (command.length !== 1) {
+        if (commandId.length !== 1) {
             throw new SimpleSerialProtocolError(SimpleSerialProtocolError.ERROR_WRONG_COMMAND_NAME_LENGTH);
         }
-        this.write(this.paramTypeInstances.get(ParamTypeChar.NAME).getBuffer(command));
+        this.write(this.paramTypeInstances.get(ParamTypeChar.NAME).getBuffer(commandId));
         if (params) {
             for (const param of params) {
                 if (ParamsParser.hasType(param.type)) {
@@ -203,7 +219,6 @@ export class SimpleSerialProtocol {
             return;
         }
         const byte: number = data[0];
-        // console.log('onData', data, data.toString());
         if (this.currentCommand) {
             /**
              * Got command already -> reading param data
@@ -212,7 +227,6 @@ export class SimpleSerialProtocol {
                 /**
                  * Check EOT -> call callback
                  */
-                // console.log("ssp - paramsRead", byte);
                 if (byte === SimpleSerialProtocol.CHAR_EOT) {
                     this.currentCommand.callCallback();
                     this.currentCommand = null;
@@ -220,7 +234,6 @@ export class SimpleSerialProtocol {
                     throw new SimpleSerialProtocolError(SimpleSerialProtocolError.ERROR_EOT_WAS_NOT_READ);
                 }
             } else {
-                // console.log("ssp - addByte", byte);
                 this.currentCommand.addByte(byte);
             }
         } else {
