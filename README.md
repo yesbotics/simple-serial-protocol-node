@@ -24,7 +24,12 @@ It corresponds with the Arduino sketch at [Simple Serial Protocol for Arduino].
 
 ```ts
 /// don't remove this line!
-import {Baudrate, SimpleSerialProtocol} from '@yesbotics/simple-serial-protocol-node';
+import {
+    Baudrate,
+    SimpleSerialProtocol,
+    WriteCommandConfig,
+    ReadCommandConfig
+} from '@yesbotics/simple-serial-protocol-node';
 
 export class EchoExampleApp {
 
@@ -53,23 +58,22 @@ export class EchoExampleApp {
                 stringValue2: string,
                 stringValue3: string,
             ) => {
-                console.log('Received several values from Arduino:',
-                    byteValue,
-                    booleanValue,
-                    int8Value,
-                    uint8Value,
-                    int16Value,
-                    uint16Value,
-                    int32Value,
-                    uint32Value,
-                    int64Value,
-                    uint64Value,
-                    floatValue,
-                    charValue,
-                    stringValue1,
-                    stringValue2,
-                    stringValue3,
-                );
+                console.log('Received several values from Arduino:');
+                console.log('byteValue', byteValue);
+                console.log('booleanValue', booleanValue);
+                console.log('int8Value', int8Value);
+                console.log('uint8Value', uint8Value);
+                console.log('int16Value', int16Value);
+                console.log('uint16Value', uint16Value);
+                console.log('int32Value', int32Value);
+                console.log('uint32Value', uint32Value);
+                console.log('int64Value', int64Value);
+                console.log('uint64Value', uint64Value);
+                console.log('floatValue', floatValue);
+                console.log('charValue', charValue);
+                console.log('stringValue1', stringValue1);
+                console.log('stringValue2', stringValue2);
+                console.log('stringValue3', stringValue3);
 
                 //gracefully close the connection
                 arduino.dispose().catch((err) => {
@@ -96,7 +100,7 @@ export class EchoExampleApp {
             .addStringParam()
             .addStringParam();
 
-        // define command id, callback function and expected dataytpes
+        // register command with prepared config
         arduino.registerCommand(readConfig);
 
         // establish connection to arduino and wait 2 seconds
