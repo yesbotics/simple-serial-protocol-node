@@ -15,7 +15,7 @@
         "test:w": "jest --watchAll --runInBand --silent=false --verbose",
         "clean": "rimraf ./dist",
         "list-serial-ports:linux": "dmesg | grep tty",
-        "prepublish": "npm run build && npm run test && npm run readme",
+        "prepublishOnly": "npm run build && npm run test && npm run readme",
         "build": "npm run clean && npm run generate-barrels && tsc",
         "build:w": "npm run build && nodemon --config nodemon.build.json",
         "readme": "embedme README.md",
