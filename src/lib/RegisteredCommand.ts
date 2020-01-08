@@ -5,7 +5,7 @@ export class RegisteredCommand {
     private readonly paramsParser: ParamsParser;
 
     constructor(
-        public command: string,
+        private command: string,
         private callback: (...args: any[]) => void,
         paramTypes: string[] = null
     ) {
