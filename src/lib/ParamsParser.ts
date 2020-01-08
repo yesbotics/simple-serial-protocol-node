@@ -59,7 +59,6 @@ export class ParamsParser {
             this.currentType = this.types[this.typeIndex];
         }
         this.currentType.addByte(byte);
-        // console.log("parser", "is full");
     }
 
     isFull(): boolean {

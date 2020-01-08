@@ -3,19 +3,24 @@ import ByteLength from '@serialport/parser-byte-length';
 import {RegisteredCommand} from "./RegisteredCommand";
 import {SimpleSerialProtocolError} from "./SimpleSerialProtocolError";
 import {ParamsParser} from "./ParamsParser";
-import {ParamTypeInt} from "./types/ParamTypeInt";
 import {ParamTypeChar} from "./types/ParamTypeChar";
-import {ParamTypeCharArray} from "./types/ParamTypeCharArray";
+import {ParamTypeString} from "./types/ParamTypeString";
 import {ParamTypeFloat} from "./types/ParamTypeFloat";
-import {ParamTypeLong} from "./types/ParamTypeLong";
-import {ParamTypeShort} from "./types/ParamTypeShort";
-import {ParamTypeUnsignedInt} from "./types/ParamTypeUnsignedInt";
-import {ParamTypeUnsignedLong} from "./types/ParamTypeUnsignedLong";
-import {ParamTypeUnsignedShort} from "./types/ParamTypeUnsignedShort";
 import {ParamType} from "./types/ParamType";
 import {Baudrate} from "./Baudrate";
-import {CommandData} from "./CommandData";
+import {CommandParam} from "./CommandParam";
 import {ParamTypeBoolean} from "./types/ParamTypeBoolean";
+import {ParamTypeInt8} from "./types/ParamTypeInt8";
+import {ParamTypeInt16} from "./types/ParamTypeInt16";
+import {ParamTypeInt32} from "./types/ParamTypeInt32";
+import {ParamTypeUnsignedInt8} from "./types/ParamTypeUnsignedInt8";
+import {ParamTypeUnsignedInt16} from "./types/ParamTypeUnsignedInt16";
+import {ParamTypeUnsignedInt32} from "./types/ParamTypeUnsignedInt32";
+import {ParamTypeByte} from "./types/ParamTypeByte";
+import {ParamTypeUnsignedInt64} from "./types/ParamTypeUnsignedInt64";
+import {ParamTypeInt64} from "./types/ParamTypeInt64";
+import {ReadCommandConfig} from "./ReadCommandConfig";
+import {WriteCommandConfig} from "./WriteCommandConfig";
 
 export class SimpleSerialProtocol {
 
@@ -92,35 +97,65 @@ export class SimpleSerialProtocol {
         return this._isInitialized;
     }
 
-    registerCommand(commandName: string, callback: (...args: any[]) => void, paramTypes: string[] = null) {
-        if (commandName.length !== 1) {
-            throw new SimpleSerialProtocolError(SimpleSerialProtocolError.ERROR_WRONG_COMMAND_NAME_LENGTH);
+    /**
+     * Pseudooverloading
+     */
+    registerCommand(readCommandConfig: ReadCommandConfig): void;
+    registerCommand(commandId: string, callback: (...args: any[]) => void): void;
+    registerCommand(commandId: string, callback: (...args: any[]) => void, paramTypes: string[]): void;
+
+    registerCommand(commandIdOrConfig: string | ReadCommandConfig, callback: (...args: any[]) => void = null, paramTypes: string[] = null): void {
+        let commandId;
+        if (commandIdOrConfig instanceof ReadCommandConfig) {
+            commandId = commandIdOrConfig.getCommandId();
+            callback = commandIdOrConfig.getCallback();
+            paramTypes = commandIdOrConfig.getCommandParamTypes();
+        } else {
+            commandId = commandIdOrConfig;
         }
-        if (this.registeredCommands.has(commandName)) {
+        if (!callback) {
+            throw new SimpleSerialProtocolError(SimpleSerialProtocolError.ERROR_CALLBACK_IS_NULL);
+        }
+        if (this.registeredCommands.has(commandId)) {
             throw new SimpleSerialProtocolError(SimpleSerialProtocolError.ERROR_COMMAND_IS_ALREADY_REGISTERED);
         }
 
-        const command: RegisteredCommand = new RegisteredCommand(
-            commandName,
+        const registeredCommand: RegisteredCommand = new RegisteredCommand(
+            commandId,
             callback,
             paramTypes
         );
-        this.registeredCommands.set(commandName, command);
+        this.registeredCommands.set(commandId, registeredCommand);
     }
 
-    unregisterCommand(commandName: string) {
-        if (this.registeredCommands.has(commandName)) {
-            const command = this.registeredCommands.get(commandName);
+    unregisterCommand(commandId: string) {
+        if (this.registeredCommands.has(commandId)) {
+            const command = this.registeredCommands.get(commandId);
             command.dispose();
-            this.registeredCommands.delete(commandName);
+            this.registeredCommands.delete(commandId);
         }
     }
 
-    writeCommand(command: string, params: CommandData[] = null): void {
-        if (command.length !== 1) {
+    /**
+     * Pseudooverloading
+     */
+    writeCommand(writeCommandConfig: WriteCommandConfig): void;
+    writeCommand(commandId: string): void;
+    writeCommand(commandId: string, params: CommandParam[]): void;
+
+    writeCommand(commandIdOrConfig: string | WriteCommandConfig, params: CommandParam[] = null): void {
+        let commandId = '';
+        if (commandIdOrConfig instanceof WriteCommandConfig) {
+            commandId = commandIdOrConfig.getCommandId();
+            params = commandIdOrConfig.getCommandParams();
+        } else {
+            commandId = commandIdOrConfig;
+        }
+
+        if (commandId.length !== 1) {
             throw new SimpleSerialProtocolError(SimpleSerialProtocolError.ERROR_WRONG_COMMAND_NAME_LENGTH);
         }
-        this.write(this.paramTypeInstances.get(ParamTypeChar.NAME).getBuffer(command));
+        this.write(this.paramTypeInstances.get(ParamTypeChar.NAME).getBuffer(commandId));
         if (params) {
             for (const param of params) {
                 if (ParamsParser.hasType(param.type)) {
@@ -132,7 +167,7 @@ export class SimpleSerialProtocol {
                 }
             }
         }
-        this.write(this.paramTypeInstances.get(ParamTypeInt.NAME).getBuffer(SimpleSerialProtocol.CHAR_EOT));
+        this.write(this.paramTypeInstances.get(ParamTypeInt8.NAME).getBuffer(SimpleSerialProtocol.CHAR_EOT));
     }
 
     addParamType(name: string, clazz: any) {
@@ -160,16 +195,19 @@ export class SimpleSerialProtocol {
     }
 
     private initParamTypes() {
+        this.addParamType(ParamTypeByte.NAME, ParamTypeByte);
         this.addParamType(ParamTypeBoolean.NAME, ParamTypeBoolean);
         this.addParamType(ParamTypeChar.NAME, ParamTypeChar);
-        this.addParamType(ParamTypeCharArray.NAME, ParamTypeCharArray);
+        this.addParamType(ParamTypeString.NAME, ParamTypeString);
         this.addParamType(ParamTypeFloat.NAME, ParamTypeFloat);
-        this.addParamType(ParamTypeInt.NAME, ParamTypeInt);
-        this.addParamType(ParamTypeLong.NAME, ParamTypeLong);
-        this.addParamType(ParamTypeShort.NAME, ParamTypeShort);
-        this.addParamType(ParamTypeUnsignedInt.NAME, ParamTypeUnsignedInt);
-        this.addParamType(ParamTypeUnsignedLong.NAME, ParamTypeUnsignedLong);
-        this.addParamType(ParamTypeUnsignedShort.NAME, ParamTypeUnsignedShort);
+        this.addParamType(ParamTypeInt8.NAME, ParamTypeInt8);
+        this.addParamType(ParamTypeInt16.NAME, ParamTypeInt16);
+        this.addParamType(ParamTypeInt32.NAME, ParamTypeInt32);
+        this.addParamType(ParamTypeInt64.NAME, ParamTypeInt64);
+        this.addParamType(ParamTypeUnsignedInt8.NAME, ParamTypeUnsignedInt8);
+        this.addParamType(ParamTypeUnsignedInt16.NAME, ParamTypeUnsignedInt16);
+        this.addParamType(ParamTypeUnsignedInt32.NAME, ParamTypeUnsignedInt32);
+        this.addParamType(ParamTypeUnsignedInt64.NAME, ParamTypeUnsignedInt64);
     }
 
     private write(buffer: string | number[] | Buffer): void {
@@ -181,7 +219,6 @@ export class SimpleSerialProtocol {
             return;
         }
         const byte: number = data[0];
-        // console.log('onData', data, data.toString());
         if (this.currentCommand) {
             /**
              * Got command already -> reading param data
@@ -190,7 +227,6 @@ export class SimpleSerialProtocol {
                 /**
                  * Check EOT -> call callback
                  */
-                // console.log("ssp - paramsRead", byte);
                 if (byte === SimpleSerialProtocol.CHAR_EOT) {
                     this.currentCommand.callCallback();
                     this.currentCommand = null;
@@ -198,7 +234,6 @@ export class SimpleSerialProtocol {
                     throw new SimpleSerialProtocolError(SimpleSerialProtocolError.ERROR_EOT_WAS_NOT_READ);
                 }
             } else {
-                // console.log("ssp - addByte", byte);
                 this.currentCommand.addByte(byte);
             }
         } else {

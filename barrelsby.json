@@ -1,13 +1,14 @@
 {
+    "name": "index.ts",
     "directory": "src",
     "delete": true,
-        "structure": "flat",
+    "structure": "flat",
     "include": [
         ".ts$"
     ],
     "exclude": [
-        "node_modules",
-        "tests",
-        "example.ts"
+        "index.ts",
+        "example.ts",
+        "tests"
     ]
 }

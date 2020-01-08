@@ -9,6 +9,7 @@ export class SimpleSerialProtocolError extends Error {
     public static readonly ERROR_WRONG_COMMAND_NAME_LENGTH: string = 'ERROR_WRONG_COMMAND_NAME_LENGTH';
     public static readonly ERROR_PARAM_TYPE_IS_ALREADY_REGISTERED: string = 'ERROR_PARAM_TYPE_IS_ALREADY_REGISTERED';
     public static readonly ERROR_PARSER_TOO_MANY_BYTES: string = 'ERROR_PARSER_TOO_MANY_BYTES';
+    public static readonly ERROR_CALLBACK_IS_NULL: string = 'ERROR_CALLBACK_IS_NULL';
 
     constructor(
         private _type: string,

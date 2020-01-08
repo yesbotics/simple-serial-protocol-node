@@ -11,4 +11,6 @@ export interface ParamType<T> {
     dispose(): void;
 
     getBuffer(data: T): Buffer;
+
+    getLength(): number;
 }

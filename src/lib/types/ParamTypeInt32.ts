@@ -1,12 +1,9 @@
 import {ParamType} from "./ParamType";
 import {ParamTypeInt8} from "./ParamTypeInt8";
 
-export class ParamTypeFloat extends ParamTypeInt8 implements ParamType<number> {
+export class ParamTypeInt32 extends ParamTypeInt8 implements ParamType<number> {
 
-    static NAME: string = "float";
-
-    protected rawData = Buffer.allocUnsafe(this.getLength());
-    protected index: number;
+    static NAME: string = "int32";
 
     getLength(): number {
         return 4;
@@ -14,11 +11,11 @@ export class ParamTypeFloat extends ParamTypeInt8 implements ParamType<number> {
 
     getBuffer(data: number): Buffer {
         const buffer = Buffer.allocUnsafe(this.getLength());
-        buffer.writeFloatLE(data, 0);
+        buffer.writeInt32LE(data, 0);
         return buffer;
     }
 
     getData(): number {
-        return this.rawData.readFloatLE(0);
+        return this.rawData.readInt32LE(0);
     }
 }
