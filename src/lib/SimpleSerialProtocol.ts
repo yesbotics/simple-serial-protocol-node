@@ -1,5 +1,5 @@
-import SerialPort from "serialport";
-import ByteLength from '@serialport/parser-byte-length';
+import {SerialPort} from "serialport";
+import {ByteLengthParser} from '@serialport/parser-byte-length';
 import {RegisteredCommand} from "./RegisteredCommand";
 import {SimpleSerialProtocolError} from "./SimpleSerialProtocolError";
 import {ParamsParser} from "./ParamsParser";
@@ -35,7 +35,8 @@ export class SimpleSerialProtocol {
 
     constructor(portname: string, baudrate: Baudrate) {
         this.initParamTypes();
-        this.serialPort = new SerialPort(portname, {
+        this.serialPort = new SerialPort({
+            path: portname,
             autoOpen: false,
             baudRate: baudrate
         });
@@ -45,7 +46,7 @@ export class SimpleSerialProtocol {
         if (this.isOpen()) {
             return Promise.reject('already connected');
         }
-        this.oneByteParser = this.serialPort.pipe(new ByteLength({length: 1}));
+        this.oneByteParser = this.serialPort.pipe(new ByteLengthParser({length: 1}));
         this.oneByteParser.on('data', this.onData.bind(this));
 
         this.serialPort.open((err) => {

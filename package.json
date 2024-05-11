@@ -1,6 +1,6 @@
 {
     "name": "@yesbotics/simple-serial-protocol-node",
-    "version": "2.2.0",
+    "version": "3.0.0",
     "description": "General Purpose Library for the communication between Node.js applications and Arduino devices. Powered by the usage of resource-efficient and microcontroller-friendly Primitive Dataypes.",
     "author": "Albrecht Nitsche, Jens Kabisch",
     "license": "MIT",
