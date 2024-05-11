@@ -158,9 +158,9 @@ echoExampleApp.run(usedPortname, usedBaudrate);
 ```
 
 ## Links
-[Simple Serial Protocol]:https://gitlab.com/yesbotics/simple-serial-protocol/simple-serial-protocol-docs
+[Simple Serial Protocol]:https://github.com/yesbotics/simple-serial-protocol-docs
 [simple-serial-protocol-node npm package]:https://www.npmjs.com/package/@yesbotics/simple-serial-protocol-node
-[Simple Serial Protocol for Arduino]:https://gitlab.com/yesbotics/simple-serial-protocol/simple-serial-protocol-arduino
+[Simple Serial Protocol for Arduino]:https://github.com/yesbotics/simple-serial-protocol-arduino
 [Arduino IDE]:https://www.arduino.cc/en/main/software
 [Arduino-CLI]:https://github.com/arduino/arduino-cli
-[IntervalCallback]:https://gitlab.com/yesbotics/libs/arduino/interval-callback
+[IntervalCallback]:https://github.com/yesbotics/interval-callback
